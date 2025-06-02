@@ -2,12 +2,17 @@
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
  */
+
+const bcrypt = require('bcrypt');
+
 exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('table_name').del()
-  await knex('table_name').insert([
-    {id: 1, colName: 'rowValue1'},
-    {id: 2, colName: 'rowValue2'},
-    {id: 3, colName: 'rowValue3'}
+  await knex('users').del()
+  const password = '12345678';
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await knex('users').insert([
+    {username: 'Daniel', email: 'daniel@gmail.com', phonenumber: '0502223366', password: hashedPassword, imageID: 9},
+    {username: 'Elli', email: 'elli@gmail.com', phonenumber: '0502223377', password: hashedPassword, imageID: 7},
+    {username: 'Nostro', email: 'nostro@gmail.com', phonenumber: '0502223355', password: hashedPassword, imageID: 1},
   ]);
 };

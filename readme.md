@@ -12,3 +12,4 @@ npx knex migrate:make create_vocabulary
 npx knex migrate:latest
 npx knex migrate:rollback
 npx knex seed:make 01_user_images
+npm install bcryptjs --save
