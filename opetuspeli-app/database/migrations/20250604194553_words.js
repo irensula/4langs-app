@@ -14,7 +14,7 @@ exports.up = function(knex) {
                 t.string('value_ru', 255).notNullable()
                 t.string('value_en', 255).notNullable()
                 t.string('value_fi', 255).notNullable()
-                t.string('value_uk', 255).notNullable()
+                t.string('value_ua', 255).notNullable()
                 t.string('part_of_speech', 255).notNullable()
         })
 };
