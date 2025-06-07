@@ -19,7 +19,7 @@ exports.up = function(knex) {
                 t.text('sentence_ru').notNullable()
                 t.text('sentence_en').notNullable()
                 t.text('sentence_fi').notNullable()
-                t.text('sentence_uk').notNullable()
+                t.text('sentence_ua').notNullable()
         })
 };
 

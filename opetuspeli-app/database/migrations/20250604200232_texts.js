@@ -14,7 +14,7 @@ exports.up = function(knex) {
                 t.text('content_ru').notNullable()
                 t.text('content_en').notNullable()
                 t.text('content_fi').notNullable()
-                t.text('content_uk').notNullable()
+                t.text('content_ua').notNullable()
         })
 };
 
