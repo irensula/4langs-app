@@ -8,9 +8,9 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
 router.post('/', (req, res, next) => {
-    const customer = req.body;
+    const user = req.body;
       
-    knex('customer').select('*').where('email', '=', customer.email)
+    knex('user').select('*').where('email', '=', user.email)
         .then((dbuser) => {
             if (dbuser.length == 0) {
                 return res.status(401).json(
@@ -18,7 +18,7 @@ router.post('/', (req, res, next) => {
                 )
             }
             const tempUser = dbuser[0];
-            bcrypt.compare(customer.password, tempUser.password)
+            bcrypt.compare(user.password, tempUser.password)
                 .then((passwordCorrect) => {
                     if (!passwordCorrect) {
                         return res.status(401).json(
@@ -54,12 +54,12 @@ router.post('/', (req, res, next) => {
                     });
                 })
                 .catch((bcryptError) => {
-                    console.error('Error comparing password for email:', customer.email, bcryptError);
+                    console.error('Error comparing password for email:', user.email, bcryptError);
                     res.status(500).json({ error: 'Password comparison failed' });
                 });
         })
         .catch((dbError) => {
-            console.error('Error fetching user from database for email:', customer.email, dbError);
+            console.error('Error fetching user from database for email:', user.email, dbError);
             res.status(500).json({ error: 'Database query failed' });
         });
 })
