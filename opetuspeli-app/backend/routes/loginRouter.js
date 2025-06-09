@@ -10,7 +10,7 @@ const jwt = require('jsonwebtoken')
 router.post('/', (req, res, next) => {
     const user = req.body;
       
-    knex('user').select('*').where('email', '=', user.email)
+    knex('users').select('*').where('email', '=', user.email)
         .then((dbuser) => {
             if (dbuser.length == 0) {
                 return res.status(401).json(
@@ -28,13 +28,8 @@ router.post('/', (req, res, next) => {
                     //token
                     const userForToken = {
                         id: tempUser.id,
-                        firstname: tempUser.firstname,
-                        lastname: tempUser.lastname,
-                        address: tempUser.address,
-                        city: tempUser.city,
-                        zipcode: tempUser.zipcode,
-                        phone: tempUser.phone,
-                        email: tempUser.email
+                        email: tempUser.email,
+                        phonenumber: tempUser.phonenumber,
                     } 
                     const token = jwt.sign(userForToken, config.SECRET, { expiresIn: '7d' });
                     console.log("token", token,
@@ -44,13 +39,8 @@ router.post('/', (req, res, next) => {
                     res.status(200).send({
                         token, userForToken,
                         id: tempUser.id,
-                        firstname: tempUser.firstname,
-                        lastname: tempUser.lastname,
-                        address: tempUser.address,
-                        city: tempUser.city,
-                        zipcode: tempUser.zipcode,
-                        phone: tempUser.phone,
-                        email: tempUser.email
+                        email: tempUser.email,
+                        phonenumber: tempUser.phonenumber,
                     });
                 })
                 .catch((bcryptError) => {

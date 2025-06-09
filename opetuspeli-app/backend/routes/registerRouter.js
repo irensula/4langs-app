@@ -7,41 +7,41 @@ const knex = require('knex')(options);
 const bcrypt = require('bcryptjs')
 
 router.post('/', (req, res, next) => {
-    const customer = req.body;
+    const user = req.body;
     const saltRounds = 10;
-    console.log({ firstname: customer.firstname, lastname: customer.lastname, email: customer.email });
-    if (!customer.firstname || !customer.lastname || !customer.address || !customer.city || !customer.zipcode || !customer.phone || !customer.email || !customer.password) {
+    console.log({ firstname: user.firstname, lastname: user.lastname, email: user.email });
+    if (!user.firstname || !user.lastname || !user.address || !user.city || !user.zipcode || !user.phone || !user.email || !user.password) {
         return res.status(400).json({ error: "All fields are required." });
     }
-    if (customer.password.trim() === '') {
+    if (user.password.trim() === '') {
         return res.status(400).json({ error: "Password is required." });
     }
-    knex('customer').where('email', customer.email).first()
-        .then(existingCustomer => {
-            if (existingCustomer) {
+    knex('user').where('email', user.email).first()
+        .then(existinguser => {
+            if (existinguser) {
                 return res.status(400).json({ error: "Email is already registered." });
             }
 
-            bcrypt.hash(customer.password, saltRounds)
+            bcrypt.hash(user.password, saltRounds)
                 .then((passwordHash) => {
-                    const newCustomer = {
-                        firstname: customer.firstname,
-                        lastname: customer.lastname,
-                        address: customer.address,
-                        city: customer.city,
-                        zipcode: customer.zipcode,
-                        phone: customer.phone,
-                        email: customer.email,
+                    const newuser = {
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        address: user.address,
+                        city: user.city,
+                        zipcode: user.zipcode,
+                        phone: user.phone,
+                        email: user.email,
                         password: passwordHash
                     }
-                    knex('customer').insert(newCustomer)
+                    knex('user').insert(newuser)
                         .then(() => {
                             console.log("register onnistui")
-                            res.status(201).json({ message: "Customer registered successfully" })
+                            res.status(201).json({ message: "user registered successfully" })
                         })
                         .catch((error) => {
                             console.error("Error inserting into database:", error);
-                            res.status(500).json({ error: "Failed to register customer" });
+                            res.status(500).json({ error: "Failed to register user" });
                         });
                 })
                 .catch((error) => {
