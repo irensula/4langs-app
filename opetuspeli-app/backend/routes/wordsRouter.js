@@ -6,32 +6,32 @@ const options = config.DATABASE_OPTIONS;
 const knex = require('knex')(options);
 
 router.get('/', (req, res, next) => {
-    knex('product')
+    knex('words')
         .select('*')
         .then((rows) => {
             res.json(rows);
         })
         .catch((err) => {
-            console.error('Error fetching products:', err.message);
-            res.status(500).json({ error: 'Failed to fetch products' })
+            console.error('Error fetching words:', err.message);
+            res.status(500).json({ error: 'Failed to fetch words' })
     })
 })
 
 router.get('/:id', (req, res) => {
-    const productId = req.params.id;
-    knex('product')
-        .where({ id: productId})
+    const wordId = req.params.id;
+    knex('words')
+        .where({ id: wordId})
         .first()
-        .then(product => {
-            if(product) {
-                res.json(product);
+        .then(word => {
+            if(word) {
+                res.json(word);
             } else {
-                res.status(404).json({ error: "Product not found" });
+                res.status(404).json({ error: "word not found" });
             }
         })
         .catch(err => {
-            console.error('Error fetching product: ', err.message);
-            res.status(500).json({ error: 'Failed to fetch product by ID' });
+            console.error('Error fetching word: ', err.message);
+            res.status(500).json({ error: 'Failed to fetch word by ID' });
         });
 })
 module.exports = router;
