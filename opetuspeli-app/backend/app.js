@@ -6,9 +6,6 @@ let Ajv = require('ajv');
 
 let app = express();
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
 let userschema = require('./schemas/userschema.json');
 let validateSchema = require('./middleware/validate');
 let isAuthenticated = require('./middleware/auth');
