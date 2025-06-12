@@ -15,6 +15,7 @@ DATABASE:
     npx knex migrate:rollback
     npx knex seed:make 01_user_images
     npm install bcryptjs --save
+    npx knex seed:run
 
 BACKEND:
     npm init
