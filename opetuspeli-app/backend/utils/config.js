@@ -18,3 +18,8 @@ module.exports = {
   PORT,
   SECRET
 }
+const knex = require('knex')(DATABASE_OPTIONS);
+
+knex.raw('SELECT 1')
+  .then(() => console.log('✅ Connected to the database'))
+  .catch(err => console.error('❌ Database connection failed:', err));
