@@ -6,5 +6,5 @@ content-type: application/json
     "email": "mary@gmail.com",
     "phonenumber": "0501112244",
     "password": "12345678",
-    "imageID": 2,
+    "imageID": 2
 }   

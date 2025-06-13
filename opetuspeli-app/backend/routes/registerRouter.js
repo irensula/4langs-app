@@ -9,14 +9,15 @@ const bcrypt = require('bcryptjs')
 router.post('/', (req, res, next) => {
     const user = req.body;
     const saltRounds = 10;
-    console.log({ firstname: user.firstname, lastname: user.lastname, email: user.email });
-    if (!user.firstname || !user.lastname || !user.address || !user.city || !user.zipcode || !user.phone || !user.email || !user.password) {
+
+    console.log({ username: user.username, email: user.email, phonenumber: user.phonenumber });
+    if (!user.username || !user.email || !user.phonenumber || !user.imageID || !user.password ) {
         return res.status(400).json({ error: "All fields are required." });
     }
     if (user.password.trim() === '') {
         return res.status(400).json({ error: "Password is required." });
     }
-    knex('user').where('email', user.email).first()
+    knex('users').where('email', user.email).first()
         .then(existinguser => {
             if (existinguser) {
                 return res.status(400).json({ error: "Email is already registered." });
@@ -25,16 +26,13 @@ router.post('/', (req, res, next) => {
             bcrypt.hash(user.password, saltRounds)
                 .then((passwordHash) => {
                     const newuser = {
-                        firstname: user.firstname,
-                        lastname: user.lastname,
-                        address: user.address,
-                        city: user.city,
-                        zipcode: user.zipcode,
-                        phone: user.phone,
+                        username: user.username,
                         email: user.email,
+                        phonenumber: user.phonenumber,
+                        imageID: user.imageID,
                         password: passwordHash
                     }
-                    knex('user').insert(newuser)
+                    knex('users').insert(newuser)
                         .then(() => {
                             console.log("register onnistui")
                             res.status(201).json({ message: "user registered successfully" })
