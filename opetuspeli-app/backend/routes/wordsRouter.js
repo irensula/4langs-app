@@ -6,11 +6,16 @@ const options = config.DATABASE_OPTIONS;
 const knex = require('knex')(options);
 
 router.get('/', (req, res, next) => {
+    if (!res.locals.auth || !res.locals.auth.userId) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+    const user_id = res.locals.auth.userId;
     knex('words')
         .select('*')
         .then((rows) => {
             res.json(rows);
         })
+        .where('users.userID',user_id)
         .catch((err) => {
             console.error('Error fetching words:', err.message);
             res.status(500).json({ error: 'Failed to fetch words' })
