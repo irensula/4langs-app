@@ -26,3 +26,9 @@ DOCKER
     docker ps
     docker compose down
     docker compose up
+
+<!-- "show my words"
+"add word to my list"
+"remove word from my list"
+"practice my saved words"
+"track progress for my words" -->

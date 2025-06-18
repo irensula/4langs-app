@@ -15,7 +15,6 @@ router.get('/', (req, res, next) => {
         .then((rows) => {
             res.json(rows);
         })
-        .where('users.userID',user_id)
         .catch((err) => {
             console.error('Error fetching words:', err.message);
             res.status(500).json({ error: 'Failed to fetch words' })

@@ -27,18 +27,18 @@ router.post('/', (req, res, next) => {
                     } 
                     //token
                     const userForToken = {
-                        id: tempUser.id,
+                        id: tempUser.userID,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
                     } 
                     const token = jwt.sign(userForToken, config.SECRET, { expiresIn: '7d' });
                     console.log("token", token,
-                        "id", tempUser.id,
+                        "id", tempUser.userID,
                         "email", tempUser.email,
                         "role", "regularuser");
                     res.status(200).send({
                         token, userForToken,
-                        id: tempUser.id,
+                        id: tempUser.userID,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
                     });

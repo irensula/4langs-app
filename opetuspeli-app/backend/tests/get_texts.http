@@ -1,2 +1,3 @@
 GET http://localhost:3001/texts HTTP/1.1
 content-type: application/json 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkYW5pZWxAZ21haWwuY29tIiwicGhvbmVudW1iZXIiOiIwNTAyMjIzMzY2IiwiaWF0IjoxNzUwMjc3MDM1LCJleHAiOjE3NTA4ODE4MzV9.9XCqAjk2rpkvzwsWQOwXALr1slJDqJ2jyyNh1xH24Gw
