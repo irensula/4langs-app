@@ -1,20 +1,34 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import { StyleSheet } from "react-native";
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+
+import StartScreen from './screens/StartScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+
+const Stack = createNativeStackNavigator();
+
+function AppContent() {
+
+  //const { isDark } = useTheme();
+  
+  return (
+      // <NavigationContainer theme={isDark ? customDarkTheme : customLightTheme}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="Start" component={StartScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <View style={styles.container}>
-        <Text>Hello!</Text>
-        <StatusBar style="auto" />
-      </View>
-      <Pressable>
-        <Text style={styles.buttonText}>Kirjaudu</Text>
-      </Pressable>
-      <Pressable>
-        <Text style={styles.buttonText}>Rekisteröity</Text>
-      </Pressable>
-    </View>
+    <AppContent />
   );
 }
 

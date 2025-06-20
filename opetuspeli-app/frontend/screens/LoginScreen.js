@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 
 import { useContext } from 'react';
-import MoonIcon from '../components/MoonIcon';
-import MessageBox from '../components/messageBox';
-import CampusContext from '../context/CampusContext';
+import MessageBox from '../components/MessageBox';
 
 import { useTheme } from '@react-navigation/native';
 
@@ -18,7 +16,6 @@ const Login = ({ navigation }) => {
     const [passwordFocused, setPasswordFocused] = useState(false);
 
     const { colors } = useTheme();
-    const { setCampusId } = useContext(CampusContext);
 
     const handleLogin = () => {
         if (username !== 'admin' || password !== '1234') {
@@ -26,7 +23,6 @@ const Login = ({ navigation }) => {
             setMessageType('error');
             setHasError(true);
         } else {
-            setCampusId(1);
             navigation.reset({
                 index: 0,
                 routes: [{ name: 'Home' }],
@@ -39,10 +35,7 @@ const Login = ({ navigation }) => {
           }, 3000);
     }
     return (
-        <View style={styles.container}>
-            <View style={styles.iconWrap}>
-                <MoonIcon />
-            </View>          
+        <View style={styles.container}>          
             <Text style={[styles.title, { color: colors.text }]}>Kirjautuminen</Text>
             <View style={{ minHeight: 50 }}>
                 <MessageBox message={message} type={messageType} />

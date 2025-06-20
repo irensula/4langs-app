@@ -27,6 +27,9 @@ DOCKER
     docker compose down
     docker compose up
 
+FRONTEND
+    npm i @react-navigation/native-stack
+
 <!-- "show my words"
 "add word to my list"
 "remove word from my list"
