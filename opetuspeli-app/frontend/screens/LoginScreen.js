@@ -72,6 +72,9 @@ const Login = ({ navigation }) => {
             <Pressable onPress={handleLogin} style={[styles.button, {backgroundColor: colors.buttonBackground}]}>
                 <Text style={styles.buttonText}>Kirjaudu</Text>
             </Pressable>
+            <Pressable onPress={() => navigation.goBack()}>
+                <Text>Back</Text>
+            </Pressable>
         </View>
     )
 }

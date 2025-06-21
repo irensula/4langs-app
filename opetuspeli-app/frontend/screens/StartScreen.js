@@ -1,9 +1,15 @@
-import { View, Text } from "react-native"; 
+import { View, Text, Pressable } from "react-native"; 
 
-const StartScreen = () => {
+const StartScreen = ({ navigation }) => {
     return (
         <View>
             <Text>Start Screen</Text>
+            <Pressable onPress={() => navigation.navigate('Login')}>
+                <Text>Login</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('Register')}>
+                <Text>Register</Text>
+            </Pressable>
         </View>
     )
 } 

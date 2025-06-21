@@ -1,9 +1,14 @@
-import { View, Text } from "react-native"; 
+import { View, Text, Pressable } from "react-native"; 
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
     return (
         <View>
-            <Text>Register Screen</Text>
+            <Text>Register</Text>
+            
+            <Pressable onPress={() => navigation.goBack()}>
+                <Text>Back</Text>
+            </Pressable>
+
         </View>
     )
 } 
