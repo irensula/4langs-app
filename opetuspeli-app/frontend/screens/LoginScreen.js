@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { View, Text, TextInput, Alert, Pressable, StyleSheet } from 'react-native';
-
 import { useContext } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 
 import { useTheme } from '@react-navigation/native';
@@ -35,8 +35,10 @@ const Login = ({ navigation }) => {
             });
     
             if (response.ok) {
-                Alert.alert("Success", "User logged in successfully");
-                navigation.goBack();
+                const data = await response.json();
+                await AsyncStorage.setItem('token', data.token);
+                console.log("Token", data.token);
+                navigation.navigate("Home");
             } else {
                 const errorData = await response.json();
                 Alert.alert("Error", errorData.message || "Login failed");
@@ -81,7 +83,10 @@ const Login = ({ navigation }) => {
                 onFocus={() => { setHasError(false); setPasswordFocused(true); }}
                 onBlur={() => setPasswordFocused(false)}
             />
-            <Pressable onPress={handleLogin} style={[styles.button, {backgroundColor: colors.buttonBackground}]}>
+            <Pressable 
+                onPress={handleLogin} 
+                style={[styles.button, {backgroundColor: colors.buttonBackground}]}    
+            >
                 <Text style={styles.buttonText}>Kirjaudu</Text>
             </Pressable>
             <Pressable onPress={() => navigation.goBack()}>

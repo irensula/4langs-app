@@ -30,6 +30,8 @@ DOCKER
 
 FRONTEND
     npm i @react-navigation/native-stack
+    npm install @react-native-async-storage/async-storage
+
 
 <!-- "show my words"
 "add word to my list"
