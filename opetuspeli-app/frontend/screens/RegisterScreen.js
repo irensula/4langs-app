@@ -17,9 +17,8 @@ const RegisterScreen = ({ navigation }) => {
         }));
     };
     
-    const handleRegister = async () => {
-        // simple validation
-        if (!userdata.username || !userdata.email || !userdata.password) {
+    const handleRegister = async () => { 
+        if (!userdata.username || !userdata.email || !userdata.phonenumber || !userdata.password || !userdata.imageID) {
             Alert.alert('Error', 'Please fill all required fields');
             return;
         }

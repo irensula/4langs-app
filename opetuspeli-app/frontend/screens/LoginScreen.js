@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Alert, Pressable, StyleSheet } from 'react-native';
 
 import { useContext } from 'react';
 import MessageBox from '../components/MessageBox';
@@ -7,7 +7,7 @@ import MessageBox from '../components/MessageBox';
 import { useTheme } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('info');
@@ -17,30 +17,42 @@ const Login = ({ navigation }) => {
 
     const { colors } = useTheme();
 
-    const handleLogin = () => {
-        if (username !== 'admin' || password !== '1234') {
-            setMessage('Tarkista tiedot');
-            setMessageType('error');
-            setHasError(true);
-        } else {
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'Home' }],
-              });
-        }
-        setTimeout(() => {
-            setMessage('');
-            setMessageType('info');
-            setHasError(false);
-          }, 3000);
-    }
+    const handleLogin = async () => {
+        if (!email || !password) {
+                Alert.alert('Error', 'Please fill all required fields');
+                return;
+            } 
+        try {
+                const response = await fetch("http://localhost:3001/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password, 
+                })
+            });
+    
+            if (response.ok) {
+                Alert.alert("Success", "User logged in successfully");
+                navigation.goBack();
+            } else {
+                const errorData = await response.json();
+                Alert.alert("Error", errorData.message || "Login failed");
+            }
+            } catch (error) {
+                console.error(error);
+                Alert.alert("Error", "Network error");
+            }
+        };
     return (
         <View style={styles.container}>          
             <Text style={[styles.title, { color: colors.text }]}>Kirjautuminen</Text>
             <View style={{ minHeight: 50 }}>
                 <MessageBox message={message} type={messageType} />
             </View>
-            <Text style={[styles.label, { color: colors.text }]}>Käyttäjätunnus</Text>
+            <Text style={[styles.label, { color: colors.text }]}>Sähköposti</Text>
             <TextInput 
                 style={[
                     styles.input, 
@@ -48,8 +60,8 @@ const Login = ({ navigation }) => {
                     hasError && styles.inputError,
                     usernameFocused && styles.inputFocused,
                 ]}
-                value={username}
-                onChangeText={setUsername}
+                value={email}
+                onChangeText={setEmail}
                 underlineColorAndroid="transparent"
                 onFocus={() => { setHasError(false); setUsernameFocused(true); }}
                 onBlur={() => setUsernameFocused(false)}

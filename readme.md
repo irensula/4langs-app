@@ -21,6 +21,7 @@ BACKEND:
     npm init
 
     npm install dotenv
+    npm i cors
 
 DOCKER
     docker ps
