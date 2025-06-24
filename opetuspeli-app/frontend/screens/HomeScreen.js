@@ -1,10 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-import { View, Text } from "react-native"; 
+import { View, Text, TouchableOpacity } from "react-native"; 
+import Svg, { Circle, Ellipse, Line } from 'react-native-svg';
 import Navbar from "../components/Navbar";
+import InteractiveSky from '../components/InteractiveSky';
 
 const HomeScreen = ({ navigation }) => {
     const [token, setToken] = useState('');
+    const [message, setMessage] = useState('Tap something');
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -27,6 +30,11 @@ const HomeScreen = ({ navigation }) => {
         <View>
             <Navbar logout={logout} />
             <Text>Home Screen</Text>
+                <InteractiveSky 
+                    onSunPress={() => setMessage("Sun tapped!")}
+                    onCloudPress={() => setMessage("Cloud tapped!")}
+                />
+            <Text>{message}</Text>
         </View>
     )
 } 

@@ -23,7 +23,7 @@ const Login = ({ navigation }) => {
                 return;
             } 
         try {
-                const response = await fetch("http://localhost:3001/login", {
+                const response = await fetch("http://192.168.1.162:3001/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

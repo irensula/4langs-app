@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native-web"
+import { View, Text, Pressable } from "react-native";
 
 const Navbar = ({logout}) => {
     return (

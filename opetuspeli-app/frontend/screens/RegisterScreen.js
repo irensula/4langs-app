@@ -79,6 +79,7 @@ const RegisterScreen = ({ navigation }) => {
                 value={userdata.imageID}
                 onChangeText={(text) => handleChange('imageID', text)}
             />
+            
             <Pressable onPress={handleRegister}>
                 <Text>Register</Text>
             </Pressable>

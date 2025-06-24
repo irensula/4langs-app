@@ -17,9 +17,9 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.anonymous.opetuspeliapp"
     },
-    "web": {
-    }
+    "web": {}
   }
 }
