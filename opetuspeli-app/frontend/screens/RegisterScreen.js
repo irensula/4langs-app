@@ -1,7 +1,24 @@
-import { useState } from "react";
-import { View, Text, TextInput, Alert, Pressable } from "react-native"; 
+import { useState, useEffect } from "react";
+import { View, Text, TextInput, Alert, Pressable, Image, FlatList, TouchableOpacity } from "react-native"; 
 
 const RegisterScreen = ({ navigation }) => {
+    const [avatars, setAvatars] = useState([]);
+    const [selectedImageID, setSelectedImageID] = useState(null);
+    const API_BASE = 'http://192.168.1.162:3001';
+    useEffect(() => {
+        const fetchAvatars = async () => {
+            try {
+                const response = await fetch(`${API_BASE}/avatars`);
+                const data = await response.json();
+                console.log("Fetched avatars:", data);
+                setAvatars(data);
+            } catch (error) {
+                console.error("Error fetching avatars:", error);
+            }
+        };
+        fetchAvatars();
+    }, []);
+
     const [userdata, setUserdata] = useState({
         username: '',
         email: '',
@@ -24,7 +41,7 @@ const RegisterScreen = ({ navigation }) => {
         }
 
         try {
-            const response = await fetch("http://localhost:3001/register", {
+            const response = await fetch(`${API_BASE}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -75,10 +92,29 @@ const RegisterScreen = ({ navigation }) => {
                 onChangeText={(text) => handleChange('password', text)}
             />
             <Text>Image</Text>
-            <TextInput 
-                value={userdata.imageID}
-                onChangeText={(text) => handleChange('imageID', text)}
-            />
+            <FlatList
+                horizontal
+                data={avatars}
+                keyExtractor={item => item.imageID.toString()}
+                renderItem={({ item }) => (
+                    <TouchableOpacity onPress={() => {
+                        setSelectedImageID(item.imageID);
+                        handleChange('imageID', item.imageID.toString());
+                    }}>
+                    <Image
+                        source={{ uri: `${API_BASE}${item.url}` }}
+                        style={{
+                        width: 80,
+                        height: 80,
+                        margin: 5,
+                        borderWidth: item.imageID === selectedImageID ? 2 : 0,
+                        borderColor: 'blue',
+                        borderRadius: 40
+                        }}
+                    />
+                    </TouchableOpacity>
+                )}
+                />
             
             <Pressable onPress={handleRegister}>
                 <Text>Register</Text>
