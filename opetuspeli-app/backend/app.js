@@ -16,6 +16,7 @@ let validateSchema = require('./middleware/validate');
 let isAuthenticated = require('./middleware/auth');
 
 let indexRouter = require('./routes/index');
+let avatarsRouter = require('./routes/avatarsRouter');
 let loginRouter = require('./routes/loginRouter');
 let registerRouter = require('./routes/registerRouter');
 let wordsRouter = require('./routes/wordsRouter');
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'build')));
 
 app.use('/', indexRouter);
+app.use('/avatars', avatarsRouter);
 app.use('/login', loginRouter);
 app.use('/register', validateSchema(userschema), registerRouter);
 app.use('/words', isAuthenticated, wordsRouter);

@@ -1,17 +1,19 @@
-import Svg, { Circle, Line, Ellipse } from 'react-native-svg';
+import Svg, { Circle, Ellipse } from 'react-native-svg';
+import { View, TouchableOpacity } from 'react-native';
 
-const InteractiveSky = ({ onSunPress, onCloudPress }) => (
-  <Svg width={300} height={300} viewBox="0 0 300 300">
-    {/* Sun (tappable) */}
-    <Circle cx="80" cy="80" r="40" fill="yellow" onPress={onSunPress} />
-    {/* Sun rays */}
-    <Line x1="80" y1="20" x2="80" y2="0" stroke="orange" strokeWidth={4} />
-    {/* ... other rays ... */}
-    {/* Cloud (tappable) */}
-    <Ellipse cx="220" cy="100" rx="40" ry="25" fill="lightgray" onPress={onCloudPress} />
-    <Ellipse cx="240" cy="90" rx="30" ry="20" fill="lightgray" onPress={onCloudPress} />
-    <Ellipse cx="200" cy="90" rx="30" ry="20" fill="lightgray" onPress={onCloudPress} />
-  </Svg>
+  const InteractiveSky = ({ onSunPress, onCloudPress }) => (
+  <View>
+    <View>
+      <Svg height="200" width="300" style={{ position: 'absolute' }}>
+        <Circle cx="50" cy="50" r="30" fill="yellow" />
+        <Ellipse cx="200" cy="60" rx="40" ry="20" fill="lightgray" />
+      </Svg>
+
+      {/* Touchable areas positioned over SVG */}
+      <TouchableOpacity onPress={onSunPress} />
+      <TouchableOpacity onPress={onCloudPress} />
+    </View>
+  </View>
 );
 
 export default InteractiveSky;

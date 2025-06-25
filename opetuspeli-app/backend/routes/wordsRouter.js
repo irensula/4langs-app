@@ -1,9 +1,7 @@
-var express = require('express');
-var router = express.Router();
-
-const config = require('../utils/config')
-const options = config.DATABASE_OPTIONS;
-const knex = require('knex')(options);
+let express = require('express');
+let router = express.Router();
+const config = require('../utils/config');
+const knex = require('knex')(config.DATABASE_OPTIONS);
 
 router.get('/', (req, res, next) => {
     if (!res.locals.auth || !res.locals.auth.userId) {
