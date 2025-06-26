@@ -36,8 +36,16 @@ const Login = ({ navigation }) => {
     
             if (response.ok) {
                 const data = await response.json();
+                const user = {
+                    id: data.id,
+                    email: data.email,
+                    phonenumber: data.phonenumber,
+                    imageID: data.imageID,
+                };
                 await AsyncStorage.setItem('token', data.token);
+                await AsyncStorage.setItem('user', JSON.stringify(user));
                 console.log("Token", data.token);
+                console.log("Image", data.imageID);
                 navigation.navigate("Home");
             } else {
                 const errorData = await response.json();

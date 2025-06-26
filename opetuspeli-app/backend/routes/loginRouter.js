@@ -30,17 +30,20 @@ router.post('/', (req, res, next) => {
                         id: tempUser.userID,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
+                        imageID: tempUser.imageID
                     } 
                     const token = jwt.sign(userForToken, config.SECRET, { expiresIn: '7d' });
                     console.log("token", token,
                         "id", tempUser.userID,
                         "email", tempUser.email,
+                        "imageID", tempUser.imageID,
                         "role", "regularuser");
                     res.status(200).send({
                         token, userForToken,
                         id: tempUser.userID,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
+                        imageID: tempUser.imageID
                     });
                 })
                 .catch((bcryptError) => {

@@ -6,12 +6,17 @@ import InteractiveSky from '../components/InteractiveSky';
 
 const HomeScreen = ({ navigation }) => {
     const [token, setToken] = useState('');
+    const [user, setUser] = useState(null);
+    const API_BASE = 'http://192.168.1.162:3001';
     const [message, setMessage] = useState('Tap something');
 
     useEffect(() => {
         const fetchToken = async () => {
             const savedToken = await AsyncStorage.getItem('token');
-            setToken(savedToken);
+            const savedUser = await AsyncStorage.getItem('user');
+            console.log("Saved user from AsyncStorage:", savedUser);
+            if (savedToken) setToken(savedToken);
+            if (savedUser) setUser(JSON.parse(savedUser));
         };
         fetchToken();
     }, []);
@@ -27,7 +32,7 @@ const HomeScreen = ({ navigation }) => {
     }
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
-            <Navbar logout={logout} />
+            <Navbar logout={logout} user={user} apiBase={API_BASE} />
             <Text>Home Screen</Text>
                 <InteractiveSky 
                     onSunPress={() => setMessage("Sun tapped!")}
