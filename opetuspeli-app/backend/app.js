@@ -22,6 +22,7 @@ let registerRouter = require('./routes/registerRouter');
 let wordsRouter = require('./routes/wordsRouter');
 let sentencesRouter = require('./routes/sentencesRouter');
 let textsRouter = require('./routes/textsRouter');
+let usersRouter = require('./routes/usersRouter');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -37,5 +38,6 @@ app.use('/register', validateSchema(userschema), registerRouter);
 app.use('/words', isAuthenticated, wordsRouter);
 app.use('/sentences', isAuthenticated, sentencesRouter);
 app.use('/texts', isAuthenticated, textsRouter);
+app.use('/users', isAuthenticated, usersRouter);
 
 module.exports = app;

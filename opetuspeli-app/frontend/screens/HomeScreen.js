@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity } from "react-native"; 
+import { ScrollView, View, Text, TouchableOpacity, Pressable } from "react-native"; 
 import Navbar from "../components/Navbar";
 import InteractiveSky from '../components/InteractiveSky';
 
@@ -32,14 +32,18 @@ const HomeScreen = ({ navigation }) => {
     }
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
-            <Navbar logout={logout} user={user} apiBase={API_BASE} />
+            {user && (
+                <Navbar logout={logout} user={user} apiBase={API_BASE} navigation={navigation} />
+            )}
             <Text>Home Screen</Text>
                 <InteractiveSky 
                     onSunPress={() => setMessage("Sun tapped!")}
                     onCloudPress={() => setMessage("Cloud tapped!")}
                 />
             <Text>{message}</Text>
-            <Text>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.</Text>
+            <Pressable onPress={() => navigation.goBack()}>
+                <Text>Back</Text>
+            </Pressable>
         </ScrollView>
     )
 } 

@@ -27,19 +27,22 @@ const StartScreen = ({ navigation }) => {
     return (
         <View>
             <Text>Welcome to the App</Text>
-            {isLoggedIn ? (
-            <Pressable onPress={() => navigation.navigate('Home')}>
-            <Text>Continue to Home</Text>
-            </Pressable>
-            ) : (
+            {isLoggedIn ? 
+              (
+                <Pressable onPress={() => navigation.navigate('Home')}>
+                    <Text>Continue to Home</Text>
+                </Pressable>
+              ) : (
                 <>
-            <Pressable onPress={() => navigation.navigate('Login')}>
-                <Text>Login</Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.navigate('Register')}>
-                <Text>Register</Text>
-            </Pressable>        
-        </>)}
+                  <Pressable onPress={() => navigation.navigate('Login')}>
+                      <Text>Login</Text>
+                  </Pressable>
+                  <Pressable onPress={() => navigation.navigate('Register')}>
+                      <Text>Register</Text>
+                  </Pressable>        
+              </>
+            )
+          }
         </View>
     )
 } 

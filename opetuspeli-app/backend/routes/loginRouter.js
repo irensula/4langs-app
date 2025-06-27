@@ -10,7 +10,10 @@ const jwt = require('jsonwebtoken')
 router.post('/', (req, res, next) => {
     const user = req.body;
       
-    knex('users').select('*').where('email', '=', user.email)
+    knex('users')
+        .select('users.*', 'user_images.url')
+        .leftJoin('user_images', 'users.imageID', 'user_images.imageID' )
+        .where('email', '=', user.email)
         .then((dbuser) => {
             if (dbuser.length == 0) {
                 return res.status(401).json(
@@ -28,22 +31,28 @@ router.post('/', (req, res, next) => {
                     //token
                     const userForToken = {
                         id: tempUser.userID,
+                        username: tempUser.username,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
-                        imageID: tempUser.imageID
+                        imageID: tempUser.imageID,
+                        url: tempUser.url
                     } 
                     const token = jwt.sign(userForToken, config.SECRET, { expiresIn: '7d' });
                     console.log("token", token,
                         "id", tempUser.userID,
+                        "username", tempUser.username,
                         "email", tempUser.email,
                         "imageID", tempUser.imageID,
+                        "url", tempUser.url,
                         "role", "regularuser");
                     res.status(200).send({
                         token, userForToken,
                         id: tempUser.userID,
+                        username: tempUser.username,
                         email: tempUser.email,
                         phonenumber: tempUser.phonenumber,
-                        imageID: tempUser.imageID
+                        imageID: tempUser.imageID,
+                        url: tempUser.url
                     });
                 })
                 .catch((bcryptError) => {

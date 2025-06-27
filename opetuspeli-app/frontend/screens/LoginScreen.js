@@ -38,14 +38,14 @@ const Login = ({ navigation }) => {
                 const data = await response.json();
                 const user = {
                     id: data.id,
+                    username: data.username,
                     email: data.email,
                     phonenumber: data.phonenumber,
                     imageID: data.imageID,
+                    url: data.url
                 };
                 await AsyncStorage.setItem('token', data.token);
                 await AsyncStorage.setItem('user', JSON.stringify(user));
-                console.log("Token", data.token);
-                console.log("Image", data.imageID);
                 navigation.navigate("Home");
             } else {
                 const errorData = await response.json();
