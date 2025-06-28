@@ -1,0 +1,9 @@
+PUT http://localhost:3001/user/3 HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Heily",
+    "email": "heily@gmail.com",
+    "phonenumber": "0508885566",
+    "password": "12345678"
+}
