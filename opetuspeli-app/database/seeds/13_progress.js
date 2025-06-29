@@ -3,12 +3,11 @@
  * @returns { Promise<void> } 
  */
 exports.seed = async function(knex) {
-  // Deletes ALL existing entries
-  await knex('exercise_cards').del()
-  await knex('exercise_cards').insert([
-    {categoryID: 1, wordID: 1, imageID: 1, description: "Tap the card to see the right word", maxPoints: 1, isReversible: true, cardType: 'both' }, 
-    {categoryID: 1, wordID: 2, imageID: 2, description: "Tap the card to see the right word", maxPoints: 1, isReversible: true, cardType: 'both' },
-    {categoryID: 2, wordID: 3, imageID: 3, description: "Tap the card to see the right word", maxPoints: 1, isReversible: true, cardType: 'both' },
-    {categoryID: 2, wordID: 4, imageID: 4, description: "Tap the card to see the right word", maxPoints: 1, isReversible: true, cardType: 'both' }
+  await knex('progress').del()
+  await knex('progress').insert([
+    {userID: 1, exerciseTable: "exercise_cards", exerciseID: 1, pointsEarned: 1, maxPoints: 1, completedAt: "2025-06-29 12:00:00"},
+    {userID: 1, exerciseTable: "exercise_cards", exerciseID: 2, pointsEarned: 1, maxPoints: 1, completedAt: "2025-06-29 12:00:00"},
+    {userID: 1, exerciseTable: "exercise_cards", exerciseID: 3, pointsEarned: 0, maxPoints: 1, completedAt: "2025-06-29 12:00:00"},
+    {userID: 1, exerciseTable: "exercise_cards", exerciseID: 4, pointsEarned: 1, maxPoints: 1, completedAt: "2025-06-29 12:00:00"},
   ]);
 };
