@@ -1,3 +1,4 @@
+import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Pressable } from "react-native"; 
@@ -7,9 +8,9 @@ import HouseIcons from '../components/HouseIcons';
 const HomeScreen = ({ navigation }) => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState(null);
-    const API_BASE = 'http://192.168.1.162:3001';
     const [categories, setCategories] = useState([]);
-
+    const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    
     useEffect(() => {
         const fetchToken = async () => {
             const savedToken = await AsyncStorage.getItem('token');
@@ -52,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
             {user && (
-                <Navbar logout={logout} user={user} apiBase={API_BASE} navigation={navigation} />
+                <Navbar logout={logout} user={user} navigation={navigation} />
             )}
             <Text>Home Screen</Text>
             

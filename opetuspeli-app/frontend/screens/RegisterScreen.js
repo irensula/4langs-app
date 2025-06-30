@@ -1,22 +1,23 @@
+import Constants from 'expo-constants';
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Alert, Pressable, Image, FlatList, TouchableOpacity } from "react-native"; 
+import { View, Text, TextInput, Pressable } from "react-native"; 
+import validateUser from "../utils/validateUser";
+import AvatarsList from '../components/AvatarsList';
+import MessageBox from '../components/MessageBox';
 
 const RegisterScreen = ({ navigation }) => {
     const [avatars, setAvatars] = useState([]);
-    const [selectedImageID, setSelectedImageID] = useState(null);
-    const API_BASE = 'http://192.168.1.162:3001';
+    const [selectedAvatar, setSelectedAvatar] = useState(null);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('success');
+    const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    
     useEffect(() => {
-        const fetchAvatars = async () => {
-            try {
-                const response = await fetch(`${API_BASE}/avatars`);
-                const data = await response.json();
-                console.log("Fetched avatars:", data);
-                setAvatars(data);
-            } catch (error) {
-                console.error("Error fetching avatars:", error);
-            }
-        };
-        fetchAvatars();
+
+        fetch(`${API_BASE}/avatars`)
+            .then(res => res.json())
+            .then(data => setAvatars(data))
+            .catch(console.error);
     }, []);
 
     const [userdata, setUserdata] = useState({
@@ -35,8 +36,17 @@ const RegisterScreen = ({ navigation }) => {
     };
     
     const handleRegister = async () => { 
-        if (!userdata.username || !userdata.email || !userdata.phonenumber || !userdata.password || !userdata.imageID) {
-            Alert.alert('Error', 'Please fill all required fields');
+        const errorMessage = validateUser({
+            username: userdata.username,
+            email: userdata.email,
+            phonenumber: userdata.phonenumber,
+            imageID: userdata.imageID,
+            password: userdata.password,
+        });
+
+        if (errorMessage) {
+            setMessage(errorMessage);
+            setMessageType('error')
             return;
         }
 
@@ -56,21 +66,31 @@ const RegisterScreen = ({ navigation }) => {
             });
 
             if (response.ok) {
-                Alert.alert("Success", "User registered successfully");
-                navigation.goBack();
+                setMessage("Tervetuloa sovellukseen!");
+                setMessageType('success');
+                setTimeout(() => {
+                    navigation.navigate("Login");
+                }, 3000);
+                
             } else {
                 const errorData = await response.json();
-                Alert.alert("Error", errorData.message || "Registration failed");
+                setMessage(errorData.error || errorData.message || "Registration failed");
+                setMessageType('error');
             }
         } catch (error) {
             console.error(error);
-            Alert.alert("Error", "Network error");
+            setMessage("Network error");
+            setMessageType('error');
         }
     };
 
     return (
         <View>
             <Text>Register</Text>
+            <View style={{ minHeight: 50 }}>
+                <MessageBox message={message} type={messageType} />
+            </View>
+
             <Text>Käyttäjätunnus</Text>
             <TextInput 
                 value={userdata.username}
@@ -89,32 +109,16 @@ const RegisterScreen = ({ navigation }) => {
             <Text>Password</Text>
             <TextInput 
                 value={userdata.password}
+                secureTextEntry={true}
                 onChangeText={(text) => handleChange('password', text)}
             />
             <Text>Image</Text>
-            <FlatList
-                horizontal
-                data={avatars}
-                keyExtractor={item => item.imageID.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => {
-                        setSelectedImageID(item.imageID);
-                        handleChange('imageID', item.imageID.toString());
-                    }}>
-                    <Image
-                        source={{ uri: `${API_BASE}${item.url}` }}
-                        style={{
-                        width: 80,
-                        height: 80,
-                        margin: 5,
-                        borderWidth: item.imageID === selectedImageID ? 2 : 0,
-                        borderColor: 'blue',
-                        borderRadius: 40
-                        }}
-                    />
-                    </TouchableOpacity>
-                )}
-                />
+            <AvatarsList 
+                avatars={avatars} 
+                onSelect={(imageID) => {
+                    setSelectedAvatar(imageID);
+                    handleChange('imageID', imageID.toString());
+            }} />
             
             <Pressable onPress={handleRegister}>
                 <Text>Register</Text>

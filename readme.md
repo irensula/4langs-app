@@ -35,6 +35,10 @@ FRONTEND
     npx expo install react-native-svg
     npm install --save-dev expo-svg-transformer
     npx expo start -c
+    npx expo install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated react-native-svg
+    npm install -g expo-cli
+    npx expo install expo-constants
+
 
 
 

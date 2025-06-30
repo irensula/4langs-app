@@ -3,7 +3,6 @@ import { View, Text, TextInput, Alert, Pressable, StyleSheet } from 'react-nativ
 import { useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
-
 import { useTheme } from '@react-navigation/native';
 
 const Login = ({ navigation }) => {

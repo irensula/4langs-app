@@ -1,9 +1,11 @@
+import Constants from 'expo-constants';
 import { View, Text, Image, Pressable } from "react-native";
 
 const UserPage = ({route, navigation}) => {
-    const { user, apiBase } = route.params;
+    const { user } = route.params;
+    const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     console.log('User', user);
-    console.log('Apibase', apiBase);
+    console.log('Apibase', API_BASE);
     return (
         <View>
             <Text>User Page</Text>
@@ -12,7 +14,7 @@ const UserPage = ({route, navigation}) => {
             <Text>Phonenumber: {user?.phonenumber}</Text>
             <Text>Password: {user?.password}</Text>
             <Image
-                source={{ uri: `${apiBase}${user?.url}` }}
+                source={{ uri: `${API_BASE}${user?.url}` }}
                 style={{
                 width: 80,
                 height: 80,

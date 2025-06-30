@@ -20,7 +20,7 @@ router.post('/', (req, res, next) => {
     knex('users').where('email', user.email).first()
         .then(existinguser => {
             if (existinguser) {
-                return res.status(400).json({ error: "Email is already registered." });
+                return res.status(400).json({ error: "Sähköpostiosoite on jo rekisteröity." });
             }
 
             bcrypt.hash(user.password, saltRounds)

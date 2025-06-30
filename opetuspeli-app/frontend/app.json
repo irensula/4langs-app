@@ -20,6 +20,9 @@
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.opetuspeliapp"
     },
-    "web": {}
+    "web": {},
+    "extra": {
+      "API_BASE": "http://192.168.1.162:3001"
+    }
   }
 }
