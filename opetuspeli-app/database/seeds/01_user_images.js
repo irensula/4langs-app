@@ -12,7 +12,7 @@ exports.seed = async function(knex) {
     {url: '/images/bear.png', label: 'Bear'},
     {url: '/images/fox.png', label: 'Fox'},
     {url: '/images/panda.png', label: 'Panda'},
-    {url: '/images/bird.png', label: 'Bird'},
+    {url: '/images/frog.png', label: 'Frog'},
     {url: '/images/dinosaur.png', label: 'Dinosaur'},
     {url: '/images/tiger.png', label: 'Tiger'},
   ]);

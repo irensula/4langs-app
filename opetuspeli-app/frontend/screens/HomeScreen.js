@@ -2,13 +2,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Pressable } from "react-native"; 
 import Navbar from "../components/Navbar";
-import InteractiveSky from '../components/InteractiveSky';
+import HouseIcons from '../components/HouseIcons';
 
 const HomeScreen = ({ navigation }) => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState(null);
     const API_BASE = 'http://192.168.1.162:3001';
-    const [message, setMessage] = useState('Tap something');
+    const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchToken = async () => {
@@ -30,17 +30,34 @@ const HomeScreen = ({ navigation }) => {
         console.log("Token from storage after logout:", check);
         navigation.navigate("Start");
     }
+
+    useEffect(() => {
+        if (!token) return;
+
+        fetch(`${API_BASE}/categories`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            setCategories(data);
+            console.log("Categories:", data);
+        })
+        .catch((err) => console.error('Fetch error:', err));
+    }, [token]);
+
+    const handleSelectCategory = (categoryName) => {
+        navigation.navigate('Category', { name: categoryName });
+    };
+
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
             {user && (
                 <Navbar logout={logout} user={user} apiBase={API_BASE} navigation={navigation} />
             )}
             <Text>Home Screen</Text>
-                <InteractiveSky 
-                    onSunPress={() => setMessage("Sun tapped!")}
-                    onCloudPress={() => setMessage("Cloud tapped!")}
-                />
-            <Text>{message}</Text>
+            
+            <HouseIcons categories={categories} onSelect={handleSelectCategory}/>
+
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>
             </Pressable>
