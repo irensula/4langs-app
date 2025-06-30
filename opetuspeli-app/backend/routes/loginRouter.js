@@ -17,7 +17,7 @@ router.post('/', (req, res, next) => {
         .then((dbuser) => {
             if (dbuser.length == 0) {
                 return res.status(401).json(
-                    { error: "invalid email or password" }
+                    { error: "Tarkista käyttäjätunnus tai salasana" }
                 )
             }
             const tempUser = dbuser[0];
@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
                 .then((passwordCorrect) => {
                     if (!passwordCorrect) {
                         return res.status(401).json(
-                            { error: "invalid email or password" }
+                            { error: "Tarkista käyttäjätunnus tai salasana" }
                         )
                     } 
                     //token

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TextInput, Alert, Pressable, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import { useContext } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
@@ -9,7 +9,7 @@ const Login = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const [messageType, setMessageType] = useState('info');
+    const [messageType, setMessageType] = useState('success');
     const [hasError, setHasError] = useState(false);
     const [usernameFocused, setUsernameFocused] = useState(false);
     const [passwordFocused, setPasswordFocused] = useState(false);
@@ -18,7 +18,9 @@ const Login = ({ navigation }) => {
 
     const handleLogin = async () => {
         if (!email || !password) {
-                Alert.alert('Error', 'Please fill all required fields');
+                setMessage('Kirjoita käyttäjätunnus ja salasana');
+                setMessageType('error');
+                setTimeout(() => setMessage(''), 5000);
                 return;
             } 
         try {
@@ -45,14 +47,19 @@ const Login = ({ navigation }) => {
                 };
                 await AsyncStorage.setItem('token', data.token);
                 await AsyncStorage.setItem('user', JSON.stringify(user));
-                navigation.navigate("Home");
+                setMessage("Tervetuloa takaisin!");
+                navigation.navigate("Home", { welcomeMessage: "Tervetuloa takaisin!" });
             } else {
                 const errorData = await response.json();
-                Alert.alert("Error", errorData.message || "Login failed");
+                setMessage(errorData.error || "Kirjautuminen epäonnistui");
+                setMessageType('error');
+                setTimeout(() => setMessage(''), 5000);
             }
             } catch (error) {
                 console.error(error);
-                Alert.alert("Error", "Network error");
+                setMessage("Verkkovirhe. Tarkista yhteys");
+                setMessageType('error');
+                setTimeout(() => setMessage(''), 5000);
             }
         };
     return (

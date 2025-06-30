@@ -3,13 +3,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Pressable } from "react-native"; 
 import Navbar from "../components/Navbar";
+import MessageBox from '../components/MessageBox';
 import HouseIcons from '../components/HouseIcons';
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ route, navigation }) => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('success');
     
     useEffect(() => {
         const fetchToken = async () => {
@@ -21,6 +24,19 @@ const HomeScreen = ({ navigation }) => {
         };
         fetchToken();
     }, []);
+
+    useEffect(() => {
+        let timer;
+        if (route.params?.welcomeMessage) {
+            setMessage(route.params.welcomeMessage);
+            setMessageType('success');
+            setTimeout(() => {
+                setMessage('');
+            }, 5000);
+            navigation.setParams({ welcomeMessage: null });
+            }
+        return () => clearTimeout(timer);
+    }, [route.params?.welcomeMessage]);
 
     const logout = async () => {
         await AsyncStorage.removeItem('token');
@@ -52,6 +68,11 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
+
+            <View style={{ minHeight: 50 }}>
+                <MessageBox message={message} type={messageType} />
+            </View>
+
             {user && (
                 <Navbar logout={logout} user={user} navigation={navigation} />
             )}
