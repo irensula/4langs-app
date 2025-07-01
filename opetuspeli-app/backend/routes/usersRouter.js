@@ -43,7 +43,7 @@ router.get('/:id', (req, res) => {
 
 router.put('/:id', async (req, res) => {
     const userId = req.params.id;
-    const { username, email, phonenumber, password } = req.body;
+    const { username, email, phonenumber, password, imageID } = req.body;
     console.log("BODY RECEIVED:", req.body);
     if (userId !== res.locals.auth.userId.toString()) {
         return res.status(403).json({ error: 'Forbidden: You cannot update another user' });
@@ -64,13 +64,23 @@ router.put('/:id', async (req, res) => {
       updatedUser.password = await bcrypt.hash(password, 10);
     }
 
+    if (imageID !== undefined) {
+      updatedUser.imageID = imageID;
+    }
+
     await knex('users')
       .where('userID', '=', userId)
       .update(updatedUser)
-      // Fetch updated user manually
+     
     const updated = await knex('users')
       .leftJoin('user_images', 'users.imageID', 'user_images.imageID')
-      .select('users.*', 'user_images.url as url')
+      .select('users.userID as id',
+            'users.username',
+            'users.email',
+            'users.phonenumber',
+            'users.password',
+            'users.imageID',
+            'user_images.url as url')
       .where('users.userID', '=', userId)
       .first();
 

@@ -5,7 +5,7 @@ const Navbar = ({logout, user, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     return (
         <View>
-            <Pressable onPress={() => navigation.navigate('UserPage', { user })}>
+            <Pressable onPress={() => navigation.navigate('UserScreen', { user })}>
                 <Image
                     source={{ uri: `${API_BASE}${user?.url}` }}
                     style={{

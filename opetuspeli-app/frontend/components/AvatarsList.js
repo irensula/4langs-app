@@ -2,17 +2,22 @@ import { useState, useEffect } from "react";
 import { View, Text, Image, FlatList, TouchableOpacity } from "react-native"; 
 import Constants from 'expo-constants';
 
-const AvatarsList = ({ avatars, onSelect }) => {
-    const [selectedImageID, setSelectedImageID] = useState(null);
+const AvatarsList = ({ avatars, onSelect, selectedImageID: propSelectedImageID }) => {
+    const [selectedImageID, setSelectedImageID] = useState(propSelectedImageID || null);
     const [showAllAvatars, setShowAllAvatars] = useState(false);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
 
     useEffect(() => {
-        if (avatars.length > 0 && selectedImageID === null) {
+        if (avatars.length > 0) {
+            const found = avatars.find(a => a.imageID === propSelectedImageID);
+            if (found) {
+                setSelectedImageID(propSelectedImageID);
+            } else {
             setSelectedImageID(avatars[0].imageID);
             onSelect && onSelect(avatars[0].imageID);
-        }
-    }, [avatars]);
+            }
+        } 
+    }, [avatars, propSelectedImageID]);
 
     return (
         <View>

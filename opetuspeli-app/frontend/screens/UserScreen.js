@@ -3,10 +3,13 @@ import { View, Text, Image, Pressable, TextInput } from "react-native";
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
+import AvatarList from '../components/AvatarsList';
 
-const UserPage = ({ route, navigation }) => {
+const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
+    console.log("Params",route.params);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    
     
     const [user, setUser] = useState(initialUser);
     const [message, setMessage] = useState('');
@@ -18,7 +21,12 @@ const UserPage = ({ route, navigation }) => {
         phonenumber: user.phonenumber,
         password: ''
     });
-
+    const [avatars, setAvatars] = useState([]);
+    const [selectedImageID, setSelectedImageID] = useState(user.imageID || null);
+    const userAvatar = avatars.find(a => a.imageID === user.imageID);
+    const userAvatarUrl = userAvatar ? userAvatar.url : null;
+    console.log("userAvatar", userAvatar);
+    console.log("userAvatarUrl", userAvatarUrl);
     useEffect(() => {
         setUserdata({
             username: user?.username || '',
@@ -26,6 +34,19 @@ const UserPage = ({ route, navigation }) => {
             phonenumber: user?.phonenumber || '',
             password: '',
         });
+    }, [user]);
+
+    useEffect(() => {
+        async function fetchAvatars() {
+            const res = await fetch(`${API_BASE}/avatars`);
+            const data = await res.json();
+            setAvatars(data);
+        }
+        fetchAvatars();
+    }, []);
+
+    useEffect(() => {
+        setSelectedImageID(user.imageID || null);
     }, [user]);
 
     const handleChange = (field, value) => {
@@ -42,7 +63,7 @@ const UserPage = ({ route, navigation }) => {
                 setMessage('Käyttäjän on oltava valtuutettu');
                 return;
             }
-            const response = await fetch(`${API_BASE}/users/${user.userID}`, {
+            const response = await fetch(`${API_BASE}/users/${user.id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -52,7 +73,8 @@ const UserPage = ({ route, navigation }) => {
                     username: userdata.username,
                     email: userdata.email,
                     phonenumber: userdata.phonenumber,
-                    password: userdata.password 
+                    password: userdata.password,
+                    imageID: selectedImageID
                 })
             });
 
@@ -112,8 +134,8 @@ const UserPage = ({ route, navigation }) => {
                 secureTextEntry
                 placeholder="New password"
             />
-            <Image
-                source={{ uri: `${API_BASE}${user?.url}` }}
+            {!editMode && <Image
+                source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
                 style={{
                 width: 80,
                 height: 80,
@@ -122,7 +144,13 @@ const UserPage = ({ route, navigation }) => {
                 borderColor: 'blue',
                 borderRadius: 40
                 }}
-            />
+            />}
+            {editMode && 
+                <AvatarList 
+                    avatars={avatars} 
+                    onSelect={setSelectedImageID}
+                    selectedImageID={selectedImageID} 
+            />}
             {editMode ? (
                 <Pressable onPress={editUserData}>
                     <Text>Tallenna</Text>
@@ -139,4 +167,4 @@ const UserPage = ({ route, navigation }) => {
         </View>
     )
 }
-export default UserPage;
+export default UserScreen;
