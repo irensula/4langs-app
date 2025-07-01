@@ -1,5 +1,6 @@
-PUT http://localhost:3001/user/3 HTTP/1.1
-Content-Type: application/json
+PUT http://localhost:3001/users/3 HTTP/1.1
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJOb3N0cm8iLCJlbWFpbCI6Im5vc3Ryb0BnbWFpbC5jb20iLCJwaG9uZW51bWJlciI6IjA1MDIyMjMzNTUiLCJpbWFnZUlEIjoxLCJ1cmwiOiIvaW1hZ2VzL2RvZy5wbmciLCJpYXQiOjE3NTEzMDA1OTQsImV4cCI6MTc1MTkwNTM5NH0.4bI3WiGX7i9DKvVI99yN9tIurFYd2SYYt9axFUoQeRg
 
 {
     "username": "Heily",
