@@ -62,8 +62,11 @@ const HomeScreen = ({ route, navigation }) => {
         .catch((err) => console.error('Fetch error:', err));
     }, [token]);
 
-    const handleSelectCategory = (categoryName) => {
-        navigation.navigate('Category', { name: categoryName });
+    const handleSelectCategory = (category) => {
+        navigation.navigate('Category', { 
+            name: category.name,
+            categoryID: category.categoryID 
+        });
     };
 
     return (

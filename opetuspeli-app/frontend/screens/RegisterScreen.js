@@ -13,7 +13,6 @@ const RegisterScreen = ({ navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     useEffect(() => {
-
         fetch(`${API_BASE}/avatars`)
             .then(res => res.json())
             .then(data => setAvatars(data))

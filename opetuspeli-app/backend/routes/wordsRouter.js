@@ -5,7 +5,8 @@ const knex = require('knex')(config.DATABASE_OPTIONS);
 
 router.get('/', (req, res, next) => {
     knex('words')
-        .join('word_images', 'words.wordID', 'word_images.wordID')
+        .leftJoin('word_images', 'words.wordID', 'word_images.wordID')
+        .leftJoin('word_sounds', 'words.wordID', 'word_sounds.wordID')
         .select('*')
         .then((rows) => {
             res.json(rows);
