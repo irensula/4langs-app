@@ -10,7 +10,7 @@ DATABASE:
     npm install knex --save
     npx knex init
     npm install mysql2 --save
-    npx knex migrate:make create_categories
+    npx knex migrate:make categories
     npx knex migrate:latest
     npx knex migrate:rollback
     npx knex seed:make 01_user_images
@@ -39,8 +39,10 @@ FRONTEND
     npm install -g expo-cli
     npx expo install expo-constants
 
-
-
+PYTHON
+    python -m pip --version
+    pip install gtts playsound==1.2.2
+    python word_sond.py
 
 <!-- "show my words"
 "add word to my list"
