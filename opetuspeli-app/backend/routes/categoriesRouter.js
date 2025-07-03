@@ -25,8 +25,27 @@ router.get('/:id/words', (req, res, next) => {
     }
 
     knex('words')
-        .where('categoryID', categoryID)
-        .select('*')
+        .where('words.categoryID', categoryID)
+        .leftJoin('word_images', 'words.wordID', 'word_images.wordID')
+        .leftJoin('word_sounds', 'words.wordID', 'word_sounds.wordID')
+        .select('words.wordID',
+                'words.categoryID',
+                'words.value_en',
+                'words.value_fi',
+                'words.value_ru',
+                'words.value_ua',
+                'word_images.word_url',    
+                knex.raw('JSON_OBJECTAGG(word_sounds.language, word_sounds.sound_file) AS sounds')
+            )
+        .groupBy(
+            'words.wordID',
+            'words.categoryID',
+            'words.value_en',
+            'words.value_fi',
+            'words.value_ru',
+            'words.value_ua',
+            'word_images.word_url'
+        )
         .then((rows) => {
             res.jsonp(rows)
         })

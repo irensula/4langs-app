@@ -10,8 +10,8 @@ export default function CategoryScreen({ route, navigation }) {
             <Text>
                 Welcome to {route.params.name}
             </Text>
-            <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID })}>
-                <Text>Go to MemoGame</Text>
+            <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID })}>
+                <Text>See the words list</Text>
             </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>

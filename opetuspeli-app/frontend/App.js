@@ -8,7 +8,7 @@ import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
 import UserScreen from "./screens/UserScreen";
 import CategoryScreen from './screens/CategoryScreen';
-import MemoScreen from './screens/MemoScreen';
+import WordsListScreen from './screens/WordsListScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +26,7 @@ function AppContent() {
           <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="UserScreen" component={UserScreen} />
           <Stack.Screen name="Category" component={CategoryScreen} />
-          <Stack.Screen name="MemoScreen" component={MemoScreen} />
+          <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );

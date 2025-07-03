@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'build')));
 app.use('/', indexRouter);
 app.use('/avatars', avatarsRouter);
 app.use('/images', express.static('assets/images'));
+app.use('/sounds', express.static('assets/sounds'));
 app.use('/login', loginRouter);
 app.use('/register', validateSchema(userschema), registerRouter);
 app.use('/categories', isAuthenticated, categoriesRouter);
