@@ -112,6 +112,7 @@ const Login = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: '#6BBC3B',
     },
     iconWrap: {
     },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View, Text, Pressable } from "react-native"; 
+import { ActivityIndicator, SafeAreaView, View, Text, Pressable, StyleSheet } from "react-native"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StartScreen = ({ navigation }) => {
@@ -25,12 +25,12 @@ const StartScreen = ({ navigation }) => {
     );
   }
     return (
-        <View>
+        <SafeAreaView style={styles.container}>
             <Text>Welcome to the App</Text>
             {isLoggedIn ? 
               (
                 <Pressable onPress={() => navigation.navigate('Home')}>
-                    <Text>Continue to Home</Text>
+                    <View style={styles.button}>Let's go!</View>
                 </Pressable>
               ) : (
                 <>
@@ -43,8 +43,26 @@ const StartScreen = ({ navigation }) => {
               </>
             )
           }
-        </View>
+        </SafeAreaView >
     )
 } 
+const styles = StyleSheet.create({
+  container: {
+        flex: 1,
+        backgroundColor: '#6BBC3B',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    button: {
+      width: 150,
+      height: 75,
+      backgroundColor: '#fff',
+      borderRadius: 50,
+      borderWidth: 3,
+      borderColor: '#000',
+      justifyContent: 'center',
+      alignItems: 'center',
+    }
+})
 
 export default StartScreen;

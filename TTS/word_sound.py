@@ -1,9 +1,9 @@
 from gtts import gTTS
 from playsound import playsound
 
-words = ["сім'я", "мати", "батько", "брат", "сестра", "бабуся", "дідусь", "тітка", "дядько"];
+words = ["семья", "мама", "папа", "брат", "сестра", "бабушка", "дедушка", "тетя", "дядя"];
 
-language = "uk"
+language = "ru"
 for word in words:
     filename = f"{word}.mp3"
     tts = gTTS(text=word, lang=language)
