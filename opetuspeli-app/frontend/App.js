@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
-
+import { useFonts } from 'expo-font';
 import StartScreen from './screens/StartScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -15,7 +15,15 @@ const Stack = createNativeStackNavigator();
 function AppContent() {
 
   //const { isDark } = useTheme();
-  
+  const [fontsLoaded] = useFonts({
+    LuckiestGuy: require('./assets/fonts/LuckiestGuy-Regular.ttf'),
+    Nunito: require('./assets/fonts/Nunito-VariableFont_wght.ttf'),
+    NunitoBold: require('./assets/fonts/Nunito-Bold.ttf'),
+  });
+
+   if (!fontsLoaded) {
+    return null;
+  }
   return (
       // <NavigationContainer theme={isDark ? customDarkTheme : customLightTheme}>
       <NavigationContainer>

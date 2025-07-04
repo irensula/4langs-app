@@ -26,7 +26,7 @@ const StartScreen = ({ navigation }) => {
   }
     return (
         <SafeAreaView style={styles.container}>
-            <Text>Welcome to the App</Text>
+            <Text style={styles.mainTitle}>Welcome to the App</Text>
             {isLoggedIn ? 
               (
                 <Pressable onPress={() => navigation.navigate('Home')}>
@@ -34,12 +34,18 @@ const StartScreen = ({ navigation }) => {
                 </Pressable>
               ) : (
                 <>
+                <View style={styles.buttonsWrap}>
                   <Pressable onPress={() => navigation.navigate('Login')}>
-                      <Text>Login</Text>
+                      <View style={styles.button}>
+                        <Text>Login</Text>
+                      </View>
                   </Pressable>
                   <Pressable onPress={() => navigation.navigate('Register')}>
-                      <Text>Register</Text>
-                  </Pressable>        
+                      <View style={styles.button}>
+                        <Text>Register</Text>
+                      </View>
+                  </Pressable>
+                </View>       
               </>
             )
           }
@@ -49,19 +55,30 @@ const StartScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
         flex: 1,
-        backgroundColor: '#6BBC3B',
+        backgroundColor: '#5CED73',
         justifyContent: 'center',
         alignItems: 'center',
     },
+  mainTitle: {
+    fontSize: 50,
+    color: '#fff',
+    fontFamily: 'LuckiestGuy',
+    marginBottom: 30,
+  },
+  buttonsWrap: {
+    flexDirection: 'row',
+    gap: 30,
+  },
     button: {
       width: 150,
-      height: 75,
+      height: 60,
       backgroundColor: '#fff',
       borderRadius: 50,
       borderWidth: 3,
-      borderColor: '#000',
+      borderColor: '#6BBC3B',
       justifyContent: 'center',
       alignItems: 'center',
+      fontFamily: 'NunitoBold',
     }
 })
 

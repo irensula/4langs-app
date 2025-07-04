@@ -63,56 +63,69 @@ const Login = ({ navigation }) => {
             }
         };
     return (
-        <View style={styles.container}>          
-            <Text style={[styles.title, { color: colors.text }]}>Kirjautuminen</Text>
-            <View style={{ minHeight: 50 }}>
-                <MessageBox message={message} type={messageType} />
+        <View style={styles.container}>
+            <View style={styles.formContainer}>
+                   
+                <Text style={[styles.title, { color: colors.text }]}>Kirjautuminen</Text>
+                <View style={{ minHeight: 50 }}>
+                    <MessageBox message={message} type={messageType} />
+                </View>
+                <Text style={[styles.label, { color: colors.text }]}>Sähköposti</Text>
+                <TextInput 
+                    style={[
+                        styles.input, 
+                        { color: colors.text }, 
+                        hasError && styles.inputError,
+                        usernameFocused && styles.inputFocused,
+                    ]}
+                    value={email}
+                    onChangeText={setEmail}
+                    underlineColorAndroid="transparent"
+                    onFocus={() => { setHasError(false); setUsernameFocused(true); }}
+                    onBlur={() => setUsernameFocused(false)}
+                />
+                <Text style={[styles.label, { color: colors.text }]}>Salasana</Text>
+                <TextInput 
+                    style={[
+                        styles.input, 
+                        { color: colors.text }, 
+                        hasError && styles.inputError,
+                        passwordFocused && styles.inputFocused,
+                    ]}
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
+                    underlineColorAndroid="transparent"
+                    onFocus={() => { setHasError(false); setPasswordFocused(true); }}
+                    onBlur={() => setPasswordFocused(false)}
+                />
+                <Pressable 
+                    onPress={handleLogin} 
+                    style={[styles.button, {backgroundColor: colors.buttonBackground}]}    
+                >
+                    <Text style={styles.buttonText}>Kirjaudu</Text>
+                </Pressable>
+                <Pressable onPress={() => navigation.goBack()}>
+                    <Text>Back</Text>
+                </Pressable>
             </View>
-            <Text style={[styles.label, { color: colors.text }]}>Sähköposti</Text>
-            <TextInput 
-                style={[
-                    styles.input, 
-                    { color: colors.text }, 
-                    hasError && styles.inputError,
-                    usernameFocused && styles.inputFocused,
-                ]}
-                value={email}
-                onChangeText={setEmail}
-                underlineColorAndroid="transparent"
-                onFocus={() => { setHasError(false); setUsernameFocused(true); }}
-                onBlur={() => setUsernameFocused(false)}
-            />
-            <Text style={[styles.label, { color: colors.text }]}>Salasana</Text>
-            <TextInput 
-                style={[
-                    styles.input, 
-                    { color: colors.text }, 
-                    hasError && styles.inputError,
-                    passwordFocused && styles.inputFocused,
-                ]}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={true}
-                underlineColorAndroid="transparent"
-                onFocus={() => { setHasError(false); setPasswordFocused(true); }}
-                onBlur={() => setPasswordFocused(false)}
-            />
-            <Pressable 
-                onPress={handleLogin} 
-                style={[styles.button, {backgroundColor: colors.buttonBackground}]}    
-            >
-                <Text style={styles.buttonText}>Kirjaudu</Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Back</Text>
-            </Pressable>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#6BBC3B',
+        flex: 1,
+        backgroundColor: '#5CED73',
+        justifyContent: 'center',
+        alignItems: 'center', 
+    },
+    formContainer: {
+        backgroundColor: '#ABF7B1',
+        borderColor: '#00C04B',
+        borderWidth: 2,
+        borderRadius: 20,
+        padding: 20,
     },
     iconWrap: {
     },
