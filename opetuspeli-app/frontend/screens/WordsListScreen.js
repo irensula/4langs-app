@@ -4,10 +4,9 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordCard from '../components/WordCard';
 
-const WordsListScreen = ({ route }) => {
+const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
     const { name, categoryID } = route.params;
-    const [showImage, setShowImage] = useState(false);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     useEffect(() => {
@@ -40,7 +39,13 @@ const WordsListScreen = ({ route }) => {
             {words.map((word) => (
                 <WordCard key={word.wordID} word={word} API_BASE={API_BASE} />
             ))}
-
+            <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID })}>
+                <Text>Next</Text>
+            </Pressable>
+            
+            <Pressable onPress={() => navigation.goBack()}>
+                <Text>Back</Text>
+            </Pressable>
         </ScrollView>
     )
 } 

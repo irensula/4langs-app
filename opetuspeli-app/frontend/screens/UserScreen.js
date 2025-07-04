@@ -10,7 +10,6 @@ const UserScreen = ({ route, navigation }) => {
     console.log("Params",route.params);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
-    
     const [user, setUser] = useState(initialUser);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');

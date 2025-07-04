@@ -8,6 +8,7 @@ exports.up = function(knex) {
                 t.increments('textID').primary()
                 t.integer('categoryID')
                     .unsigned()
+                    .nullable()
                     .references('categoryID')
                     .inTable('categories')
                     .onDelete('SET NULL');
@@ -15,6 +16,7 @@ exports.up = function(knex) {
                 t.text('text_en').notNullable()
                 t.text('text_fi').notNullable()
                 t.text('text_ua').notNullable()
+                t.string('text_image').notNullable()
         })
 };
 

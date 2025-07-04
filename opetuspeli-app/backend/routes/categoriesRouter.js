@@ -47,7 +47,26 @@ router.get('/:id/words', (req, res, next) => {
             'word_images.word_url'
         )
         .then((rows) => {
-            res.jsonp(rows)
+            res.json(rows)
+        })
+        .catch ((err) => {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to fetch categories words' })
+        });
+});
+
+router.get('/:id/texts', (req, res, next) => {
+    const categoryID = parseInt(req.params.id, 10); // 10 is radix
+
+    if(isNaN(categoryID)) {
+        return res.status(400).json({ error: 'Invalid category ID' });
+    }
+
+    knex('texts')
+        .where('texts.categoryID', categoryID)
+        .select('*')
+        .then((rows) => {
+            res.json(rows)
         })
         .catch ((err) => {
             console.error(err);
