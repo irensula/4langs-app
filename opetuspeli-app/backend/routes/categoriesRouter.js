@@ -34,18 +34,12 @@ router.get('/:id/words', (req, res, next) => {
                 'words.value_fi',
                 'words.value_ru',
                 'words.value_ua',
-                'word_images.word_url',    
-                knex.raw('JSON_OBJECTAGG(word_sounds.language, word_sounds.sound_file) AS sounds')
-            )
-        .groupBy(
-            'words.wordID',
-            'words.categoryID',
-            'words.value_en',
-            'words.value_fi',
-            'words.value_ru',
-            'words.value_ua',
-            'word_images.word_url'
-        )
+                'word_images.word_url',
+                'word_sounds.sound_ru',
+                'word_sounds.sound_fi',
+                'word_sounds.sound_en',
+                'word_sounds.sound_ua'    
+                )
         .then((rows) => {
             res.json(rows)
         })

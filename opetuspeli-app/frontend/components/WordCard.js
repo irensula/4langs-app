@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import { Audio } from 'expo-av';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import LANG_KEYS from '../constants/langKeys';
 
 const WordCard = ({ word, API_BASE }) => {
     const [currentSound, setCurrentSound] = useState(null);
+
     const playSound = async (file) => {
         if (!file) return;
         try {
@@ -21,20 +23,6 @@ const WordCard = ({ word, API_BASE }) => {
         }
     };
 
-    const renderWordRow = (value, langKey) => {
-        const soundFile = word.sounds?.[langKey];
-        return (
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
-                <Text style={{ flex: 1 , padding: 5}}>{value}</Text>
-                {soundFile && (
-                    <Pressable onPress={() => playSound(soundFile)} style={{ flex: 1 }}>
-                        <AntDesign name="playcircleo" size={24} color="black" />
-                    </Pressable>
-                )}
-            </View>
-        )
-    };
-
     return (        
         <View style={{ flexDirection: 'row', alignItems: 'center', margin: 5 }}>
             {word.word_url && (
@@ -45,10 +33,24 @@ const WordCard = ({ word, API_BASE }) => {
                 />
             )}
 
-            <View style={{flex: 1 }}>{renderWordRow(word.value_ru, 'ru')}</View>
-            <View style={{flex: 1 }}>{renderWordRow(word.value_fi, 'fi')}</View>
-            <View style={{flex: 1 }}>{renderWordRow(word.value_en, 'en')}</View>
-            <View style={{flex: 1 }}>{renderWordRow(word.value_ua, 'ua')}</View>
+            {
+                LANG_KEYS.map(({ key }) => {
+                    const value = word[`value_${key}`];
+                    const soundFile = word[`sound_${key}`];
+                    return(
+                        <View key={key} style={{ flex: 1 }}>
+                            <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 5 }}>
+                                <Text style={{ flex: 1, padding: 5 }}>{value}</Text>
+                                {soundFile && (
+                                    <Pressable onPress={() => playSound(soundFile)} style={{ flex: 1 }}>
+                                    <AntDesign name="playcircleo" size={24} color="black" />
+                                    </Pressable>
+                                )}
+                            </View>
+                        </View>
+                    )
+                })
+            }
         </View>
     )
 }
