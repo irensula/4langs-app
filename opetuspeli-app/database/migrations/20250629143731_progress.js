@@ -11,11 +11,13 @@ exports.up = function(knex) {
                 .references('userID')
                 .inTable('users')
                 .onDelete('SET NULL');
-                // Polymorphic relationship
-            t.string('exerciseTable').notNullable(); // e.g., 'exercise_cards', 'sentence_exercises'
-            t.integer('exerciseID').notNullable();
-            t.integer('pointsEarned');
-            t.integer('maxPoints');
+            t.integer('exerciseID')
+                .unsigned()
+                .notNullable()
+                .references('exerciseID')
+                .inTable('exercises')
+                .onDelete('CASCADE');
+            t.integer('score');
             t.timestamp('completedAt').defaultTo(knex.fn.now());
     })
 };
@@ -28,4 +30,3 @@ exports.down = function(knex) {
     return knex.schema
         .dropTableIfExists('progress')
 };
-

@@ -21,9 +21,14 @@ exports.up = function(knex) {
                 .references('imageID')
                 .inTable('word_images')
                 .onDelete('CASCADE');
-            t.enum('card_type', ['word', 'image', 'sound']).notNullable();
-            t.string('language', 10).notNullable();
-});
+            t.integer('maxScore').notNullable().defaultTo(1);
+            t.integer('exerciseID')
+                .unsigned()
+                .notNullable()
+                .references('exerciseID')
+                .inTable('exercises')
+                .onDelete('CASCADE');
+    });
 };
 
 /**

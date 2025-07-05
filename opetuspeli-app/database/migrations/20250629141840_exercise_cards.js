@@ -22,7 +22,7 @@ exports.up = function(knex) {
                 .inTable('word_images')
                 .onDelete('SET NULL');
             t.text('description');
-            t.integer('maxPoints').notNullable().defaultTo(1);
+            t.integer('maxStars').notNullable().defaultTo(1);
             t.boolean('isReversible').defaultTo(false);
             t.enum('cardType', ['imageToWord', 'wordToImage', 'both']).notNullable();
             t.timestamps(true, true);
