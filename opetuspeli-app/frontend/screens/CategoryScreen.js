@@ -11,7 +11,13 @@ export default function CategoryScreen({ route, navigation }) {
                 Welcome to {route.params.name}
             </Text>
             <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID })}>
-                <Text>See the words list</Text>
+                <Text>Words list</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID })}>
+                <Text>Text</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID })}>
+                <Text>MemoGame</Text>
             </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>

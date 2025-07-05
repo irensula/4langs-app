@@ -39,6 +39,7 @@ FRONTEND
     npm install -g expo-cli
     npx expo install expo-constants // for API
     npx expo install expo-av // for sounds
+    npx expo install expo-audio // for sounds
     npm i @expo/vector-icons // for icons
     npx react-native-asset // for assets
 

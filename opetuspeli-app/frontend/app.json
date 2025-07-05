@@ -25,7 +25,8 @@
       "API_BASE": "http://192.168.1.162:3001"
     },
     "plugins": [
-      "expo-font"
+      "expo-font",
+      "expo-audio"
     ]
   }
 }

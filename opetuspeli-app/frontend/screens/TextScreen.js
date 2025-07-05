@@ -20,17 +20,13 @@ const TextScreen = ({ route, navigation }) => {
             });
             const data = await res.json();
             setTexts(data);
-            console.log('Data', data);
-            console.log('Texts', texts);
         } catch (error) {
             console.error('Error fetching texts:', error);
         }
     };
     fetchTexts();
 }, []);
-    useEffect(() => {
-        console.log('Texts', texts);
-    })
+    
     return (
         <View>
             <Text>Text's for the category: {name}</Text>
@@ -52,17 +48,10 @@ const TextScreen = ({ route, navigation }) => {
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('MemoScreen')}>
+            <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID })}>
                 <Text>Next</Text>
             </Pressable>
         </View>
     )
 }
 export default TextScreen;
-
-// {
-//                     text_ru: texts.text_ru,
-//                     text_fi: texts.text_fi,
-//                     text_en: texts.text_en,
-//                     text_en: texts.text_en
-//                 }
