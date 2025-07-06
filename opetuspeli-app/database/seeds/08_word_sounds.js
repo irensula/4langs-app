@@ -91,7 +91,7 @@ exports.seed = async function(knex) {
       categoryID: 1,
       sound_ru: '/sounds/family/дядя.mp3',
       sound_en: '/sounds/family/uncle.mp3',
-      sound_fi: '/sounds/family/setä.mp3',
+      sound_fi: '/sounds/family/eno_setä.mp3',
       sound_ua: '/sounds/family/дядько.mp3'
     }  
   ]);

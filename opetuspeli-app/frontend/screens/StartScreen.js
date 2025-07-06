@@ -30,7 +30,9 @@ const StartScreen = ({ navigation }) => {
             {isLoggedIn ? 
               (
                 <Pressable onPress={() => navigation.navigate('Home')}>
-                    <View style={styles.button}>Let's go!</View>
+                    <View style={styles.button}>
+                      <Text>Let's go!</Text>
+                    </View>
                 </Pressable>
               ) : (
                 <>

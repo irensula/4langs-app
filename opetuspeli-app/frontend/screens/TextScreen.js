@@ -31,10 +31,10 @@ const TextScreen = ({ route, navigation }) => {
         <View>
             <Text>Text's for the category: {name}</Text>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
-                <Pressable onPress={(() => {setSelectedLanguage('ru')})}>Russian</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('fi')})}>Finnish</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('en')})}>English</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('ua')})}>Ukrainian</Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('ru')})}><Text>Russian</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('ua')})}><Text>Ukrainian</Text></Pressable>
             </View>
             {texts.map((item, index) =>(
                 <TextCard 

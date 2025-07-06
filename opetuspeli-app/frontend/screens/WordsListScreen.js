@@ -30,18 +30,12 @@ const WordsListScreen = ({ route, navigation }) => {
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
             <Text>Words List for the category {name}</Text>
+            
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-  <Text style={{ width: 50, height: 50, marginRight: 10 }}></Text>
-  {LANG_KEYS.map(({ key, label }) => (
-    <Text key={key} style={{ flex: 1 }}>{label}</Text>
-  ))}
-</View>
-            <View style={{ flexDirection: 'row' }}>
                 <Text style={{ width: 50, height: 50, marginRight: 10 }}></Text>
-                <Text style={{flex: 1 }}>Русский</Text>
-                <Text style={{flex: 1 }}>Suomi</Text>
-                <Text style={{flex: 1 }}>English</Text>
-                <Text style={{flex: 1 }}>Українська</Text>
+                {LANG_KEYS.map(({ key, label }) => (
+                    <Text key={key} style={{ flex: 1 }}>{label}</Text>
+                ))}
             </View>
             {words.map((word) => (
                 <WordCard key={word.wordID} word={word} API_BASE={API_BASE} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MemoCard from '../components/MemoCard';
@@ -39,20 +39,19 @@ const MemoScreen = ({ route, navigation }) => {
     };
         fetchMemoGame();
     }, []);
-    useEffect(() => {
-        console.log('MemoCards', memoCards);
-    })
+    
     return (
-        <View>
+        <ScrollView>
             <Text>Category {name}</Text>
             <Text>Memo Game</Text>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
-                <Pressable onPress={(() => {setSelectedLanguage('en')})}>English</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('fi')})}>Finnish</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('ua')})}>Ukrainian</Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('ru')})}>Russian</Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('ua')})}><Text>Ukrainian</Text></Pressable>
+                <Pressable onPress={(() => {setSelectedLanguage('ru')})}><Text>Russian</Text></Pressable>
             </View>
-            <View style={{ flexDirection: 'row' }}>
+            
+            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {memoCards.map((item, index) => (
                     <MemoCard
                         key={index}
@@ -65,7 +64,7 @@ const MemoScreen = ({ route, navigation }) => {
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>
-        </View>
+        </ScrollView>
     )
 }
 
