@@ -10,6 +10,11 @@ const MemoScreen = ({ route, navigation }) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const { name, categoryID } = route.params;
 
+
+    const [flippedCards, setFlippedCards] = useState([]);
+    const [matchedCards, setMatchedCards] = useState([]);
+    const [isDisabled, setIsDisabled] = useState(false);
+
     const doubleAndShuffle = (cards) => {
         // double the cards
         const doubled = [...cards, ...cards];
@@ -18,6 +23,7 @@ const MemoScreen = ({ route, navigation }) => {
             const j = Math.floor(Math.random() * (i + 1));
             [doubled[i], doubled[j]] = [doubled[j], doubled[i]];
         }
+        console.log(doubled);
         return doubled;
     }
 
@@ -40,6 +46,39 @@ const MemoScreen = ({ route, navigation }) => {
         fetchMemoGame();
     }, []);
     
+    const handleCardPress = (index) => {
+        if (isDisabled || flippedCards.includes(index) || matchedCards.includes(index)) return;
+
+        const newFlipped = [...flippedCards, index];
+        setFlippedCards(newFlipped);
+        console.log('New flipped:',newFlipped);
+    };
+    useEffect(() => {
+        if(flippedCards.length === 2) {
+            setIsDisabled(true);
+            const [firstIndex, secondIndex] = flippedCards;
+            const firstCard = memoCards[firstIndex];
+            const secondCard = memoCards[secondIndex];
+
+            setIsDisabled(true);
+
+            const isMatch = firstCard.wordID === secondCard.wordID;
+
+            if(isMatch) {
+                setTimeout(() => {
+                    setMatchedCards((prev) => [...prev, firstIndex, secondIndex]);
+                    setFlippedCards([]);
+                    setIsDisabled(false);
+                }, 500);
+            } else { 
+                setTimeout(() => {
+                    setFlippedCards([]);
+                    setIsDisabled(false);
+                }, 1000);
+            }
+        }
+    }, [flippedCards])
+
     return (
         <ScrollView>
             <Text>Category {name}</Text>
@@ -52,15 +91,26 @@ const MemoScreen = ({ route, navigation }) => {
             </View>
             
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {memoCards.map((item, index) => (
+                {memoCards.map((card, index) => (
                     <MemoCard
                         key={index}
-                        memoCards={item} 
+                        index={index}
+                        memoCards={card} 
+                        isFlipped={flippedCards.includes(index)}
+                        isMatched={matchedCards.includes(index)}
+                        onPress={handleCardPress}
                         API_BASE={API_BASE}
                         selectedLanguage={selectedLanguage}
                     />
                 ))}
             </View>
+            <Pressable onPress={() => {
+                setFlippedCards([]);
+                setMatchedCards([]);
+                setMemoCards(doubleAndShuffle(memoCards.slice(0, memoCards.length / 2)));
+            }}>
+                <Text>Restart</Text>
+            </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>
