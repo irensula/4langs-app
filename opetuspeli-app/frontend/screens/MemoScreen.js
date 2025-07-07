@@ -3,9 +3,11 @@ import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MemoCard from '../components/MemoCard';
+import MessageBox from '../components/MessageBox';
 
 const MemoScreen = ({ route, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const [originalCards, setOriginalCards] = useState([]);
     const [memoCards, setMemoCards] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const { name, categoryID } = route.params;
@@ -14,6 +16,8 @@ const MemoScreen = ({ route, navigation }) => {
     const [flippedCards, setFlippedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState('success')
 
     const doubleAndShuffle = (cards) => {
         // double the cards
@@ -23,7 +27,7 @@ const MemoScreen = ({ route, navigation }) => {
             const j = Math.floor(Math.random() * (i + 1));
             [doubled[i], doubled[j]] = [doubled[j], doubled[i]];
         }
-        console.log(doubled);
+        console.log("Doubled array:", doubled);
         return doubled;
     }
 
@@ -36,6 +40,7 @@ const MemoScreen = ({ route, navigation }) => {
                     headers: {Authorization: `Bearer ${token}` }
                 });
             const data = await res.json();
+            setOriginalCards(data);
             const doubleAndShuffled = doubleAndShuffle(data);
             setMemoCards(doubleAndShuffled);
 
@@ -51,7 +56,6 @@ const MemoScreen = ({ route, navigation }) => {
 
         const newFlipped = [...flippedCards, index];
         setFlippedCards(newFlipped);
-        console.log('New flipped:',newFlipped);
     };
     useEffect(() => {
         if(flippedCards.length === 2) {
@@ -78,11 +82,27 @@ const MemoScreen = ({ route, navigation }) => {
             }
         }
     }, [flippedCards])
+    
+    useEffect (() => {
+        if(matchedCards.length === memoCards.length && memoCards.length > 0) {
+            setMessage('Congratulations! All cards matched.');
+            setMessageType('win');
+
+            const timer = setTimeout (() => {
+                setMessage('');
+                setFlippedCards([]);
+                setMatchedCards([]);
+                setMemoCards(doubleAndShuffle(originalCards));
+            }, 5000);
+        return () => clearTimeout(timer);
+        }
+    }, [matchedCards])
 
     return (
         <ScrollView>
             <Text>Category {name}</Text>
             <Text>Memo Game</Text>
+            <MessageBox message={message} messageType={messageType}/>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
                 <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
                 <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>
@@ -105,9 +125,10 @@ const MemoScreen = ({ route, navigation }) => {
                 ))}
             </View>
             <Pressable onPress={() => {
+                setMessage('');
                 setFlippedCards([]);
                 setMatchedCards([]);
-                setMemoCards(doubleAndShuffle(memoCards.slice(0, memoCards.length / 2)));
+                setMemoCards(doubleAndShuffle(originalCards));
             }}>
                 <Text>Restart</Text>
             </Pressable>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable } from 'react-native';
 import { Audio } from 'expo-av';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -35,6 +35,12 @@ const MemoCard = ({ memoCards, index, isFlipped, isMatched, onPress, API_BASE, s
     };
     const displayedWord = wordMap[selectedLanguage];
     const soundFile = soundMap[selectedLanguage];  
+
+    useEffect(() => {
+        if (isFlipped && !isMatched) {
+            playSound(soundFile);
+        }
+    }, [isFlipped]);
 
     return (
         <View>
