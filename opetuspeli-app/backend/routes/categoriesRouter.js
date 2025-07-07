@@ -88,6 +88,7 @@ router.get('/:id/memogame', (req, res, next) => {
                 'memogame.imageID',
                 'word_images.word_url',
                 'memogame.soundID',
+                'memogame.maxScore',
                 'word_sounds.sound_ru',
                 'word_sounds.sound_fi',
                 'word_sounds.sound_en',

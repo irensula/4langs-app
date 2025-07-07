@@ -3,7 +3,7 @@ import { View, Text, Image, Pressable } from 'react-native';
 import { Audio } from 'expo-av';
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-const MemoCard = ({ memoCards, index, isFlipped, isMatched, onPress, API_BASE, selectedLanguage }) => {
+const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, selectedLanguage }) => {
 
     const wordMap = {
         fi: memoCards.value_fi,
@@ -37,14 +37,14 @@ const MemoCard = ({ memoCards, index, isFlipped, isMatched, onPress, API_BASE, s
     const soundFile = soundMap[selectedLanguage];  
 
     useEffect(() => {
-        if (isFlipped && !isMatched) {
+        if (isOpened && !isMatched) {
             playSound(soundFile);
         }
-    }, [isFlipped]);
+    }, [isOpened]);
 
     return (
         <View>
-            {isFlipped || isMatched ? (
+            {isOpened || isMatched ? (
                 <View style={{ width: 120, height: 120, margin: 5, borderWidth: 2, borderColor: 'green' }}>
                     <Image 
                         source={{ uri: `${API_BASE}${memoCards.word_url}` }}

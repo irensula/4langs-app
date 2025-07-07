@@ -12,10 +12,11 @@ const MemoScreen = ({ route, navigation }) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const { name, categoryID } = route.params;
 
-
-    const [flippedCards, setFlippedCards] = useState([]);
+    const [openedCards, setOpenedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [hasScored, setHasScored] = useState(false);
+
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success')
 
@@ -43,6 +44,9 @@ const MemoScreen = ({ route, navigation }) => {
             setOriginalCards(data);
             const doubleAndShuffled = doubleAndShuffle(data);
             setMemoCards(doubleAndShuffled);
+            if (data.length > 0) {
+                const maxScore = data[0].maxScore;
+            }
 
         } catch (error) {
             console.error('Error fetching texts:', error);
@@ -52,15 +56,15 @@ const MemoScreen = ({ route, navigation }) => {
     }, []);
     
     const handleCardPress = (index) => {
-        if (isDisabled || flippedCards.includes(index) || matchedCards.includes(index)) return;
+        if (isDisabled || openedCards.includes(index) || matchedCards.includes(index)) return;
 
-        const newFlipped = [...flippedCards, index];
-        setFlippedCards(newFlipped);
+        const newFlipped = [...openedCards, index];
+        setOpenedCards(newFlipped);
     };
     useEffect(() => {
-        if(flippedCards.length === 2) {
+        if(openedCards.length === 2) {
             setIsDisabled(true);
-            const [firstIndex, secondIndex] = flippedCards;
+            const [firstIndex, secondIndex] = openedCards;
             const firstCard = memoCards[firstIndex];
             const secondCard = memoCards[secondIndex];
 
@@ -71,32 +75,36 @@ const MemoScreen = ({ route, navigation }) => {
             if(isMatch) {
                 setTimeout(() => {
                     setMatchedCards((prev) => [...prev, firstIndex, secondIndex]);
-                    setFlippedCards([]);
+                    setOpenedCards([]);
                     setIsDisabled(false);
                 }, 500);
             } else { 
                 setTimeout(() => {
-                    setFlippedCards([]);
+                    setOpenedCards([]);
                     setIsDisabled(false);
                 }, 1000);
             }
         }
-    }, [flippedCards])
+    }, [openedCards])
     
     useEffect (() => {
-        if(matchedCards.length === memoCards.length && memoCards.length > 0) {
-            setMessage('Congratulations! All cards matched.');
+        const allMatched = matchedCards.length === memoCards.length && memoCards.length > 0;
+
+        if(allMatched && !hasScored) {
+            setHasScored(true);
+            const maxScore = originalCards.length > 0 ? originalCards[0].maxScore : null;
+            setMessage(`Congratulations! All cards matched. \nYou've got ${maxScore} stars.`);
             setMessageType('win');
 
             const timer = setTimeout (() => {
                 setMessage('');
-                setFlippedCards([]);
+                setOpenedCards([]);
                 setMatchedCards([]);
                 setMemoCards(doubleAndShuffle(originalCards));
             }, 5000);
         return () => clearTimeout(timer);
         }
-    }, [matchedCards])
+    }, [matchedCards, memoCards, setHasScored, originalCards]);
 
     return (
         <ScrollView>
@@ -116,7 +124,7 @@ const MemoScreen = ({ route, navigation }) => {
                         key={index}
                         index={index}
                         memoCards={card} 
-                        isFlipped={flippedCards.includes(index)}
+                        isOpened={openedCards.includes(index)}
                         isMatched={matchedCards.includes(index)}
                         onPress={handleCardPress}
                         API_BASE={API_BASE}
@@ -126,7 +134,7 @@ const MemoScreen = ({ route, navigation }) => {
             </View>
             <Pressable onPress={() => {
                 setMessage('');
-                setFlippedCards([]);
+                setOpenedCards([]);
                 setMatchedCards([]);
                 setMemoCards(doubleAndShuffle(originalCards));
             }}>
