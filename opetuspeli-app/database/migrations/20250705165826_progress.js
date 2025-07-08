@@ -17,7 +17,10 @@ exports.up = function(knex) {
                 .references('exerciseID')
                 .inTable('exercises')
                 .onDelete('CASCADE');
-            t.integer('score');
+            t.integer('score_en');
+            t.integer('score_fi');
+            t.integer('score_ua');
+            t.integer('score_ru');
             t.timestamp('completedAt').defaultTo(knex.fn.now());
     })
 };

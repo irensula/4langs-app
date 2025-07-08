@@ -15,10 +15,15 @@ const MemoScreen = ({ route, navigation }) => {
     const [openedCards, setOpenedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [activeLanguage, setActiveLanguage] = useState(false);
     const [hasScored, setHasScored] = useState(false);
+    const [scoreEn, setScoreEn] = useState(null);
+    const [scoreFi, setScoreFi] = useState(null);
+    const [scoreUa, setScoreUa] = useState(null);
+    const [scoreRu, setScoreRu] = useState(null);
 
     const [message, setMessage] = useState('');
-    const [messageType, setMessageType] = useState('success')
+    const [messageType, setMessageType] = useState('success');
 
     const doubleAndShuffle = (cards) => {
         // double the cards
@@ -55,12 +60,6 @@ const MemoScreen = ({ route, navigation }) => {
         fetchMemoGame();
     }, []);
     
-    const handleCardPress = (index) => {
-        if (isDisabled || openedCards.includes(index) || matchedCards.includes(index)) return;
-
-        const newFlipped = [...openedCards, index];
-        setOpenedCards(newFlipped);
-    };
     useEffect(() => {
         if(openedCards.length === 2) {
             setIsDisabled(true);
@@ -69,7 +68,7 @@ const MemoScreen = ({ route, navigation }) => {
             const secondCard = memoCards[secondIndex];
 
             setIsDisabled(true);
-
+            
             const isMatch = firstCard.wordID === secondCard.wordID;
 
             if(isMatch) {
@@ -87,13 +86,35 @@ const MemoScreen = ({ route, navigation }) => {
         }
     }, [openedCards])
     
+    // choose the language
+    const handleCardPress = (index) => {
+        if (isDisabled || openedCards.includes(index) || matchedCards.includes(index)) return;
+        if (!activeLanguage) {
+            setActiveLanguage(true);
+        }
+        const newOpened = [...openedCards, index];
+        setOpenedCards(newOpened);
+    }
+
     useEffect (() => {
         const allMatched = matchedCards.length === memoCards.length && memoCards.length > 0;
 
         if(allMatched && !hasScored) {
             setHasScored(true);
             const maxScore = originalCards.length > 0 ? originalCards[0].maxScore : null;
-            setMessage(`Congratulations! All cards matched. \nYou've got ${maxScore} stars.`);
+            if(selectedLanguage == 'en' && scoreEn === null) {
+                setScoreEn(maxScore);
+            }
+            if(selectedLanguage == 'fi' && scoreFi === null) {
+                setScoreFi(maxScore);
+            }
+            if(selectedLanguage == 'ua' && scoreUa === null) {
+                setScoreUa(maxScore);
+            }
+            if(selectedLanguage == 'ru' && scoreRu === null) {
+                setScoreRu(maxScore);
+            }
+            setMessage(`Congratulations! All cards matched. \nYou've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
             setMessageType('win');
 
             const timer = setTimeout (() => {
@@ -112,10 +133,34 @@ const MemoScreen = ({ route, navigation }) => {
             <Text>Memo Game</Text>
             <MessageBox message={message} messageType={messageType}/>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
-                <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('ua')})}><Text>Ukrainian</Text></Pressable>
-                <Pressable onPress={(() => {setSelectedLanguage('ru')})}><Text>Russian</Text></Pressable>
+                <Pressable 
+                    onPress={(() => {setSelectedLanguage('en')})}
+                    disabled={activeLanguage}
+                    style={{ opacity: activeLanguage && selectedLanguage !== 'en' ? 0.5 : 1 }}
+                >
+                    <Text>English</Text>
+                </Pressable>
+                <Pressable 
+                    onPress={(() => {setSelectedLanguage('fi')})}
+                    disabled={activeLanguage}
+                    style={{ opacity: activeLanguage && selectedLanguage !== 'fi' ? 0.5 : 1 }}
+                >
+                    <Text>Finnish</Text>
+                </Pressable>
+                <Pressable 
+                    onPress={(() => {setSelectedLanguage('ua')})}
+                    disabled={activeLanguage}
+                    style={{ opacity: activeLanguage && selectedLanguage !== 'ua' ? 0.5 : 1 }}
+                >
+                    <Text>Ukrainian</Text>
+                </Pressable>
+                <Pressable 
+                    onPress={(() => {setSelectedLanguage('ru')})}
+                    disabled={activeLanguage}
+                    style={{ opacity: activeLanguage && selectedLanguage !== 'ru' ? 0.5 : 1 }}
+                >
+                    <Text>Russian</Text>
+                </Pressable>
             </View>
             
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
@@ -136,7 +181,9 @@ const MemoScreen = ({ route, navigation }) => {
                 setMessage('');
                 setOpenedCards([]);
                 setMatchedCards([]);
+                setHasScored(false);
                 setMemoCards(doubleAndShuffle(originalCards));
+                setActiveLanguage(false);
             }}>
                 <Text>Restart</Text>
             </Pressable>
