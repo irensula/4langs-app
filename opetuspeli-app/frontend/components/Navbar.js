@@ -21,6 +21,9 @@ const Navbar = ({logout, user, navigation }) => {
                     {user?.username}
                 </Text>
             </Pressable>
+            <Pressable onPress={() => navigation.navigate('ProgressScreen', { user })}>
+                <Text>User's Progress</Text>
+            </Pressable>
 
             <Pressable onPress={logout}>
                 <Text>Kirjaudu ulos</Text>

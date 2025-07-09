@@ -7,7 +7,6 @@ import AvatarList from '../components/AvatarsList';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
-    console.log("Params",route.params);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     const [user, setUser] = useState(initialUser);

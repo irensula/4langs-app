@@ -18,7 +18,6 @@ const HomeScreen = ({ route, navigation }) => {
         const fetchToken = async () => {
             const savedToken = await AsyncStorage.getItem('token');
             const savedUser = await AsyncStorage.getItem('user');
-            console.log("Saved user from AsyncStorage:", savedUser);
             if (savedToken) setToken(savedToken);
             if (savedUser) setUser(JSON.parse(savedUser));
         };

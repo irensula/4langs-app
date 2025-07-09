@@ -20,9 +20,11 @@ router.get('/', (req, res, next) => {
 router.get('/:id', (req, res) => {
     const userId = req.params.id;
     knex('progress')
+        .join('exercises', 'exercises.exerciseID', 'progress.exerciseID')
         .where({ 'userID': userId})
-        .select('*')
-        .first()
+        .select('progress.*',
+            'exercises.maxScore as maxScore'
+        )
         .then(user => {
             if(user) {
                 res.json(user);
