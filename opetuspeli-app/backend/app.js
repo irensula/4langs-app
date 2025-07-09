@@ -24,6 +24,7 @@ let wordsRouter = require('./routes/wordsRouter');
 let sentencesRouter = require('./routes/sentencesRouter');
 let textsRouter = require('./routes/textsRouter');
 let usersRouter = require('./routes/usersRouter');
+let progressRouter = require('./routes/progressRouter');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -42,5 +43,6 @@ app.use('/words', isAuthenticated, wordsRouter);
 app.use('/sentences', isAuthenticated, sentencesRouter);
 app.use('/texts', isAuthenticated, textsRouter);
 app.use('/users', isAuthenticated, usersRouter);
+app.use('/progress', isAuthenticated, progressRouter);
 
 module.exports = app;
