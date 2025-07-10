@@ -102,4 +102,31 @@ router.get('/:id/memogame', (req, res, next) => {
     })
 })
 
+router.get('/:id/connect_task', (req, res, next) => {
+    const categoryID = parseInt(req.params.id, 10);
+    console.log('Category', categoryID);
+
+    if (isNaN(categoryID)) {
+        return res.status(400).json({ error: 'Invalid category ID' });
+    }
+    knex('connect_task')
+        .join('words', 'words.wordID', 'connect_task.wordID')
+        .join('word_images', 'word_images.imageID', 'connect_task.imageID')
+        .where('words.categoryID', categoryID)
+        .select('connect_task.*',
+            'words.value_ru',
+            'words.value_fi',
+            'words.value_en',
+            'words.value_ua',
+            'word_images.word_url'
+        )
+        .then((rows) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ error: 'Failed to fetch connect task' })
+        })
+})
+
 module.exports = router;

@@ -12,6 +12,7 @@ import WordsListScreen from './screens/WordsListScreen';
 import TextScreen from "./screens/TextScreen";
 import MemoScreen from "./screens/MemoScreen";
 import ProgressScreen from "./screens/ProgressScreen";
+import ConnectScreen from "./screens/ConnectScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +42,7 @@ function AppContent() {
           <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
           <Stack.Screen name="TextScreen" component={TextScreen} />
           <Stack.Screen name="MemoScreen" component={MemoScreen} />
+          <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );

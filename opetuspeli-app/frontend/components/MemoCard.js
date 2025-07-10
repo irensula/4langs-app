@@ -6,14 +6,14 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, selectedLanguage }) => {
 
     const wordMap = {
-        fi: memoCards.value_fi,
         en: memoCards.value_en,
+        fi: memoCards.value_fi,
         ua: memoCards.value_ua,
         ru: memoCards.value_ru
     }
     const soundMap = {
-        fi: memoCards.sound_fi,
         en: memoCards.sound_en,
+        fi: memoCards.sound_fi,
         ua: memoCards.sound_ua,
         ru: memoCards.sound_ru
     };

@@ -40,10 +40,7 @@ const HomeScreen = ({ route, navigation }) => {
     const logout = async () => {
         await AsyncStorage.removeItem('token');
         setToken('');
-        console.log("Token deleted");
-        
         const check = await AsyncStorage.getItem('token');
-        console.log("Token from storage after logout:", check);
         navigation.navigate("Start");
     }
 
@@ -56,7 +53,6 @@ const HomeScreen = ({ route, navigation }) => {
         .then((res) => res.json())
         .then((data) => {
             setCategories(data);
-            console.log("Categories:", data);
         })
         .catch((err) => console.error('Fetch error:', err));
     }, [token]);

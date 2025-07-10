@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LanguageTabs from '../components/LanguageTabs';
 import MemoCard from '../components/MemoCard';
 import MessageBox from '../components/MessageBox';
 
@@ -33,7 +34,6 @@ const MemoScreen = ({ route, navigation }) => {
             const j = Math.floor(Math.random() * (i + 1));
             [doubled[i], doubled[j]] = [doubled[j], doubled[i]];
         }
-        console.log("Doubled array:", doubled);
         return doubled;
     }
 
@@ -51,7 +51,7 @@ const MemoScreen = ({ route, navigation }) => {
             setMemoCards(doubleAndShuffled);
 
         } catch (error) {
-            console.error('Error fetching texts:', error);
+            console.error('Error fetching memogame:', error);
         }
     };
         fetchMemoGame();
@@ -190,37 +190,14 @@ const MemoScreen = ({ route, navigation }) => {
         <ScrollView>
             <Text>Category {name}</Text>
             <Text>Memo Game</Text>
+            
             <MessageBox message={message} messageType={messageType}/>
-            <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
-                <Pressable 
-                    onPress={(() => {setSelectedLanguage('en')})}
-                    disabled={activeLanguage}
-                    style={{ opacity: activeLanguage && selectedLanguage !== 'en' ? 0.5 : 1 }}
-                >
-                    <Text>English</Text>
-                </Pressable>
-                <Pressable 
-                    onPress={(() => {setSelectedLanguage('fi')})}
-                    disabled={activeLanguage}
-                    style={{ opacity: activeLanguage && selectedLanguage !== 'fi' ? 0.5 : 1 }}
-                >
-                    <Text>Finnish</Text>
-                </Pressable>
-                <Pressable 
-                    onPress={(() => {setSelectedLanguage('ua')})}
-                    disabled={activeLanguage}
-                    style={{ opacity: activeLanguage && selectedLanguage !== 'ua' ? 0.5 : 1 }}
-                >
-                    <Text>Ukrainian</Text>
-                </Pressable>
-                <Pressable 
-                    onPress={(() => {setSelectedLanguage('ru')})}
-                    disabled={activeLanguage}
-                    style={{ opacity: activeLanguage && selectedLanguage !== 'ru' ? 0.5 : 1 }}
-                >
-                    <Text>Russian</Text>
-                </Pressable>
-            </View>
+            
+            <LanguageTabs 
+                selectedLanguage={selectedLanguage}
+                setSelectedLanguage={setSelectedLanguage}
+                activeLanguage={activeLanguage}
+            />
             
             <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                 {memoCards.map((card, index) => (
@@ -245,6 +222,9 @@ const MemoScreen = ({ route, navigation }) => {
                 setActiveLanguage(false);
             }}>
                 <Text>Restart</Text>
+            </Pressable>
+            <Pressable onPress={() => navigation.navigate('ConnectScreen')}>
+                <Text>Connect Task</Text>
             </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>

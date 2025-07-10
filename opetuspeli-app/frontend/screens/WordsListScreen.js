@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import {View, Text, Pressable, Image, ScrollView} from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import WordCard from '../components/WordCard';
+import WordListCard from '../components/WordListCard';
 import LANG_KEYS from '../constants/langKeys';
 
 const WordsListScreen = ({ route, navigation }) => {
@@ -38,7 +38,7 @@ const WordsListScreen = ({ route, navigation }) => {
                 ))}
             </View>
             {words.map((word) => (
-                <WordCard key={word.wordID} word={word} API_BASE={API_BASE} />
+                <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
             ))}
             <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID })}>
                 <Text>Next</Text>
