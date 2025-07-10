@@ -49,9 +49,6 @@ const MemoScreen = ({ route, navigation }) => {
             setOriginalCards(data);
             const doubleAndShuffled = doubleAndShuffle(data);
             setMemoCards(doubleAndShuffled);
-            if (data.length > 0) {
-                const maxScore = data[0].maxScore;
-            }
 
         } catch (error) {
             console.error('Error fetching texts:', error);
@@ -62,7 +59,6 @@ const MemoScreen = ({ route, navigation }) => {
     
     useEffect(() => {
         if(openedCards.length === 2) {
-            setIsDisabled(true);
             const [firstIndex, secondIndex] = openedCards;
             const firstCard = memoCards[firstIndex];
             const secondCard = memoCards[secondIndex];
@@ -101,6 +97,7 @@ const MemoScreen = ({ route, navigation }) => {
 
         if(allMatched && !hasScored) {
             setHasScored(true);
+            
             const maxScore = originalCards.length > 0 ? originalCards[0].maxScore : null;
             if(selectedLanguage == 'en' && scoreEn === null) {
                 setScoreEn(maxScore);
@@ -114,19 +111,81 @@ const MemoScreen = ({ route, navigation }) => {
             if(selectedLanguage == 'ru' && scoreRu === null) {
                 setScoreRu(maxScore);
             }
-            setMessage(`Congratulations! All cards matched. \nYou've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
+            setMessage('Congratulations! All cards matched.');
             setMessageType('win');
 
-            const timer = setTimeout (() => {
+            const timer1 = setTimeout (() => {
+                setMessage(`You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
+                setMessageType('success');
+            }, 2500);
+
+            handleScore();
+
+            const timer2 = setTimeout(() => {
                 setMessage('');
                 setOpenedCards([]);
                 setMatchedCards([]);
                 setMemoCards(doubleAndShuffle(originalCards));
+                setActiveLanguage(false);
+                setHasScored(false);
             }, 5000);
-        return () => clearTimeout(timer);
+
+            return () => {
+                clearTimeout(timer1);
+                clearTimeout(timer2);
+            };
         }
     }, [matchedCards, memoCards, setHasScored, originalCards]);
 
+
+    // handling score GET, POST and PUT
+    const handleScore = async () => { 
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const maxScore = originalCards[0]?.maxScore || 0;
+
+            const res = await fetch(`${API_BASE}/progress/${user.id}`, {
+                headers: {Authorization: `Bearer ${token}` }
+            });
+            
+            const existingProgress = await res.json();
+
+            const currentProgress = existingProgress.find(p => p.exerciseID === categoryID);
+            // prepare progress data
+            const body = {
+                userID: user.id,
+                exerciseID: categoryID,
+                score_en: selectedLanguage === 'en' ? maxScore : 0,
+                score_fi: selectedLanguage === 'fi' ? maxScore : 0,
+                score_ua: selectedLanguage === 'ua' ? maxScore : 0,
+                score_ru: selectedLanguage === 'ru' ? maxScore : 0,
+            };
+
+            const method = currentProgress ? 'PUT' : 'POST';
+
+            const url = currentProgress
+                ? `${API_BASE}/progress/${currentProgress.progressID}`
+                : `${API_BASE}/progress`;
+
+            const saveRes = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!saveRes.ok) {
+                throw new Error('Save failed');
+            }
+        } catch (error) {
+            console.error(error);
+            setMessage("Network error");
+            setMessageType('error');
+        }
+};
     return (
         <ScrollView>
             <Text>Category {name}</Text>
