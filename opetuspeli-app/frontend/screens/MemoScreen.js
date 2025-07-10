@@ -156,16 +156,16 @@ const MemoScreen = ({ route, navigation }) => {
             const body = {
                 userID: user.id,
                 exerciseID: categoryID,
-                score_en: selectedLanguage === 'en' ? maxScore : 0,
-                score_fi: selectedLanguage === 'fi' ? maxScore : 0,
-                score_ua: selectedLanguage === 'ua' ? maxScore : 0,
-                score_ru: selectedLanguage === 'ru' ? maxScore : 0,
+                score_en: selectedLanguage === 'en' ? maxScore : currentProgress?.score_en || 0,
+                score_fi: selectedLanguage === 'fi' ? maxScore : currentProgress?.score_fi || 0,
+                score_ua: selectedLanguage === 'ua' ? maxScore : currentProgress?.score_ua || 0,
+                score_ru: selectedLanguage === 'ru' ? maxScore : currentProgress?.score_ru || 0,
             };
 
             const method = currentProgress ? 'PUT' : 'POST';
 
             const url = currentProgress
-                ? `${API_BASE}/progress/${currentProgress.progressID}`
+                ? `${API_BASE}/progress/${user.id}`
                 : `${API_BASE}/progress`;
 
             const saveRes = await fetch(url, {

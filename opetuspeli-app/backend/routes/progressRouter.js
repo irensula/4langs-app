@@ -55,7 +55,7 @@ router.post('/:id', async(req, res) => {
         const existing = await knex('progress')
             .where({ userID: userId, exerciseID: progress.exerciseID })
             .first();
-        if (existing) {
+        if (!existing) {
             return res.status(409).json({ error: "Progress already exists for this exercise."});
         }
 
@@ -83,36 +83,33 @@ router.put('/:id', async (req, res) => {
     const { exerciseID, score_en, score_fi, score_ua, score_ru } = req.body;
     console.log("BODY RECEIVED:", req.body);
 
-    if(exerciseID == null  || score_en == null || score_fi == null || score_ua == null || score_ru == null) {
-      return res.status(400).json({ error: 'Missing required fields (exerciseID, score_en, score_fi, score_ua, score_ru)' });
+    if(!exerciseID) {
+      return res.status(400).json({ error: 'Missing required fields (exerciseID)' });
     }
+
   try {
+    const existing = await knex('progress')
+        .where({ userID: userId, exerciseID })
+        .first();
+
+    if (!existing) {
+        return res.status(404).json({ error: 'Progress record not found for this user and exercise' });
+    }
 
     const updatedProgress = {
-      score_en,
-      score_fi,
-      score_ua,
-      score_ru
+      score_en: score_en != null ? score_en : existing.score_en,
+      score_fi: score_fi != null ? score_fi : existing.score_fi,
+      score_ua: score_ua != null ? score_ua : existing.score_ua,
+      score_ru: score_ru != null ? score_ru : existing.score_ru
     };
 
-    const updatedCount = await knex('progress')
-      .where({userID: userId, exerciseID})
-      .update(updatedProgress)
-    
-    if (updatedCount === 0) {
-      return res.status(404).json({ error: 'Progress record not found for this user and exercise' });
-    }
+    await knex('progress')
+      .where({ userID: userId, exerciseID })
+      .update(updatedProgress);
 
     const updated = await knex('progress')
-      .select('*')
-      .where({userID: userId, exerciseID})
-      .then(rows => {
-            if (rows.length > 0) {
-                res.json(rows);
-            } else {
-                res.status(404).json({ error: "User progress not found" });
-            }
-        })
+      .where({ userID: userId, exerciseID })
+      .first();
 
     res.json(updated);
   } catch (err) {

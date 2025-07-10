@@ -6,6 +6,7 @@
 exports.seed = async function(knex) {
   await knex('exercises').del()
   await knex('exercises').insert([
-    {'exerciseID': 1, title: 'Memogame', description: "Find pairs of images", score_type: 'fixed', maxScore: 5}
+    {'exerciseID': 1, title: 'Memogame', description: "Find pairs of images", score_type: 'fixed', maxScore: 5},
+    {'exerciseID': 2, title: 'Connect', description: "Connect word with image", score_type: 'fixed', maxScore: 5}
   ]);
 };

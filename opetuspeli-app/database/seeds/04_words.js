@@ -8,7 +8,7 @@ exports.seed = async function(knex) {
     {categoryID: 1, value_ru: "Семья", value_en: 'Family', value_fi: 'Perhe', value_ua: "Сiм'я", part_of_speech: "существительное"},
     {categoryID: 1, value_ru: "Мама", value_en: "Mother", value_fi: "Äiti", value_ua: "Мама", part_of_speech: "существительное"},
     {categoryID: 1, value_ru: "Папа", value_en: "Father", value_fi: "Isä", value_ua: "Тато", part_of_speech: "существительное"},
-    {categoryID: 1, value_ru: "Син", value_en: "Son", value_fi: "Poika", value_ua: "Син", part_of_speech: "существительное"},
+    {categoryID: 1, value_ru: "Сын", value_en: "Son", value_fi: "Poika", value_ua: "Син", part_of_speech: "существительное"},
     {categoryID: 1, value_ru: "Дочь", value_en: "Daughter", value_fi: "Tytär", value_ua: "Донька", part_of_speech: "существительное"},
     {categoryID: 1, value_ru: "Сестра", value_en: "Sister", value_fi: "Sisko", value_ua: "Сестра", part_of_speech: "существительное"},
     {categoryID: 1, value_ru: "Брат", value_en: "Brother", value_fi: "Veli", value_ua: "Брат", part_of_speech: "существительное"},
