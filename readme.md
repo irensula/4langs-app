@@ -42,6 +42,7 @@ FRONTEND
     npx expo install expo-audio // for sounds
     npm i @expo/vector-icons // for icons
     npx react-native-asset // for assets
+    npm install jwt-decode
 
 PYTHON
     python -m pip --version

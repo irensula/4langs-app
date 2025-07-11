@@ -55,7 +55,7 @@ router.post('/:id', async(req, res) => {
         const existing = await knex('progress')
             .where({ userID: userId, exerciseID: progress.exerciseID })
             .first();
-        if (!existing) {
+        if (existing) {
             return res.status(409).json({ error: "Progress already exists for this exercise."});
         }
 

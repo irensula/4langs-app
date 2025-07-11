@@ -1,18 +1,38 @@
 import { useEffect, useState } from "react";
 import { ActivityIndicator, SafeAreaView, View, Text, Pressable, StyleSheet } from "react-native"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecode } from 'jwt-decode';
 
 const StartScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-    const checkLogin = async () => {
-      const token = await AsyncStorage.getItem('token');
-      const user = await AsyncStorage.getItem('user');
-      setIsLoggedIn(!!token && !!user);
-      setLoading(false);
-    };
+        const checkLogin = async () => {
+          try {
+            const token = await AsyncStorage.getItem('token');
+            const user = await AsyncStorage.getItem('user');
+        
+            if (token && user) {
+                const decoded = jwtDecode(token);
+                const isExpired = decoded.exp * 1000 < Date.now();
+                
+                if (isExpired) {
+                  await AsyncStorage.multiRemove(['token', 'user']);
+                  setIsLoggedIn(false);
+                } else {
+                  setIsLoggedIn(true);
+                }
+            } else {
+              setIsLoggedIn(false);
+            }
+          } catch (error) {
+              await AsyncStorage.multiRemove(['token', 'user']);
+              setIsLoggedIn(false);
+          } finally {
+            setLoading(false);
+          }
+      };
     checkLogin();
   }, []);
 

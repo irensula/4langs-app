@@ -1,15 +1,16 @@
-import { View, Image } from 'react-native';
+import { View, Image, Pressable } from 'react-native';
 
-const ImageCard = ({ image, API_BASE }) => {
-console.log('Image', image);
+const ImageCard = ({ image, API_BASE, onPress, matched }) => {
     return (
-        <View>
-            <Image 
+        <Pressable onPress={onPress}>
+            <View style={{ opacity: matched ? 0.3 : 1 }}>
+                <Image 
                 source={{ uri: `${API_BASE}${image.word_url}` }}
                 style={{ width: 50, height: 50, margin: 5 }}
                 resizeMode='cover'
-            />            
-        </View>
+            /> 
+            </View>      
+        </Pressable>
     )
 }
 

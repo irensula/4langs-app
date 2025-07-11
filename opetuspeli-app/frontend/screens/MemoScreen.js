@@ -135,7 +135,7 @@ const MemoScreen = ({ route, navigation }) => {
                 clearTimeout(timer2);
             };
         }
-    }, [matchedCards, memoCards, setHasScored, originalCards]);
+    }, [matchedCards, memoCards, originalCards]);
 
 
     // handling score GET, POST and PUT
@@ -150,12 +150,13 @@ const MemoScreen = ({ route, navigation }) => {
             });
             
             const existingProgress = await res.json();
-
-            const currentProgress = existingProgress.find(p => p.exerciseID === categoryID);
+            const progressArray = Array.isArray(existingProgress) ? existingProgress : [];
+            const exerciseID = originalCards[0]?.exerciseID;
+            const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
             // prepare progress data
             const body = {
                 userID: user.id,
-                exerciseID: categoryID,
+                exerciseID: exerciseID,
                 score_en: selectedLanguage === 'en' ? maxScore : currentProgress?.score_en || 0,
                 score_fi: selectedLanguage === 'fi' ? maxScore : currentProgress?.score_fi || 0,
                 score_ua: selectedLanguage === 'ua' ? maxScore : currentProgress?.score_ua || 0,
@@ -166,7 +167,7 @@ const MemoScreen = ({ route, navigation }) => {
 
             const url = currentProgress
                 ? `${API_BASE}/progress/${user.id}`
-                : `${API_BASE}/progress`;
+                : `${API_BASE}/progress/${user.id}`;
 
             const saveRes = await fetch(url, {
                 method,

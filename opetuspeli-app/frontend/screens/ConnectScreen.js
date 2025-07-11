@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordCard from '../components/WordCard';
 import ImageCard from '../components/ImageCard';
 import LanguageTabs from '../components/LanguageTabs';
+import MessageBox from '../components/MessageBox';
 
 const ConnectScreen = ({ navigation, route }) => {
 
@@ -13,9 +14,14 @@ const ConnectScreen = ({ navigation, route }) => {
     const { name, categoryID } = route.params;
     const [pairs, setPairs] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
-    const [activeLanguage, setActive] = useState(false);
+    const [activeLanguage, setActiveLanguage] = useState(false);
     const [shuffledWords, setShuffledWords] = useState([]);
     const [shuffledImages, setShuffledImages] = useState([]);
+    const [selectedWord, setSelectedWord] = useState(null);
+    const [matchedPairs, setMatchedPairs] = useState([]);
+    const [hasScored, setHasScored] = useState(false);
+    const [message, setMessage] = useState([]);
+    const [messageType, setMessageType] = useState('success');
 
     useEffect(() => {
         const fetchConnectTask = async () => {
@@ -59,20 +65,121 @@ const ConnectScreen = ({ navigation, route }) => {
         setShuffledImages(shuffledPairs(images));
     }, [pairs, selectedLanguage])
 
-    useEffect(() => {
-        console.log('Shuffled images', shuffledImages);
-        console.log('Shuffled images', shuffledWords);
-    }, [shuffledImages, shuffledWords]);
+    const handleWordPress = (word) => {
+        setSelectedWord(word);
+    }
+
+    const handleImagePress = (image) => {
+        if (!selectedWord) return;
+        const isMatch = image.image === selectedWord.word;
+        if (isMatch) {
+            setMatchedPairs(prev => [...prev, selectedWord.word]);
+            setSelectedWord(null);
+        } else {
+            setSelectedWord(null);
+        }
+        if ((matchedPairs.length + 1) === pairs.length) {
+
+            const maxScore = pairs[0]?.maxScore || 0;
+            setMessage('You did it!');
+            setMessageType('win');
+
+            const timer1 = setTimeout(() => {
+                setMessage(`You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
+                setMessageType('success');
+            }, 2500);
+
+            handleScore();
+            
+            const timer2 = setTimeout (() => {
+                resetGame();
+            }, 5000);
+
+            return () => {
+                clearTimeout(timer1);
+                clearTimeout(timer2);
+            };
+         }
+    }
+
+    const handleScore = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            const user = JSON.parse(await AsyncStorage.getItem('user'));
+            const maxScore = pairs[0]?.maxScore || 0;
+            const res = await fetch(`${API_BASE}/progress/${user.id}`, {
+                headers: {Authorization: `Bearer ${token}`}
+            });
+
+            const existingProgress = await res.json();
+            const progressArray = Array.isArray(existingProgress) ? existingProgress : [];
+            const exerciseID = pairs[0]?.exerciseID;
+            const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
+            
+            // const currentProgress = existingProgress.find(p => p.exerciseID === categoryID);
+
+            const body = {
+                userID: user.id,
+                exerciseID: exerciseID,
+                score_en: selectedLanguage === 'en' ? maxScore : currentProgress?.score_en || 0,
+                score_fi: selectedLanguage === 'fi' ? maxScore : currentProgress?.score_fi || 0,
+                score_ua: selectedLanguage === 'ua' ? maxScore : currentProgress?.score_ua || 0,
+                score_ru: selectedLanguage === 'ru' ? maxScore : currentProgress?.score_ru || 0,
+            }
+            const method = currentProgress ? 'PUT' : 'POST';
+
+            const url = currentProgress
+                ? `${API_BASE}/progress/${user.id}`
+                : `${API_BASE}/progress/${user.id}`;
+            const saveRes = await fetch(url, {
+                method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(body)
+            });
+
+            if(!saveRes.ok) {
+                throw new Error('Save failed');
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const resetGame = () => {
+        const words = pairs.map(pair => ({
+            word: pair.wordID,
+            value: pair[`value_${selectedLanguage}`]
+        }))
+
+        const images = pairs.map(pair => ({
+            image: pair.imageID,
+            word_url: pair.word_url  
+        }))
+        setShuffledWords(shuffledPairs(words));
+        setShuffledImages(shuffledPairs(images));
+        setMatchedPairs([]);
+        setSelectedWord(null);
+        setActiveLanguage(false);
+        setHasScored(false);
+        setMessage('');
+    };
 
     return (
         <ScrollView>
             <Text>Connect Screen to the category {name}</Text>
             <Text>Connect Task</Text>
+
+            <MessageBox message={message} />
+            
             <LanguageTabs 
                 selectedLanguage={selectedLanguage}
                 setSelectedLanguage={setSelectedLanguage}
                 activeLanguage={activeLanguage}
             />
+            
             <View style={{ flexDirection: 'row', gap: 100 }}>
                 <View>
                     {shuffledImages.map((image, index) => (
@@ -80,6 +187,8 @@ const ConnectScreen = ({ navigation, route }) => {
                             key={index}
                             image={image}
                             API_BASE={API_BASE}
+                            onPress={() => handleImagePress(image)}
+                            matched={matchedPairs.includes(image.image)}
                         /> 
                     ))}
                 </View>
@@ -88,13 +197,19 @@ const ConnectScreen = ({ navigation, route }) => {
                         <WordCard
                             key={index}
                             word={word}
+                            selected={selectedWord?.word === word.word}
+                            onPress={() => handleWordPress(word)}
                         /> 
                     ))}
                 </View>
             </View>
+            <Pressable onPress={resetGame}>
+                Restart
+            </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>
+
         </ScrollView>
     )
 }
