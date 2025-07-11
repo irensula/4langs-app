@@ -79,16 +79,13 @@ router.get('/:id/memogame', (req, res, next) => {
         .join('word_sounds', 'word_sounds.soundID', 'memogame.soundID' )
         .join('word_images', 'word_images.imageID', 'memogame.imageID')
         .where('words.categoryID', categoryID)
-        .select('memogame.wordID',
+        .select('memogame.*',
                 'words.value_en',
                 'words.value_fi',
                 'words.value_ru',
                 'words.value_ua',
                 'words.categoryID',
-                'memogame.imageID',
                 'word_images.word_url',
-                'memogame.soundID',
-                'memogame.maxScore',
                 'word_sounds.sound_ru',
                 'word_sounds.sound_fi',
                 'word_sounds.sound_en',

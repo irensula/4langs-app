@@ -152,15 +152,20 @@ const MemoScreen = ({ route, navigation }) => {
             const existingProgress = await res.json();
             const progressArray = Array.isArray(existingProgress) ? existingProgress : [];
             const exerciseID = originalCards[0]?.exerciseID;
-            const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
+            
             // prepare progress data
+            if (!exerciseID) {
+                console.error("Missing exerciseID");
+                return;
+            }
+            const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
             const body = {
                 userID: user.id,
                 exerciseID: exerciseID,
-                score_en: selectedLanguage === 'en' ? maxScore : currentProgress?.score_en || 0,
-                score_fi: selectedLanguage === 'fi' ? maxScore : currentProgress?.score_fi || 0,
-                score_ua: selectedLanguage === 'ua' ? maxScore : currentProgress?.score_ua || 0,
-                score_ru: selectedLanguage === 'ru' ? maxScore : currentProgress?.score_ru || 0,
+                score_en: selectedLanguage === 'en' ? maxScore : (currentProgress?.score_en ?? 0),
+                score_fi: selectedLanguage === 'fi' ? maxScore : (currentProgress?.score_fi ?? 0),
+                score_ua: selectedLanguage === 'ua' ? maxScore : (currentProgress?.score_ua ?? 0),
+                score_ru: selectedLanguage === 'ru' ? maxScore : (currentProgress?.score_ru ?? 0),
             };
 
             const method = currentProgress ? 'PUT' : 'POST';
@@ -169,6 +174,7 @@ const MemoScreen = ({ route, navigation }) => {
                 ? `${API_BASE}/progress/${user.id}`
                 : `${API_BASE}/progress/${user.id}`;
 
+            console.log("POST body", JSON.stringify(body, null, 2));
             const saveRes = await fetch(url, {
                 method,
                 headers: {
@@ -187,6 +193,9 @@ const MemoScreen = ({ route, navigation }) => {
             setMessageType('error');
         }
 };
+useEffect(() => {
+    console.log("originalCards:", originalCards);
+}, [originalCards]);
     return (
         <ScrollView>
             <Text>Category {name}</Text>
