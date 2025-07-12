@@ -178,4 +178,9 @@ router.get('/:id/connect_task', (req, res, next) => {
         })
 })
 
+router.get('/:id/gaps_task', (req, res, next) => {
+    const categoryID = parseInt(req.params.id, 10);
+
+})
+
 module.exports = router;
