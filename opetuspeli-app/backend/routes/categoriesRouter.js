@@ -180,7 +180,24 @@ router.get('/:id/connect_task', (req, res, next) => {
 
 router.get('/:id/gaps_task', (req, res, next) => {
     const categoryID = parseInt(req.params.id, 10);
-
+    if (isNaN(categoryID)) {
+        return res.status(400).json({ error: 'Invalid category ID' });
+    }
+    knex('gaps_task')
+        .join('sentences', 'sentences.sentenceID', 'gaps_task.sentenceID')
+        .join('words', 'words.wordID', 'sentences.wordID')
+        .where('sentences.categoryID', categoryID)
+        .select('gaps_task.*',
+            'sentences.*',
+            'words.*'
+        )
+        .then((rows) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.error(err);
+            res.status(500).json({ err: 'Failed to fetch connect task' })
+        })
 })
 
 module.exports = router;
