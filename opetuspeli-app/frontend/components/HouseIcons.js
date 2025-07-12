@@ -48,41 +48,49 @@ const HouseIcons = ({ categories, onSelect }) => (
     {categories[0] && (
       <Pressable
         style={{ position: 'absolute', left: 10, top: 20, width: 40, height: 50 }}
-          onPress={() => onSelect(categories[0])}
+        onPress={() => onSelect(categories[0])}
+        disabled={categories[0].locked}
       />
     )}
     {categories[1] && (
       <Pressable
         style={{ position: 'absolute', left: 65, top: 30, width: 40, height: 40 }}
-          onPress={() => onSelect(categories[1])}
+        onPress={() => onSelect(categories[1])}
+        disabled={categories[1].locked}
       />
     )}
     {categories[2] && (
       <Pressable
         style={{ position: 'absolute', left: 115, top: 30, width: 40, height: 50 }}
-          onPress={() => onSelect(categories[2])}
+        onPress={() => onSelect(categories[2])}
+        disabled={categories[2].locked}
       />
     )}
     {categories[3] && (
       <Pressable
         style={{ position: 'absolute', left: 165, top: 30, width: 40, height: 50 }}
-          onPress={() => onSelect(categories[0])}
+        onPress={() => onSelect(categories[3])}
+        disabled={categories[3].locked}
       />
     )}
     {categories[4] && (
       <Pressable
         style={{ position: 'absolute', left: 215, top: 30, width: 40, height: 50 }}
-          onPress={() => onSelect(categories[0])}
+        onPress={() => onSelect(categories[4])}
+        disabled={categories[4].locked}
       />
     )}
 
-  {categories.map((cat) => (
+  {categories.map((category) => (
     <Pressable
-      key={cat.categoryID}
-      onPress={() => onSelect(cat)}
+      key={category.categoryID}
+      disabled={category.locked}
+      onPress={() => onSelect(category)}
       style={{ padding: 10, backgroundColor: '#ccc', marginBottom: 5 }}
     >
-    <Text>{cat.name}</Text>
+      <Text style={{ opacity: category.locked ? 0.4 : 1 }}>
+        {category.name} {category.locked ? '(Locked)' : ''}
+      </Text>
     </Pressable>
   ))}
 

@@ -10,6 +10,12 @@ exports.up = function(knex) {
             t.text('description');
             t.enum('score_type', ['multi', 'fixed']).notNullable();
             t.integer('maxScore');
+            t.integer('categoryID')
+                .unsigned()
+                .nullable()
+                .references('categoryID')
+                .inTable('categories')
+                .onDelete('SET NULL');
         })
 };
 

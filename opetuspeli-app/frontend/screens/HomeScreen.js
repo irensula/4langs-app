@@ -64,6 +64,9 @@ const HomeScreen = ({ route, navigation }) => {
         });
     };
 
+    useEffect(() => {
+        console.log('Categories', categories);
+    }, [categories]);
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
 
@@ -86,3 +89,18 @@ const HomeScreen = ({ route, navigation }) => {
 } 
 
 export default HomeScreen;
+
+// categories.map(category => (
+//   <Pressable
+//     key={category.categoryID}
+//     disabled={category.locked}
+//     onPress={() => navigation.navigate('CategoryScreen', {
+//       name: category.name,
+//       categoryID: category.categoryID
+//     })}
+//   >
+//     <Text style={{ opacity: category.locked ? 0.4 : 1 }}>
+//       {category.name} {category.locked ? '(Locked)' : ''}
+//     </Text>
+//   </Pressable>
+// ));
