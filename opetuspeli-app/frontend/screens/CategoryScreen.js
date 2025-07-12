@@ -21,6 +21,9 @@ export default function CategoryScreen({ route, navigation }) {
             <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID })}>
                 <Text>Connect Task</Text>
             </Pressable>
+            <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID })}>
+                <Text>Gaps Task</Text>
+            </Pressable>
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>
             </Pressable>
