@@ -20,7 +20,7 @@ const ConnectScreen = ({ navigation, route }) => {
     const [selectedWord, setSelectedWord] = useState(null);
     const [matchedPairs, setMatchedPairs] = useState([]);
     const [hasScored, setHasScored] = useState(false);
-    const [message, setMessage] = useState([]);
+    const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const ConnectScreen = ({ navigation, route }) => {
                 const token = await AsyncStorage.getItem('token');
                 if (!token) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/connect_task`, {
-                    headers: {Authorization: `Bearer ${token}` }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
                 const data = await res.json();
                 console.log('Connect Task data', data)
@@ -45,7 +45,7 @@ const ConnectScreen = ({ navigation, route }) => {
         const shuffled = [...array]
         for (let i = shuffled.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
         }
         return shuffled;
     } 
@@ -172,7 +172,7 @@ const ConnectScreen = ({ navigation, route }) => {
             <Text>Connect Screen to the category {name}</Text>
             <Text>Connect Task</Text>
 
-            <MessageBox message={message} />
+            <MessageBox message={message} messageType={messageType} />
             
             <LanguageTabs 
                 selectedLanguage={selectedLanguage}
@@ -206,6 +206,11 @@ const ConnectScreen = ({ navigation, route }) => {
             <Pressable onPress={resetGame}>
                 Restart
             </Pressable>
+            
+            <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID })}>
+                Next
+            </Pressable>
+            
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>

@@ -13,6 +13,7 @@ import TextScreen from "./screens/TextScreen";
 import MemoScreen from "./screens/MemoScreen";
 import ProgressScreen from "./screens/ProgressScreen";
 import ConnectScreen from "./screens/ConnectScreen";
+import GapsScreen from "./screens/GapsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,7 @@ function AppContent() {
           <Stack.Screen name="TextScreen" component={TextScreen} />
           <Stack.Screen name="MemoScreen" component={MemoScreen} />
           <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
+          <Stack.Screen name="GapsScreen" component={GapsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
   );
