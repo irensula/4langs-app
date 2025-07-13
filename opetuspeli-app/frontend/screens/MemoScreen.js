@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
 import MemoCard from '../components/MemoCard';
 import MessageBox from '../components/MessageBox';
@@ -26,17 +28,8 @@ const MemoScreen = ({ route, navigation }) => {
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
 
-    const doubleAndShuffle = (cards) => {
-        // double the cards
-        const doubled = [...cards, ...cards];
-        // shuffle the doebled array
-        for (let i = doubled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [doubled[i], doubled[j]] = [doubled[j], doubled[i]];
-        }
-        return doubled;
-    }
-
+    const doubleAndShuffle = (array) => shuffledArray([...array, ...array]);
+    
     useEffect(() => {
         const fetchMemoGame = async () => {
         try {
@@ -47,8 +40,8 @@ const MemoScreen = ({ route, navigation }) => {
                 });
             const data = await res.json();
             setOriginalCards(data);
-            const doubleAndShuffled = doubleAndShuffle(data);
-            setMemoCards(doubleAndShuffled);
+            const shuffled = doubleAndShuffle(data);
+            setMemoCards(shuffled);
 
         } catch (error) {
             console.error('Error fetching memogame:', error);

@@ -3,6 +3,7 @@ import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import shuffledArray from '../utils/shuffledArray';
 import WordCard from '../components/WordCard';
 import ImageCard from '../components/ImageCard';
 import LanguageTabs from '../components/LanguageTabs';
@@ -41,15 +42,6 @@ const ConnectScreen = ({ navigation, route }) => {
         fetchConnectTask();
     }, []);
 
-    const shuffledPairs = (array) => {
-        const shuffled = [...array]
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    } 
-
     useEffect (() => {
         const words = pairs.map(pair => ({
             word: pair.wordID,
@@ -61,8 +53,8 @@ const ConnectScreen = ({ navigation, route }) => {
             word_url: pair.word_url  
         }))
         
-        setShuffledWords(shuffledPairs(words));
-        setShuffledImages(shuffledPairs(images));
+        setShuffledWords(shuffledArray(words));
+        setShuffledImages(shuffledArray(images));
     }, [pairs, selectedLanguage])
 
     const handleWordPress = (word) => {
@@ -158,8 +150,8 @@ const ConnectScreen = ({ navigation, route }) => {
             image: pair.imageID,
             word_url: pair.word_url  
         }))
-        setShuffledWords(shuffledPairs(words));
-        setShuffledImages(shuffledPairs(images));
+        setShuffledWords(shuffledArray(words));
+        setShuffledImages(shuffledArray(images));
         setMatchedPairs([]);
         setSelectedWord(null);
         setActiveLanguage(false);

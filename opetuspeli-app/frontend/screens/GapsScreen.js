@@ -2,10 +2,11 @@ import { View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
 import MessageBox from '../components/MessageBox';
 import Sentence from '../components/Sentence';
-import WordGap from './WordGap';
+import WordGap from '../components/WordGap';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
@@ -37,15 +38,6 @@ const GapsScreen = ({ navigation, route }) => {
         };
         fetchGapsTask();
     }, [])
-    // MAKE IT SEPARATE
-    const shuffledArray = (words) => {
-        const shuffled = [...words]
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
-        }
-        return shuffled;
-    }
 
     useEffect (() => {
         console.log('Sentences:', sentences);
@@ -72,13 +64,17 @@ const GapsScreen = ({ navigation, route }) => {
                 ))}
             </View>
             <View>
-                {sentences.map((sentence, index) => (
-                    <Sentence 
-                        key={index}
-                        sentence={sentence}
-                        selectedLanguage={selectedLanguage}
-                    />
-                ))}
+                {sentences.map((sentence, index) => {
+                    const matchingWord = words.find(w => w.wordID === sentence.wordID);
+                    return (
+                        <Sentence 
+                            key={index}
+                            sentence={sentence}
+                            word={matchingWord}
+                            selectedLanguage={selectedLanguage}
+                        />
+                    )
+                })}
             </View>
 
             <Pressable onPress={() => navigation.goBack()}>
