@@ -186,7 +186,7 @@ router.get('/:id/gaps_task', (req, res, next) => {
     knex('gaps_task')
         .join('sentences', 'sentences.sentenceID', 'gaps_task.sentenceID')
         .join('words', 'words.wordID', 'sentences.wordID')
-        .where('sentences.categoryID', categoryID)
+        .where('words.categoryID', categoryID)
         .select('gaps_task.*',
             'sentences.*',
             'words.*'

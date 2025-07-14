@@ -1,25 +1,34 @@
-import { View, Text } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 const Sentence = ({ sentence, word, selectedLanguage }) => {
-    console.log('Word', word);
-    function escapeRegExp(string) {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
-
+    const [userInput, setUserInput] = useState('');
     const fullSentence = sentence[`sentence_${selectedLanguage}`];
-    const gapdWord = word?.[`value_${selectedLanguage}`] || '';
-    const escapedWord = escapeRegExp(gapdWord);
-    const sentenceWithGap = fullSentence.replace(new RegExp(`\\b${escapedWord}(?:'s)?\\b`, 'i'),
-        '_____');
-    console.log('Full sentence:', fullSentence);
-    console.log('Sentence with gap', sentenceWithGap);
+    const parts = fullSentence.split('{{answer}}');
+
     return (
-        <View>
-            <Text>{sentenceWithGap}</Text>
-            {/* <Text>{fullSentence}</Text> */}
+        <View style={{flexDirection: 'row'}}>
+            <Text>{parts[0]}</Text>
+            <TextInput 
+                value={userInput}
+                onChangeText={setUserInput}
+                autoCapitalize="none"
+                style={styles.input}
+            >
+            </TextInput>
+            <Text>{parts[1]}</Text>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    input: {
+        borderBottomWidth: 1,
+        borderColor: '#888',
+        padding: 4,
+        minWidth: 60,
+        marginHorizontal: 4,
+    }
+})
 
 export default Sentence;

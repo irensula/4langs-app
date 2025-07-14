@@ -76,7 +76,6 @@ const GapsScreen = ({ navigation, route }) => {
                     )
                 })}
             </View>
-
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>

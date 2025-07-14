@@ -11,15 +11,10 @@ exports.up = function(knex) {
                     .references('wordID')
                     .inTable('words')
                     .onDelete('SET NULL');
-                t.integer('categoryID')
-                    .unsigned()
-                    .references('categoryID')
-                    .inTable('categories')
-                    .onDelete('SET NULL');
-                t.text('sentence_ru').notNullable()
                 t.text('sentence_en').notNullable()
                 t.text('sentence_fi').notNullable()
                 t.text('sentence_ua').notNullable()
+                t.text('sentence_ru').notNullable()
         })
 };
 

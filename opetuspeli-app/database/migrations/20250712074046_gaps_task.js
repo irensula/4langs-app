@@ -6,17 +6,21 @@ exports.up = function(knex) {
   return knex.schema
     .createTable('gaps_task', t => {
         t.increments('gapID').primary();
-        t.integer('sentenceID')
-          .unsigned()
-          .references('sentenceID')
-          .inTable('sentences')
-          .onDelete('CASCADE');
         t.integer('exerciseID')
           .unsigned()
           .notNullable()
           .references('exerciseID')
           .inTable('exercises')
           .onDelete('CASCADE');
+        t.integer('sentenceID')
+          .unsigned()
+          .references('sentenceID')
+          .inTable('sentences')
+          .onDelete('CASCADE');
+        t.text('answer_ru').notNullable()
+        t.text('answer_en').notNullable()
+        t.text('answer_fi').notNullable()
+        t.text('answer_ua').notNullable()
         t.integer('maxScore').notNullable().defaultTo(1);
     }) 
 };
