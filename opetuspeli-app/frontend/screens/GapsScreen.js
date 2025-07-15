@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from 'react-native';
+import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ const GapsScreen = ({ navigation, route }) => {
     }, [sentences]);
 
     return (
-        <View>
+        <ScrollView>
             <Text>Gaps Screen</Text>
 
             <MessageBox message={message} messageType={messageType} />
@@ -72,6 +72,7 @@ const GapsScreen = ({ navigation, route }) => {
                             sentence={sentence}
                             word={matchingWord}
                             selectedLanguage={selectedLanguage}
+                            API_BASE={API_BASE}
                         />
                     )
                 })}
@@ -79,7 +80,7 @@ const GapsScreen = ({ navigation, route }) => {
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Go Back</Text>
             </Pressable>
-        </View>
+        </ScrollView>
     )
 }
 

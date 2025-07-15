@@ -186,10 +186,12 @@ router.get('/:id/gaps_task', (req, res, next) => {
     knex('gaps_task')
         .join('sentences', 'sentences.sentenceID', 'gaps_task.sentenceID')
         .join('words', 'words.wordID', 'sentences.wordID')
+        .join('word_images', 'word_images.wordID', 'words.wordID')
         .where('words.categoryID', categoryID)
         .select('gaps_task.*',
             'sentences.*',
-            'words.*'
+            'words.*',
+            'word_images.word_url'
         )
         .then((rows) => {
             res.json(rows);
