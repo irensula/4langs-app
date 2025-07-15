@@ -196,11 +196,11 @@ const ConnectScreen = ({ navigation, route }) => {
                 </View>
             </View>
             <Pressable onPress={resetGame}>
-                Restart
+                <Text>Restart</Text>
             </Pressable>
             
             <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID })}>
-                Next
+                <Text>Next</Text>
             </Pressable>
             
             <Pressable onPress={() => navigation.goBack()}>

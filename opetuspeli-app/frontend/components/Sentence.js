@@ -2,10 +2,9 @@ import { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import ImageCard from './ImageCard';
 
-const Sentence = ({ sentence, selectedLanguage, API_BASE }) => {
+const Sentence = ({ sentence, selectedLanguage, handleCorrectAnswer, API_BASE }) => {
     const [userInput, setUserInput] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
-    const [score, setScore] = useState(0);
     
     const correctAnswer = sentence?.[`answer_${selectedLanguage}`]?.trim().toLowerCase() || '';
     const fullSentence = sentence[`sentence_${selectedLanguage}`];
@@ -15,7 +14,7 @@ const Sentence = ({ sentence, selectedLanguage, API_BASE }) => {
         const formatedInput = userInput.trim().toLowerCase();
         if (formatedInput === correctAnswer && !isCorrect) {
             setIsCorrect(true);
-            setScore(prev => prev + 1);
+            handleCorrectAnswer();
         }
     }, [userInput]);
     
