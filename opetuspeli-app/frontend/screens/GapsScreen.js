@@ -19,6 +19,8 @@ const GapsScreen = ({ navigation, route }) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
     const [score, setScore] = useState(0);
+    const [correctAnswers, setCorrectAnswers] = useState({});
+    const [resetTrigger, setResetTrigger] = useState(0);
     
     useEffect (() => {
         const fetchGapsTask = async () => {
@@ -40,11 +42,10 @@ const GapsScreen = ({ navigation, route }) => {
         fetchGapsTask();
     }, [API_BASE, categoryID])
 
-    const handleScore = async () => {
+    const handleScore = async (finalScore) => {
         try {
             const token = await AsyncStorage.getItem('token');
             const user = JSON.parse(await AsyncStorage.getItem('user'));
-            const maxScore = sentences.length;
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
                 headers: {Authorization: `Bearer ${token}`}
             });
@@ -52,20 +53,18 @@ const GapsScreen = ({ navigation, route }) => {
             const progressArray = Array.isArray(existingProgress) ? existingProgress : [];
             const exerciseID = sentences[0]?.exerciseID;
             const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
-            
+            console.log('currentProgress', currentProgress);
             const body = {
                 userID: user.id,
                 exerciseID: exerciseID,
-                score_en: selectedLanguage === 'en' ? maxScore : currentProgress?.score_en || 0,
-                score_fi: selectedLanguage === 'fi' ? maxScore : currentProgress?.score_fi || 0,
-                score_ua: selectedLanguage === 'ua' ? maxScore : currentProgress?.score_ua || 0,
-                score_ru: selectedLanguage === 'ru' ? maxScore : currentProgress?.score_ru || 0, 
+                score_en: selectedLanguage === 'en' ? finalScore : currentProgress?.score_en || 0,
+                score_fi: selectedLanguage === 'fi' ? finalScore : currentProgress?.score_fi || 0,
+                score_ua: selectedLanguage === 'ua' ? finalScore : currentProgress?.score_ua || 0,
+                score_ru: selectedLanguage === 'ru' ? finalScore : currentProgress?.score_ru || 0, 
             }
             const method = currentProgress ? 'PUT' : 'POST';
 
-            const url = currentProgress
-                ? `${API_BASE}/progress/${user.id}`
-                : `${API_BASE}/progress/${user.id}`;
+            const url = `${API_BASE}/progress/${user.id}`;
 
             const saveRes = await fetch(url, {
                 method,
@@ -83,26 +82,32 @@ const GapsScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleCorrectAnswer = () => {
-        setScore(prev => prev + 1);
-        if((score + 1) === sentences.length) {
-            const maxScore = sentences[0]?.maxScore;
-            console.log('MaxScore', maxScore);
-            setMessage('Good job!');
-            setMessageType('win');
+    const markAnswer = (index, isCorrect) => {
+        setCorrectAnswers(prev => ({...prev, [index]: isCorrect}));
+        console.log('Correct answers object:', correctAnswers);
+    }
 
-            setTimeout(() => {
-                setMessage(`You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`)
-                setMessageType('success');
-            }, 2500);
+    const handleSendAnswers = () => {
+        const correctCount = Object.values(correctAnswers).filter(Boolean).length;
+        setScore(correctCount);
 
-            handleScore();
+        setMessage('Good job!');
+        setMessageType('win');
 
-            setTimeout (() => {
-                resetGame();
-            }, 5000);
+        setTimeout(() => {
+            setMessage(`You got ${correctCount} out of ${sentences.length} correct.`);
+            setMessageType(correctCount === sentences.length ? 'win' : 'info');
+        }, 3000)
 
-        }
+        setTimeout(() => {
+            setMessage('');
+        }, 6000);
+
+        handleScore(correctCount);
+        
+        setTimeout (() => {
+            resetGame();
+        }, 6000);
     }
 
     const resetGame = () => {
@@ -110,6 +115,7 @@ const GapsScreen = ({ navigation, route }) => {
         setShuffledWords(shuffled);
         setScore(0);
         setMessage('');
+        setResetTrigger(prev => prev + 1);
     }
 
     useEffect (() => {
@@ -141,19 +147,19 @@ const GapsScreen = ({ navigation, route }) => {
                         <Sentence 
                             key={index}
                             sentence={sentence}
-                            handleCorrectAnswer={handleCorrectAnswer}
                             selectedLanguage={selectedLanguage}
                             API_BASE={API_BASE}
+                            index={index}
+                            markAnswer={markAnswer}
+                            resetTrigger={resetTrigger}
                         />
                     )
                 )}
             </View>
-
-            <Text>Score: {score}</Text>
             
-            {/* <Pressable onPress={}>
+            <Pressable onPress={handleSendAnswers}>
                 <Text>Send answers</Text>
-            </Pressable> */}
+            </Pressable>
 
             <Pressable onPress={resetGame}>
                 <Text>Restart</Text>

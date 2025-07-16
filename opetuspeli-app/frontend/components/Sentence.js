@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import ImageCard from './ImageCard';
 
-const Sentence = ({ sentence, selectedLanguage, handleCorrectAnswer, API_BASE }) => {
+const Sentence = ({ sentence, selectedLanguage, API_BASE, index, markAnswer, resetTrigger }) => {
     const [userInput, setUserInput] = useState('');
     const [isCorrect, setIsCorrect] = useState(false);
     
@@ -12,13 +12,22 @@ const Sentence = ({ sentence, selectedLanguage, handleCorrectAnswer, API_BASE })
 
     useEffect (() => {
         const formatedInput = userInput.trim().toLowerCase();
-        if (formatedInput === correctAnswer && !isCorrect) {
-            setIsCorrect(true);
-            handleCorrectAnswer();
-        }
-    }, [userInput]);
+        const answerIsCorrect = formatedInput === correctAnswer;
+        
+        if (answerIsCorrect !== isCorrect) {
+                setIsCorrect(answerIsCorrect);
+                markAnswer(index, answerIsCorrect);
+            }
+            console.log('Comparing:', formatedInput, 'vs', correctAnswer);
+            console.log(`Set ${answerIsCorrect ? 'correct' : 'wrong'} answer at index:`, index);
+    }, [userInput, correctAnswer]);
     
     const parts = fullSentence.split('{{answer}}');
+
+    useEffect(() => {
+        setUserInput('');
+        setIsCorrect(false);
+    }, [resetTrigger]);
 
     return (
         <View style={{flexDirection: 'row'}}>
