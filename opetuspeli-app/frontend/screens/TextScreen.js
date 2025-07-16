@@ -3,11 +3,12 @@ import { View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextCard from '../components/TextCard';
+import Navbar from '../components/Navbar';
 
 const TextScreen = ({ route, navigation }) => {
+    const { name, categoryID, user, logout } = route.params;
     const [texts, setTexts] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
-    const { name, categoryID } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     useEffect(() => {
@@ -29,6 +30,9 @@ const TextScreen = ({ route, navigation }) => {
     
     return (
         <View>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
             <Text>Text's for the category: {name}</Text>
             <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
                 <Pressable onPress={(() => {setSelectedLanguage('ru')})}><Text>Russian</Text></Pressable>

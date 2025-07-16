@@ -7,10 +7,11 @@ import LanguageTabs from '../components/LanguageTabs';
 import MessageBox from '../components/MessageBox';
 import Sentence from '../components/Sentence';
 import WordGap from '../components/WordGap';
+import Navbar from '../components/Navbar';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { name, categoryID } = route.params;
+    const { name, categoryID, user, logout } = route.params;
     const [sentences, setSentences] = useState([]);
     const [words, setWords] = useState([]);
     const [shuffledWords, setShuffledWords] = useState([]);
@@ -124,6 +125,10 @@ const GapsScreen = ({ navigation, route }) => {
 
     return (
         <ScrollView>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
+
             <Text>Gaps Screen</Text>
 
             <MessageBox message={message} messageType={messageType} />

@@ -7,13 +7,14 @@ import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
 import MemoCard from '../components/MemoCard';
 import MessageBox from '../components/MessageBox';
+import Navbar from '../components/Navbar';
 
 const MemoScreen = ({ route, navigation }) => {
+    const { name, categoryID, user, logout } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const [originalCards, setOriginalCards] = useState([]);
     const [memoCards, setMemoCards] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
-    const { name, categoryID } = route.params;
 
     const [openedCards, setOpenedCards] = useState([]);
     const [matchedCards, setMatchedCards] = useState([]);
@@ -191,6 +192,10 @@ useEffect(() => {
 }, [originalCards]);
     return (
         <ScrollView>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
+
             <Text>Category {name}</Text>
             <Text>Memo Game</Text>
             

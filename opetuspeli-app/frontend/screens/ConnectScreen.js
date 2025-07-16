@@ -8,11 +8,12 @@ import WordCard from '../components/WordCard';
 import ImageCard from '../components/ImageCard';
 import LanguageTabs from '../components/LanguageTabs';
 import MessageBox from '../components/MessageBox';
+import Navbar from '../components/Navbar';
 
 const ConnectScreen = ({ navigation, route }) => {
 
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { name, categoryID } = route.params;
+    const { name, categoryID, user, logout } = route.params;
     const [pairs, setPairs] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
@@ -161,6 +162,9 @@ const ConnectScreen = ({ navigation, route }) => {
 
     return (
         <ScrollView>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
             <Text>Connect Screen to the category {name}</Text>
             <Text>Connect Task</Text>
 

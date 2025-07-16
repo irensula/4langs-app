@@ -4,9 +4,11 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 import AvatarList from '../components/AvatarsList';
+import Navbar from '../components/Navbar';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
+    const { name, categoryID, logout } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     const [user, setUser] = useState(initialUser);
@@ -95,6 +97,9 @@ const UserScreen = ({ route, navigation }) => {
     
     return (
         <View>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
             <Text>User Page</Text>
 
             <View style={{ minHeight: 50 }}>

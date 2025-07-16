@@ -60,30 +60,21 @@ const HomeScreen = ({ route, navigation }) => {
     const handleSelectCategory = (category) => {
         navigation.navigate('Category', { 
             name: category.name,
-            categoryID: category.categoryID 
+            categoryID: category.categoryID,
+            user,
+            logout
         });
     };
 
-    useEffect(() => {
-        console.log('Categories', categories);
-    }, [categories]);
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
-
-            <View style={{ minHeight: 50 }}>
-                <MessageBox message={message} type={messageType} />
-            </View>
 
             {user && (
                 <Navbar logout={logout} user={user} navigation={navigation} />
             )}
-            <Text>Home Screen</Text>
-            
-            <HouseIcons categories={categories} onSelect={handleSelectCategory}/>
+            {/* <Text>{user?.username}</Text> */}
+            <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory}/>
 
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Back</Text>
-            </Pressable>
         </ScrollView>
     )
 } 

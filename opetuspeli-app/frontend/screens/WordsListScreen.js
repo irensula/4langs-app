@@ -4,10 +4,11 @@ import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordListCard from '../components/WordListCard';
 import LANG_KEYS from '../constants/langKeys';
+import Navbar from '../components/Navbar';
 
 const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
-    const { name, categoryID } = route.params;
+    const { name, categoryID, user, logout } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     useEffect(() => {
@@ -29,6 +30,9 @@ const WordsListScreen = ({ route, navigation }) => {
 
     return (
         <ScrollView contentContainerStyle={{ padding: 20 }}>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
             <Text>Words List for the category {name}</Text>
             
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>

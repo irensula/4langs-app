@@ -18,8 +18,6 @@ const Sentence = ({ sentence, selectedLanguage, API_BASE, index, markAnswer, res
                 setIsCorrect(answerIsCorrect);
                 markAnswer(index, answerIsCorrect);
             }
-            console.log('Comparing:', formatedInput, 'vs', correctAnswer);
-            console.log(`Set ${answerIsCorrect ? 'correct' : 'wrong'} answer at index:`, index);
     }, [userInput, correctAnswer]);
     
     const parts = fullSentence.split('{{answer}}');

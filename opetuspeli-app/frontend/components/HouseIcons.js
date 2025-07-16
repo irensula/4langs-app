@@ -1,5 +1,6 @@
 import { Text, View, Pressable } from 'react-native';
 import Svg, { Rect, Polygon, Path, G } from 'react-native-svg';
+import Entypo from '@expo/vector-icons/Entypo';
 
 const HouseIcons = ({ categories, onSelect }) => (
   <View>
@@ -59,11 +60,27 @@ const HouseIcons = ({ categories, onSelect }) => (
         disabled={categories[1].locked}
       />
     )}
+    {categories[1]?.locked && (
+      <Entypo
+        name="lock"
+        size={20}
+        color="black"
+        style={{ position: 'absolute', left: 75, top: 35 }}
+      />
+    )}
     {categories[2] && (
       <Pressable
         style={{ position: 'absolute', left: 115, top: 30, width: 40, height: 50 }}
         onPress={() => onSelect(categories[2])}
         disabled={categories[2].locked}
+      />
+    )}
+    {categories[2]?.locked && (
+      <Entypo
+        name="lock"
+        size={20}
+        color="black"
+        style={{ position: 'absolute', left: 130, top: 35 }}
       />
     )}
     {categories[3] && (
@@ -73,6 +90,14 @@ const HouseIcons = ({ categories, onSelect }) => (
         disabled={categories[3].locked}
       />
     )}
+    {categories[3]?.locked && (
+      <Entypo
+        name="lock"
+        size={20}
+        color="black"
+        style={{ position: 'absolute', left: 190, top: 35 }}
+      />
+    )}
     {categories[4] && (
       <Pressable
         style={{ position: 'absolute', left: 215, top: 30, width: 40, height: 50 }}
@@ -80,8 +105,16 @@ const HouseIcons = ({ categories, onSelect }) => (
         disabled={categories[4].locked}
       />
     )}
+    {categories[4]?.locked && (
+      <Entypo
+        name="lock"
+        size={20}
+        color="black"
+        style={{ position: 'absolute', left: 245, top: 35 }}
+      />
+    )}
 
-  {categories.map((category) => (
+  {/* {categories.map((category) => (
     <Pressable
       key={category.categoryID}
       disabled={category.locked}
@@ -92,7 +125,7 @@ const HouseIcons = ({ categories, onSelect }) => (
         {category.name} {category.locked ? '(Locked)' : ''}
       </Text>
     </Pressable>
-  ))}
+  ))} */}
 
   </View>
 );

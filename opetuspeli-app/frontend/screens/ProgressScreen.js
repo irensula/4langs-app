@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Navbar from '../components/Navbar';
 
 const ProgressScreen = ({ route, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const [userProgress, setUserProgress] = useState([]);
-    const { user } = route?.params || {};
-
+    // const { user } = route?.params || {};
+    const { name, categoryID, user, logout } = route.params;
     useEffect(() => {
         const fetchProgress = async () => {
             try {
@@ -50,6 +51,9 @@ const ProgressScreen = ({ route, navigation }) => {
 
     return (
         <View>
+            {user && (
+                <Navbar user={user} logout={logout} navigation={navigation} />
+            )}
             <Text>Progress Screen</Text>
             <Text>Progress in English: {totalScores.score_en} of {totalScores.maxScore}</Text>
             <Text>Progress in Finnish: {totalScores.score_fi} of {totalScores.maxScore}</Text>
