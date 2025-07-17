@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import {View, Text, Pressable, Image, ScrollView} from 'react-native';
+import {View, Text, Pressable, Image, ScrollView, StyleSheet} from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordListCard from '../components/WordListCard';
 import LANG_KEYS from '../constants/langKeys';
 import Navbar from '../components/Navbar';
+import NextArrow from '../components/NextArrow';
 
 const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
@@ -29,7 +30,7 @@ const WordsListScreen = ({ route, navigation }) => {
 }, []);
 
     return (
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ScrollView style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -44,15 +45,17 @@ const WordsListScreen = ({ route, navigation }) => {
             {words.map((word) => (
                 <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
             ))}
-            <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID })}>
-                <Text>Next</Text>
-            </Pressable>
-            
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Back</Text>
-            </Pressable>
+
+           <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
         </ScrollView>
     )
 } 
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
 
 export default WordsListScreen;

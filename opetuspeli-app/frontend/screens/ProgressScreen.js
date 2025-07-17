@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Navbar from '../components/Navbar';
@@ -50,7 +50,7 @@ const ProgressScreen = ({ route, navigation }) => {
     const totalMaxScore = totalMaxScorePerExercise * 4;
 
     return (
-        <View>
+        <View style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -66,5 +66,12 @@ const ProgressScreen = ({ route, navigation }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+        flex: 1,
+    }
+})
 
 export default ProgressScreen;

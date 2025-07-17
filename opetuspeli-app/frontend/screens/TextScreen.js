@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextCard from '../components/TextCard';
 import Navbar from '../components/Navbar';
+import NextArrow from '../components/NextArrow';
 
 const TextScreen = ({ route, navigation }) => {
     const { name, categoryID, user, logout } = route.params;
@@ -29,7 +30,7 @@ const TextScreen = ({ route, navigation }) => {
 }, []);
     
     return (
-        <View>
+        <View style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -49,13 +50,16 @@ const TextScreen = ({ route, navigation }) => {
                 />)
             )}
 
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Go Back</Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID })}>
-                <Text>Next</Text>
-            </Pressable>
+            <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
+
 export default TextScreen;

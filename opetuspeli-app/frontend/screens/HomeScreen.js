@@ -1,7 +1,7 @@
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, Pressable } from "react-native"; 
+import { ScrollView, StyleSheet } from "react-native"; 
 import Navbar from "../components/Navbar";
 import MessageBox from '../components/MessageBox';
 import HouseIcons from '../components/HouseIcons';
@@ -67,7 +67,7 @@ const HomeScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView contentContainerStyle={{ padding: 20 }}>
+        <ScrollView style={styles.container}>
 
             {user && (
                 <Navbar logout={logout} user={user} navigation={navigation} />
@@ -78,6 +78,12 @@ const HomeScreen = ({ route, navigation }) => {
         </ScrollView>
     )
 } 
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
 
 export default HomeScreen;
 

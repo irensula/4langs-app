@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, Pressable } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
@@ -8,6 +8,7 @@ import MessageBox from '../components/MessageBox';
 import Sentence from '../components/Sentence';
 import WordGap from '../components/WordGap';
 import Navbar from '../components/Navbar';
+import NextArrow from '../components/NextArrow';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
@@ -124,7 +125,7 @@ const GapsScreen = ({ navigation, route }) => {
     }, [sentences]);
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -169,13 +170,17 @@ const GapsScreen = ({ navigation, route }) => {
             <Pressable onPress={resetGame}>
                 <Text>Restart</Text>
             </Pressable>
-
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Go Back</Text>
-            </Pressable>
+            
+            <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
 
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
 
 export default GapsScreen;

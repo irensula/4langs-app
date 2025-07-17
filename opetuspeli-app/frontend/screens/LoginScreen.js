@@ -119,6 +119,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#5CED73',
         justifyContent: 'center',
         alignItems: 'center', 
+        padding: 10,
     },
     formContainer: {
         backgroundColor: '#ABF7B1',

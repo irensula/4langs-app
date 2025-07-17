@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Pressable } from "react-native"; 
+import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"; 
 import validateUser from "../utils/validateUser";
 import AvatarsList from '../components/AvatarsList';
 import MessageBox from '../components/MessageBox';
@@ -84,7 +84,7 @@ const RegisterScreen = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <View style={styles.container}>
             <Text>Register</Text>
             <View style={{ minHeight: 50 }}>
                 <MessageBox message={message} type={messageType} />
@@ -130,5 +130,12 @@ const RegisterScreen = ({ navigation }) => {
         </View>
     )
 } 
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+        flex: 1,
+    }
+})
 
 export default RegisterScreen;

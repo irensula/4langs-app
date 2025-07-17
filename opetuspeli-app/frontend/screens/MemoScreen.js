@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Pressable } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -8,6 +8,7 @@ import LanguageTabs from '../components/LanguageTabs';
 import MemoCard from '../components/MemoCard';
 import MessageBox from '../components/MessageBox';
 import Navbar from '../components/Navbar';
+import NextArrow from '../components/NextArrow';
 
 const MemoScreen = ({ route, navigation }) => {
     const { name, categoryID, user, logout } = route.params;
@@ -191,7 +192,7 @@ useEffect(() => {
     console.log("originalCards:", originalCards);
 }, [originalCards]);
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -231,14 +232,17 @@ useEffect(() => {
             }}>
                 <Text>Restart</Text>
             </Pressable>
-            <Pressable onPress={() => navigation.navigate('ConnectScreen')}>
-                <Text>Connect Task</Text>
-            </Pressable>
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Go Back</Text>
-            </Pressable>
+
+            <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
 
 export default MemoScreen;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable, TextInput } from "react-native";
+import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
@@ -96,7 +96,7 @@ const UserScreen = ({ route, navigation }) => {
     };
     
     return (
-        <View>
+        <View style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -106,63 +106,69 @@ const UserScreen = ({ route, navigation }) => {
                 <MessageBox message={message} type={messageType} />
             </View>
 
-            <Text>Username:</Text>
-            <TextInput
-                value={userdata.username}
-                editable={editMode}
-                onChangeText={(val) => handleChange('username', val)}
-                autoCapitalize='none'
-            />
-            <Text>Email:</Text>
-            <TextInput
-                value={userdata.email}
-                editable={editMode}
-                onChangeText={(val) => handleChange('email', val)}
-                keyboardType="email-address"
-                autoCapitalize='none'
-            />
-            <Text>Phonenumber:</Text>
-            <TextInput
-                value={userdata.phonenumber}
-                editable={editMode}
-                onChangeText={(val) => handleChange('phonenumber', val)}
-                keyboardType="phone-pad"
-                autoCapitalize='none'
-            />
-            <Text>Password:</Text>
-            <TextInput
-                value={userdata.password}
-                editable={editMode}
-                onChangeText={(val) => handleChange('password', val)}
-                secureTextEntry
-                placeholder="New password"
-            />
-            {!editMode && <Image
-                source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
-                style={{
-                width: 80,
-                height: 80,
-                margin: 5,
-                borderWidth: 2,
-                borderColor: 'blue',
-                borderRadius: 40
-                }}
-            />}
-            {editMode && 
-                <AvatarList 
-                    avatars={avatars} 
-                    onSelect={setSelectedImageID}
-                    selectedImageID={selectedImageID} 
-            />}
-            {editMode ? (
-                <Pressable onPress={editUserData}>
-                    <Text>Tallenna</Text>
-                </Pressable>
-            ) : (
-                <Pressable onPress={() => setEditMode(true)}>
-                    <Text>Muokkaa</Text>
-                </Pressable>
-            )}
+            <View style={styles.infoCard}>
+                <Text style={styles.label}>Username</Text>
+                <TextInput
+                    value={userdata.username}
+                    editable={editMode}
+                    onChangeText={(val) => handleChange('username', val)}
+                    autoCapitalize='none'
+                    style={styles.textInput}
+                />
+                <Text style={styles.label}>Email</Text>
+                <TextInput
+                    value={userdata.email}
+                    editable={editMode}
+                    onChangeText={(val) => handleChange('email', val)}
+                    keyboardType="email-address"
+                    autoCapitalize='none'
+                    style={styles.textInput}
+                />
+                <Text style={styles.label}>Phonenumber</Text>
+                <TextInput
+                    value={userdata.phonenumber}
+                    editable={editMode}
+                    onChangeText={(val) => handleChange('phonenumber', val)}
+                    keyboardType="phone-pad"
+                    autoCapitalize='none'
+                    style={styles.textInput}
+                />
+                <Text style={styles.label}>Password:</Text>
+                <TextInput
+                    value={userdata.password}
+                    editable={editMode}
+                    onChangeText={(val) => handleChange('password', val)}
+                    secureTextEntry
+                    placeholder="New password"
+                    style={styles.textInput}
+                />
+                {!editMode && <Image
+                    source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
+                    style={{
+                    width: 80,
+                    height: 80,
+                    margin: 5,
+                    borderWidth: 2,
+                    borderColor: 'blue',
+                    borderRadius: 40
+                    }}
+                />}
+                {editMode && 
+                    <AvatarList 
+                        avatars={avatars} 
+                        onSelect={setSelectedImageID}
+                        selectedImageID={selectedImageID} 
+                />}
+                {editMode ? (
+                    <Pressable onPress={editUserData}>
+                        <Text>Tallenna</Text>
+                    </Pressable>
+                ) : (
+                    <Pressable onPress={() => setEditMode(true)}>
+                        <Text>Muokkaa</Text>
+                    </Pressable>
+                )}
+            </View>
             
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>
@@ -170,4 +176,29 @@ const UserScreen = ({ route, navigation }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+        flex: 1,
+        backgroundColor: '#5CED73',
+    },
+    infoCard: {
+        padding: 10,
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: '#55962f',
+        backgroundColor: '#f0f8eb',
+    },
+    label: {
+        fontSize: 10,
+        fontFamily: "ABeeZee",
+        color: '#55962f',
+        marginTop: 10,
+    },
+    textInput : {
+        marginBottom: 10,
+    }
+})
+
 export default UserScreen;

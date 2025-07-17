@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Pressable } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -9,6 +9,7 @@ import ImageCard from '../components/ImageCard';
 import LanguageTabs from '../components/LanguageTabs';
 import MessageBox from '../components/MessageBox';
 import Navbar from '../components/Navbar';
+import NextArrow from '../components/NextArrow';
 
 const ConnectScreen = ({ navigation, route }) => {
 
@@ -161,7 +162,7 @@ const ConnectScreen = ({ navigation, route }) => {
     };
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -203,15 +204,16 @@ const ConnectScreen = ({ navigation, route }) => {
                 <Text>Restart</Text>
             </Pressable>
             
-            <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID })}>
-                <Text>Next</Text>
-            </Pressable>
-            
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Go Back</Text>
-            </Pressable>
+           <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
 
         </ScrollView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        padding: 10,
+    }
+})
+
 export default ConnectScreen;

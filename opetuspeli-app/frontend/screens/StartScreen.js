@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, SafeAreaView, View, Text, Pressable, StyleSheet } from "react-native"; 
+import { ActivityIndicator, View, Text, Pressable, StyleSheet } from "react-native"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
 
@@ -45,7 +45,7 @@ const StartScreen = ({ navigation }) => {
     );
   }
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Text style={styles.mainTitle}>Welcome to the App</Text>
             {isLoggedIn ? 
               (
@@ -71,21 +71,24 @@ const StartScreen = ({ navigation }) => {
               </>
             )
           }
-        </SafeAreaView >
+        </View >
     )
 } 
 const styles = StyleSheet.create({
   container: {
-        flex: 1,
-        backgroundColor: '#5CED73',
-        justifyContent: 'center',
-        alignItems: 'center',
+      flex: 1,
+      backgroundColor: '#5CED73',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   mainTitle: {
     fontSize: 50,
     color: '#fff',
     fontFamily: 'LuckiestGuy',
     marginBottom: 30,
+    marginHorizontal: 10,
+    textAlign: 'center',
+    alignSelf: 'center',
   },
   buttonsWrap: {
     flexDirection: 'row',

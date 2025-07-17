@@ -22,6 +22,7 @@ function AppContent() {
   //const { isDark } = useTheme();
   const [fontsLoaded] = useFonts({
     LuckiestGuy: require('./assets/fonts/LuckiestGuy-Regular.ttf'),
+    ABeeZee: require('./assets/fonts/ABeeZee-Regular.ttf'),
     Nunito: require('./assets/fonts/Nunito-VariableFont_wght.ttf'),
     NunitoBold: require('./assets/fonts/Nunito-Bold.ttf'),
   });
