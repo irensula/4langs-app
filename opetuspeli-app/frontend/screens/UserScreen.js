@@ -100,20 +100,31 @@ const UserScreen = ({ route, navigation }) => {
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
-            <Text>User Page</Text>
 
             <View style={{ minHeight: 50 }}>
                 <MessageBox message={message} type={messageType} />
             </View>
 
             <View style={styles.infoCard}>
-                <Text style={styles.label}>Username</Text>
+                <View style={styles.info}>
+                {!editMode && <Image
+                    source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
+                    style={styles.image}
+                />}
+                {editMode && 
+                    <AvatarList 
+                        avatars={avatars} 
+                        onSelect={setSelectedImageID}
+                        selectedImageID={selectedImageID} 
+                />}
+
+                {editMode && (<Text style={styles.label}>Username</Text>)}
                 <TextInput
                     value={userdata.username}
                     editable={editMode}
                     onChangeText={(val) => handleChange('username', val)}
                     autoCapitalize='none'
-                    style={styles.textInput}
+                    style={styles.textInputName}
                 />
                 <Text style={styles.label}>Email</Text>
                 <TextInput
@@ -133,32 +144,17 @@ const UserScreen = ({ route, navigation }) => {
                     autoCapitalize='none'
                     style={styles.textInput}
                 />
-                <Text style={styles.label}>Password:</Text>
+                <Text style={styles.label}>Password</Text>
                 <TextInput
                     value={userdata.password}
                     editable={editMode}
+                    placeholder="●●●●●●"
+                    placeholderTextColor="lightgrey"
                     onChangeText={(val) => handleChange('password', val)}
                     secureTextEntry
-                    placeholder="New password"
                     style={styles.textInput}
                 />
-                {!editMode && <Image
-                    source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
-                    style={{
-                    width: 80,
-                    height: 80,
-                    margin: 5,
-                    borderWidth: 2,
-                    borderColor: 'blue',
-                    borderRadius: 40
-                    }}
-                />}
-                {editMode && 
-                    <AvatarList 
-                        avatars={avatars} 
-                        onSelect={setSelectedImageID}
-                        selectedImageID={selectedImageID} 
-                />}
+                
                 {editMode ? (
                     <Pressable onPress={editUserData}>
                         <Text>Tallenna</Text>
@@ -168,11 +164,8 @@ const UserScreen = ({ route, navigation }) => {
                         <Text>Muokkaa</Text>
                     </Pressable>
                 )}
+                </View>
             </View>
-            
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Back</Text>
-            </Pressable>
         </View>
     )
 }
@@ -184,10 +177,30 @@ const styles = StyleSheet.create({
         backgroundColor: '#5CED73',
     },
     infoCard: {
+        flexDirection: 'column',
+        alignItems: 'center',
         padding: 10,
-        borderRadius: 15,
+        borderRadius: 20,
         borderWidth: 2,
         borderColor: '#55962f',
+        backgroundColor: '#f0f8eb',
+        position: 'relative',
+        height: 350,
+        overflow: 'visible',
+    },
+    info: {
+        alignItems: 'center',
+        width: '100%',
+        position: 'absolute',
+        top: -35,
+    },
+    image: {
+        width: 80,
+        height: 80,
+        margin: 5,
+        borderWidth: 2,
+        borderColor: '#55962f',
+        borderRadius: 40,
         backgroundColor: '#f0f8eb',
     },
     label: {
@@ -196,9 +209,18 @@ const styles = StyleSheet.create({
         color: '#55962f',
         marginTop: 10,
     },
+    textInputName: {
+        fontFamily: 'LuckiestGuy',
+        color: '#55962f',
+        fontSize: 35,
+        marginBottom: 10,
+        textAlign: 'center',
+    },
     textInput : {
         marginBottom: 10,
-    }
+        textAlign: 'center',
+        fontSize: 18,
+    },
 })
 
 export default UserScreen;
