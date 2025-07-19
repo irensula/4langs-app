@@ -1,7 +1,7 @@
 from gtts import gTTS
 from playsound import playsound
 
-words = ["мама"];
+words = ['school', 'teacher', 'student', 'book', 'pen', 'pencil', 'notebook', 'classroom', 'group', 'desk'];
 
 language = "uk"
 for word in words:
