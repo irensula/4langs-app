@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import { View, Text, Image, FlatList, TouchableOpacity } from "react-native"; 
+import { View, Text, Image, FlatList, TouchableOpacity, StyleSheet } from "react-native"; 
 import Constants from 'expo-constants';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 const AvatarsList = ({ avatars, onSelect, selectedImageID: propSelectedImageID }) => {
     const [selectedImageID, setSelectedImageID] = useState(propSelectedImageID || null);
@@ -33,14 +34,7 @@ const AvatarsList = ({ avatars, onSelect, selectedImageID: propSelectedImageID }
                     }}>
                     <Image
                         source={{ uri: `${API_BASE}${item.url}` }}
-                        style={{
-                        width: 80,
-                        height: 80,
-                        margin: 5,
-                        borderWidth: item.imageID === selectedImageID ? 2 : 0,
-                        borderColor: 'blue',
-                        borderRadius: 40
-                        }}
+                        style={styles.image}
                     />
                     </TouchableOpacity>
                 )}
@@ -52,23 +46,54 @@ const AvatarsList = ({ avatars, onSelect, selectedImageID: propSelectedImageID }
                                 setShowAllAvatars(true);
                             }}
                         >
-                            <Image 
-                                source={{ uri: `${API_BASE}${avatars[0].url}` }}
-                                style={{
-                                width: 100,
-                                height: 100,
-                                borderRadius: 50,
-                                margin: 10,
-                                borderWidth: 2,
-                                borderColor: 'blue'
-                                }}
-                            />
-                            <Text>Valitse kuva</Text>
+                            <View style={{ position: 'relative' }}>
+                                <Image 
+                                    source={{ uri: `${API_BASE}${avatars[0].url}` }}
+                                    style={styles.imageEdit}
+                                />
+                                <View style={styles.editOverlay}>
+                                    <Text style={styles.edit}>
+                                        <MaterialIcons name="edit" size={24} color="#fff" />
+                                    </Text>
+                                </View>
+                            </View>
                         </TouchableOpacity>
                     )
                 )}
         </View>
     )
 }
+
+const styles=StyleSheet.create({
+    image: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        margin: 5,
+        borderWidth: 2,
+        borderColor: '#55962f',
+    },
+    imageEdit: {
+        width: 80,
+        height: 80,
+        borderRadius: 40,
+        borderWidth: 2,
+        borderColor: '#55962f',
+        position: 'relative',
+    },
+    editOverlay: {
+        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+        width: 80,
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 40,
+        borderBottomRightRadius: 40,
+        borderBottomLeftRadius: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})
 
 export default AvatarsList;

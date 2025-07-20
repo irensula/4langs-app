@@ -85,6 +85,11 @@ const UserScreen = ({ route, navigation }) => {
                 setUser(updatedUser);
                 setEditMode(false);
                 await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+
+                setTimeout(() => {
+                    setMessage('');
+                }, 3000);
+
             } else {
                 const errorData = await response.json();
                 setMessage(errorData.error || 'Päivitys epäonnistui');
@@ -102,10 +107,10 @@ const UserScreen = ({ route, navigation }) => {
             )}
 
             <View style={{ minHeight: 50 }}>
-                <MessageBox message={message} type={messageType} />
+                {message !== '' && (<MessageBox message={message} type={messageType} />)}
             </View>
 
-            <View style={styles.infoCard}>
+            <View style={[styles.infoCard, styles.shadowStyle]}>
                 <View style={styles.info}>
                 {!editMode && <Image
                     source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
@@ -160,8 +165,8 @@ const UserScreen = ({ route, navigation }) => {
                         <Text>Tallenna</Text>
                     </Pressable>
                 ) : (
-                    <Pressable onPress={() => setEditMode(true)}>
-                        <Text>Muokkaa</Text>
+                    <Pressable style={styles.button} onPress={() => setEditMode(true)}>
+                        <Text style={styles.buttonText}>Muokkaa</Text>
                     </Pressable>
                 )}
                 </View>
@@ -184,15 +189,21 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#55962f',
         backgroundColor: '#f0f8eb',
-        position: 'relative',
-        height: 350,
         overflow: 'visible',
+        marginVertical: 20,
+        alignSelf: 'stretch',
     },
     info: {
         alignItems: 'center',
         width: '100%',
-        position: 'absolute',
-        top: -35,
+        marginTop: -40,
+    },
+    shadowStyle: {
+        shadowColor: '#000',
+        shadowOffset: { width: 4, height: 8 },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 5,
     },
     image: {
         width: 80,
@@ -221,6 +232,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 18,
     },
+    button: {
+      width: 120,
+      height: 50,
+      borderRadius: 50,
+      backgroundColor: '#6BBC3B',
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginBottom: 10,
+    },
+    buttonText: {
+        color: '#ffffff',
+        fontFamily: 'NunitoBold',
+    }
 })
 
 export default UserScreen;

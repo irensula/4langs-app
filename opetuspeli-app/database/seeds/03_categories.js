@@ -6,9 +6,9 @@ exports.seed = async function(knex) {
   await knex('categories').del()
   await knex('categories').insert([
     {name: 'Family'},
-    {name: 'Room'},
+    {name: 'School'},
     {name: 'Food'},
     {name: 'Transport'},
-    {name: 'School'},
+    {name: 'Room'},
   ]);
 };
