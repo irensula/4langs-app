@@ -43,6 +43,9 @@ FRONTEND
     npm i @expo/vector-icons // for icons
     npx react-native-asset // for assets
     npm install jwt-decode
+    react-native-reanimated v2
+    react-native-svg
+    react-native-redash 
 
 PYTHON
     python -m pip --version
