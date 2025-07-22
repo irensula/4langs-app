@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CircularProgress from 'react-native-circular-progress-indicator';
 import Navbar from '../components/Navbar';
 
 const ProgressScreen = ({ route, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const [userProgress, setUserProgress] = useState([]);
+    const [value, setValue] = useState(0);
     // const { user } = route?.params || {};
     const { name, categoryID, user, logout } = route.params;
     useEffect(() => {
@@ -60,9 +62,19 @@ const ProgressScreen = ({ route, navigation }) => {
             <Text>Progress in Ukrainian: {totalScores.score_ua} of {totalScores.maxScore}</Text>
             <Text>Progress in Russian: {totalScores.score_ru} of {totalScores.maxScore}</Text>
             <Text>Total Score: {totalScore} of {totalMaxScore}</Text>
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Go Back</Text>
-            </Pressable>
+            <CircularProgress
+              radius={90}
+              value={85}
+              textColor={'#222'}
+              fontSize={20}
+              valueSuffix={'%'}
+              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeOpacity={'0.2'}
+              inActiveStrokeWidth={6}
+              duration={3000}
+              
+                    
+             />
         </View>
     )
 }
