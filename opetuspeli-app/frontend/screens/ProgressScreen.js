@@ -75,6 +75,32 @@ const ProgressScreen = ({ route, navigation }) => {
               
                     
              />
+                  <CircularProgress
+              radius={90}
+              value={85}
+              textColor={'#222'}
+              fontSize={20}
+              valueSuffix={'%'}
+              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeOpacity={'0.2'}
+              inActiveStrokeWidth={6}
+              duration={3000}
+              
+                    
+             />
+            <CircularProgress
+              radius={90}
+              value={85}
+              textColor={'#222'}
+              fontSize={20}
+              valueSuffix={'%'}
+              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeOpacity={'0.2'}
+              inActiveStrokeWidth={6}
+              duration={3000}
+              
+                    
+             />
         </View>
     )
 }
