@@ -63,7 +63,7 @@ const ProgressScreen = ({ route, navigation }) => {
             <Text>Progress in Russian: {totalScores.score_ru} of {totalScores.maxScore}</Text>
             <Text>Total Score: {totalScore} of {totalMaxScore}</Text>
             <CircularProgress
-              radius={90}
+              radius={totalScores.maxScore}
               value={totalScores.score_en}
               textColor={'#222'}
               fontSize={20}
@@ -76,7 +76,7 @@ const ProgressScreen = ({ route, navigation }) => {
                     
              />
                   <CircularProgress
-              radius={90}
+              radius={totalScores.maxScore}
               value={totalScores.score_fi}
               textColor={'#222'}
               fontSize={20}
@@ -89,7 +89,7 @@ const ProgressScreen = ({ route, navigation }) => {
                     
              />
             <CircularProgress
-              radius={90}
+              radius={totalScores.maxScore}
               value={totalScores.score_ua}
               textColor={'#222'}
               fontSize={20}
