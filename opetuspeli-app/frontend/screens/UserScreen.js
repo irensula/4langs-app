@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
+import { layout, textStyles, spacing  } from '../constants/layout';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
@@ -101,7 +102,7 @@ const UserScreen = ({ route, navigation }) => {
     };
     
     return (
-        <View style={styles.container}>
+        <View style={layout.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
@@ -110,7 +111,7 @@ const UserScreen = ({ route, navigation }) => {
                 {message !== '' && (<MessageBox message={message} type={messageType} />)}
             </View>
 
-            <View style={[styles.infoCard, styles.shadowStyle]}>
+            <View style={[styles.infoCard, layout.shadowStyle]}>
                 <View style={styles.info}>
                 {!editMode && <Image
                     source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
@@ -176,11 +177,7 @@ const UserScreen = ({ route, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        flex: 1,
-        backgroundColor: '#5CED73',
-    },
+    
     infoCard: {
         flexDirection: 'column',
         alignItems: 'center',
@@ -197,13 +194,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
         marginTop: -40,
-    },
-    shadowStyle: {
-        shadowColor: '#000',
-        shadowOffset: { width: 4, height: 8 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-        elevation: 5,
     },
     image: {
         width: 80,

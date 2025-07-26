@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ActivityIndicator, View, Text, Pressable, StyleSheet } from "react-native"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
+import { layout, textStyles, spacing  } from '../constants/layout';
 
 const StartScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -45,26 +46,26 @@ const StartScreen = ({ navigation }) => {
     );
   }
     return (
-        <View style={styles.container}>
-            <Text style={styles.mainTitle}>Welcome to the App</Text>
+        <View style={layout.mainContainer}>
+            <Text style={textStyles.mainTitle}>Tervetuloa!</Text>
             {isLoggedIn ? 
               (
                 <Pressable onPress={() => navigation.navigate('Home')}>
-                    <View style={styles.button}>
-                      <Text>Let's go!</Text>
+                    <View style={layout.button}>
+                      <Text style={textStyles.buttonText}>Let's go!</Text>
                     </View>
                 </Pressable>
               ) : (
                 <>
                 <View style={styles.buttonsWrap}>
                   <Pressable onPress={() => navigation.navigate('Login')}>
-                      <View style={styles.button}>
-                        <Text>Login</Text>
+                      <View style={layout.button}>
+                        <Text style={textStyles.buttonText}>Login</Text>
                       </View>
                   </Pressable>
                   <Pressable onPress={() => navigation.navigate('Register')}>
-                      <View style={styles.button}>
-                        <Text>Register</Text>
+                      <View style={layout.button}>
+                        <Text style={textStyles.buttonText}>Register</Text>
                       </View>
                   </Pressable>
                 </View>       
@@ -75,36 +76,10 @@ const StartScreen = ({ navigation }) => {
     )
 } 
 const styles = StyleSheet.create({
-  container: {
-      flex: 1,
-      backgroundColor: '#5CED73',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  mainTitle: {
-    fontSize: 50,
-    color: '#fff',
-    fontFamily: 'LuckiestGuy',
-    marginBottom: 30,
-    marginHorizontal: 10,
-    textAlign: 'center',
-    alignSelf: 'center',
-  },
   buttonsWrap: {
     flexDirection: 'row',
-    gap: 30,
-  },
-    button: {
-      width: 150,
-      height: 60,
-      backgroundColor: '#fff',
-      borderRadius: 50,
-      borderWidth: 3,
-      borderColor: '#6BBC3B',
-      justifyContent: 'center',
-      alignItems: 'center',
-      fontFamily: 'NunitoBold',
-    }
+    gap: 10,
+  }
 })
 
 export default StartScreen;

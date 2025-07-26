@@ -4,6 +4,8 @@ import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
 import validateUser from "../utils/validateUser";
 import AvatarsList from '../components/AvatarsList';
 import MessageBox from '../components/MessageBox';
+import BackButton from '../components/BackButton';
+import { layout, textStyles, spacing, colors } from '../constants/layout';
 
 const RegisterScreen = ({ navigation }) => {
     const [avatars, setAvatars] = useState([]);
@@ -84,44 +86,67 @@ const RegisterScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={styles.container}>
-            <Text>Register</Text>
-            <View style={{ minHeight: 50 }}>
-                <MessageBox message={message} type={messageType} />
+        <View style={layout.mainContainer}>
+            <View style={styles.left}>
+                <BackButton navigation={navigation} />
             </View>
 
-            <Text>Käyttäjätunnus</Text>
-            <TextInput 
-                value={userdata.username}
-                onChangeText={(text) => handleChange('username', text)}
-            />
-            <Text>Sähköposti</Text>
-            <TextInput 
-                value={userdata.email}
-                onChangeText={(text) => handleChange('email', text)}
-            />
-            <Text>Puhelinnumero</Text>
-            <TextInput 
-                value={userdata.phonenumber}
-                onChangeText={(text) => handleChange('phonenumber', text)}
-            />
-            <Text>Password</Text>
-            <TextInput 
-                value={userdata.password}
-                secureTextEntry={true}
-                onChangeText={(text) => handleChange('password', text)}
-            />
-            <Text>Image</Text>
-            <AvatarsList 
-                avatars={avatars} 
-                onSelect={(imageID) => {
-                    setSelectedAvatar(imageID);
-                    handleChange('imageID', imageID.toString());
-            }} />
+            <Text style={textStyles.subtitle}>Rekisteröityminen</Text>
             
-            <Pressable onPress={handleRegister}>
-                <Text>Register</Text>
-            </Pressable>
+            {message ? 
+                <View style={{ minHeight: 50 }}>
+                    <MessageBox message={message} type={messageType} />
+                </View> 
+            : null}
+
+            <View style={layout.formContainer}>
+                <Text style={textStyles.label}>Käyttäjätunnus</Text>
+                <TextInput 
+                    value={userdata.username}
+                    onChangeText={(text) => handleChange('username', text)}
+                    style={layout.input}
+                />
+
+                <Text style={textStyles.label}>Sähköposti</Text>
+                <TextInput 
+                    value={userdata.email}
+                    onChangeText={(text) => handleChange('email', text)}
+                    style={layout.input}
+                />
+
+                <Text  style={textStyles.label}>Puhelinnumero</Text>
+                <TextInput 
+                    value={userdata.phonenumber}
+                    onChangeText={(text) => handleChange('phonenumber', text)}
+                    style={layout.input}
+                />
+
+                <Text  style={textStyles.label}>Password</Text>
+                <TextInput 
+                    value={userdata.password}
+                    secureTextEntry={true}
+                    onChangeText={(text) => handleChange('password', text)}
+                    style={layout.input}
+                />
+                <View style={layout.center}>
+
+                    <AvatarsList 
+                        avatars={avatars} 
+                        onSelect={(imageID) => {
+                            setSelectedAvatar(imageID);
+                            handleChange('imageID', imageID.toString());
+                    }} />
+                
+                    <Pressable 
+                        onPress={handleRegister}
+                        style={layout.button}
+                    >
+                        <Text style={textStyles.buttonText}>Register</Text>
+                    </Pressable>
+                </View>
+                
+            </View>
+            
 
             <Pressable onPress={() => navigation.goBack()}>
                 <Text>Back</Text>
@@ -132,10 +157,11 @@ const RegisterScreen = ({ navigation }) => {
 } 
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        flex: 1,
-    }
+    left: {
+        paddingHorizontal: 20,
+        width: '100%',
+        alignItems: 'flex-start',
+    },
 })
 
 export default RegisterScreen;
