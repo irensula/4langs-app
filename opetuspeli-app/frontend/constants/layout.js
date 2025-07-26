@@ -42,10 +42,10 @@ export const textStyles = StyleSheet.create({
     color: colors.text,
   },
   label: {
-    fontSize: 18,
-    color: colors.text,
-    fontFamily: 'ABeeZee',
-    marginBottom: 5,
+    fontSize: 14,
+    fontFamily: "ABeeZee",
+    color: colors.secondary,
+    marginVertical: 10,
   }
 });
 
@@ -55,6 +55,7 @@ export const layout = StyleSheet.create({
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
   },
   container: {
     padding: 10,
@@ -68,15 +69,14 @@ export const layout = StyleSheet.create({
     paddingVertical: 20,
   },
   formContainer: {
-    backgroundColor: '#ABF7B1',
+    backgroundColor: '#f0f8eb',
     borderColor: '#00C04B',
     borderWidth: 2,
     borderRadius: 20,
     paddingHorizontal: 30,
     paddingVertical: 20,
-    width: '80%',
-    marginHorizontal: 10,
-    },
+    width: '100%',
+  },
   shadowStyle: {
     shadowColor: '#000',
     shadowOffset: { width: 4, height: 8 },

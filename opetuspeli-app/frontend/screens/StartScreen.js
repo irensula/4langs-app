@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { ActivityIndicator, View, Text, Pressable, StyleSheet } from "react-native"; 
+import { ActivityIndicator, View, Text, Pressable, Button, BackHandler, Platform, StyleSheet } from "react-native"; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from 'jwt-decode';
-import { layout, textStyles, spacing  } from '../constants/layout';
+import { layout, textStyles, spacing, colors  } from '../constants/layout';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const StartScreen = ({ navigation }) => {
     const [loading, setLoading] = useState(true);
@@ -37,6 +38,14 @@ const StartScreen = ({ navigation }) => {
     checkLogin();
   }, []);
 
+  const handleExit = () => {
+    if (Platform.OS === 'android') {
+      BackHandler.exitApp();
+    } else {
+      alert('Please, close the app manually on iOS');
+    }
+  };
+
   if (loading) {
     return (
       <View>
@@ -46,33 +55,41 @@ const StartScreen = ({ navigation }) => {
     );
   }
     return (
-        <View style={layout.mainContainer}>
-            <Text style={textStyles.mainTitle}>Tervetuloa!</Text>
-            {isLoggedIn ? 
-              (
-                <Pressable onPress={() => navigation.navigate('Home')}>
-                    <View style={layout.button}>
-                      <Text style={textStyles.buttonText}>Let's go!</Text>
-                    </View>
-                </Pressable>
-              ) : (
-                <>
-                <View style={styles.buttonsWrap}>
-                  <Pressable onPress={() => navigation.navigate('Login')}>
+        <View style={layout.container}>
+            <View>
+              <Pressable onPress={handleExit}>
+                <FontAwesome name="close" size={40} color={colors.secondary} />
+              </Pressable>
+            </View>
+
+            <View style={layout.mainContainer}>
+              <Text style={textStyles.mainTitle}>Tervetuloa!</Text>
+              {isLoggedIn ? 
+                (
+                  <Pressable onPress={() => navigation.navigate('Home')}>
                       <View style={layout.button}>
-                        <Text style={textStyles.buttonText}>Login</Text>
+                        <Text style={textStyles.buttonText}>Let's go!</Text>
                       </View>
                   </Pressable>
-                  <Pressable onPress={() => navigation.navigate('Register')}>
-                      <View style={layout.button}>
-                        <Text style={textStyles.buttonText}>Register</Text>
-                      </View>
-                  </Pressable>
-                </View>       
-              </>
-            )
-          }
+                ) : (
+                  <>
+                  <View style={styles.buttonsWrap}>
+                    <Pressable onPress={() => navigation.navigate('Login')}>
+                        <View style={layout.button}>
+                          <Text style={textStyles.buttonText}>Login</Text>
+                        </View>
+                    </Pressable>
+                    <Pressable onPress={() => navigation.navigate('Register')}>
+                        <View style={layout.button}>
+                          <Text style={textStyles.buttonText}>Register</Text>
+                        </View>
+                    </Pressable>
+                  </View>       
+                </>
+              )
+            }
         </View >
+      </View>
     )
 } 
 const styles = StyleSheet.create({

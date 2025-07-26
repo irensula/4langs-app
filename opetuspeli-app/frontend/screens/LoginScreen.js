@@ -61,69 +61,66 @@ const Login = ({ navigation }) => {
             }
         };
     return (
-        <View style={layout.mainContainer}>
+        <View style={layout.container}>
 
-            <View style={styles.left}>
+            <View>
                 <BackButton navigation={navigation} />
             </View>
 
-            <Text style={textStyles.subtitle}>Kirjautuminen</Text>
+            <View style={layout.mainContainer}>
+                <Text style={textStyles.subtitle}>Kirjautuminen</Text>
 
-            <View style={layout.formContainer}>
-                   
-                {message ? <View style={{ minHeight: 50 }}>
-                    <MessageBox message={message} type={messageType} />
-                </View> : null}
-                
-                <Text style={textStyles.label}>Sähköposti</Text>
-                <TextInput 
-                    style={[
-                        layout.input, 
-                        { color: colors.text }, 
-                        hasError && styles.inputError,
-                        usernameFocused && styles.inputFocused,
-                    ]}
-                    value={email}
-                    onChangeText={setEmail}
-                    underlineColorAndroid="transparent"
-                    onFocus={() => { setHasError(false); setUsernameFocused(true); }}
-                    onBlur={() => setUsernameFocused(false)}
-                />
-                <Text style={textStyles.label}>Salasana</Text>
-                <TextInput 
-                    style={[
-                        layout.input,  
-                        { color: colors.text }, 
-                        hasError && styles.inputError,
-                        passwordFocused && styles.inputFocused,
-                    ]}
-                    value={password}
-                    onChangeText={setPassword}
-                    secureTextEntry={true}
-                    underlineColorAndroid="transparent"
-                    onFocus={() => { setHasError(false); setPasswordFocused(true); }}
-                    onBlur={() => setPasswordFocused(false)}
-                />
-                <View style={layout.center}>
-                    <Pressable 
-                        onPress={handleLogin} 
-                        style={layout.button}    
-                    >
-                        <Text style={textStyles.buttonText}>Kirjaudu</Text>
-                    </Pressable>
+                <View style={[layout.formContainer, layout.shadowStyle]}>
+                    
+                    {message ? <View style={{ minHeight: 50 }}>
+                        <MessageBox message={message} type={messageType} />
+                    </View> : null}
+                    
+                    <Text style={textStyles.label}>Sähköposti</Text>
+                    <TextInput 
+                        style={[
+                            layout.input, 
+                            { color: colors.text }, 
+                            hasError && styles.inputError,
+                            usernameFocused && styles.inputFocused,
+                        ]}
+                        value={email}
+                        onChangeText={setEmail}
+                        underlineColorAndroid="transparent"
+                        onFocus={() => { setHasError(false); setUsernameFocused(true); }}
+                        onBlur={() => setUsernameFocused(false)}
+                    />
+                    <Text style={textStyles.label}>Salasana</Text>
+                    <TextInput 
+                        style={[
+                            layout.input,  
+                            { color: colors.text }, 
+                            hasError && styles.inputError,
+                            passwordFocused && styles.inputFocused,
+                        ]}
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
+                        underlineColorAndroid="transparent"
+                        onFocus={() => { setHasError(false); setPasswordFocused(true); }}
+                        onBlur={() => setPasswordFocused(false)}
+                    />
+                    <View style={layout.center}>
+                        <Pressable 
+                            onPress={handleLogin} 
+                            style={layout.button}    
+                        >
+                            <Text style={textStyles.buttonText}>Kirjaudu</Text>
+                        </Pressable>
+                    </View>
+                    
                 </View>
-                
             </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    left: {
-        paddingHorizontal: 20,
-        width: '100%',
-        alignItems: 'flex-start',
-    },
     inputError: {
     },    
     inputFocused: {

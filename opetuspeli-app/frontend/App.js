@@ -19,7 +19,6 @@ const Stack = createNativeStackNavigator();
 
 function AppContent() {
 
-  //const { isDark } = useTheme();
   const [fontsLoaded] = useFonts({
     LuckiestGuy: require('./assets/fonts/LuckiestGuy-Regular.ttf'),
     ABeeZee: require('./assets/fonts/ABeeZee-Regular.ttf'),

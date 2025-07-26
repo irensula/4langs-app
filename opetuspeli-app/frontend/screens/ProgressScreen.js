@@ -68,25 +68,21 @@ const ProgressScreen = ({ route, navigation }) => {
               textColor={'#222'}
               fontSize={20}
               valueSuffix={'%'}
-              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeColor={'#2ecc71'}
               inActiveStrokeOpacity={'0.2'}
               inActiveStrokeWidth={6}
-              duration={3000}
-              
-                    
+              duration={3000}                    
              />
-                  <CircularProgress
+            <CircularProgress
               radius={totalScores.maxScore}
               value={totalScores.score_fi}
               textColor={'#222'}
               fontSize={20}
               valueSuffix={'%'}
-              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeColor={'#2ecc71'}
               inActiveStrokeOpacity={'0.2'}
               inActiveStrokeWidth={6}
               duration={3000}
-              
-                    
              />
             <CircularProgress
               radius={totalScores.maxScore}
@@ -94,7 +90,7 @@ const ProgressScreen = ({ route, navigation }) => {
               textColor={'#222'}
               fontSize={20}
               valueSuffix={'%'}
-              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeColor={'#2ecc71'}
               inActiveStrokeOpacity={'0.2'}
               inActiveStrokeWidth={6}
               duration={3000} 
@@ -105,12 +101,10 @@ const ProgressScreen = ({ route, navigation }) => {
               textColor={'#222'}
               fontSize={20}
               valueSuffix={'%'}
-              inActiveStrokeColor={´#2ecc71'}
+              inActiveStrokeColor={'#2ecc71'}
               inActiveStrokeOpacity={'0.2'}
               inActiveStrokeWidth={6}
-              duration={3000}
-              
-                    
+              duration={3000}   
              />
         </View>
     )

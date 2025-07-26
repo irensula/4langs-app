@@ -44,7 +44,6 @@ npm i @expo/vector-icons // for icons
 npx react-native-asset // for assets
 npm install jwt-decode
 react-native-reanimated v2
-react-native-svg
 react-native-redash
 npm i @react-navigation/native-stack // make a stack in the app
 npm install @react-native-async-storage/async-storage // for saving user and token in AsyncStorage

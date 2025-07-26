@@ -1,6 +1,6 @@
 import Constants from 'expo-constants';
 import { useState, useEffect } from "react";
-import { View, Text, TextInput, Pressable, StyleSheet } from "react-native"; 
+import { ScrollView, View, Text, TextInput, Pressable, StyleSheet } from "react-native"; 
 import validateUser from "../utils/validateUser";
 import AvatarsList from '../components/AvatarsList';
 import MessageBox from '../components/MessageBox';
@@ -86,73 +86,69 @@ const RegisterScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={layout.mainContainer}>
-            <View style={styles.left}>
+        <ScrollView style={layout.container}>
+            <View>
                 <BackButton navigation={navigation} />
             </View>
 
-            <Text style={textStyles.subtitle}>Rekisteröityminen</Text>
-            
-            {message ? 
-                <View style={{ minHeight: 50 }}>
-                    <MessageBox message={message} type={messageType} />
-                </View> 
-            : null}
-
-            <View style={layout.formContainer}>
-                <Text style={textStyles.label}>Käyttäjätunnus</Text>
-                <TextInput 
-                    value={userdata.username}
-                    onChangeText={(text) => handleChange('username', text)}
-                    style={layout.input}
-                />
-
-                <Text style={textStyles.label}>Sähköposti</Text>
-                <TextInput 
-                    value={userdata.email}
-                    onChangeText={(text) => handleChange('email', text)}
-                    style={layout.input}
-                />
-
-                <Text  style={textStyles.label}>Puhelinnumero</Text>
-                <TextInput 
-                    value={userdata.phonenumber}
-                    onChangeText={(text) => handleChange('phonenumber', text)}
-                    style={layout.input}
-                />
-
-                <Text  style={textStyles.label}>Password</Text>
-                <TextInput 
-                    value={userdata.password}
-                    secureTextEntry={true}
-                    onChangeText={(text) => handleChange('password', text)}
-                    style={layout.input}
-                />
-                <View style={layout.center}>
-
-                    <AvatarsList 
-                        avatars={avatars} 
-                        onSelect={(imageID) => {
-                            setSelectedAvatar(imageID);
-                            handleChange('imageID', imageID.toString());
-                    }} />
+                <View style={layout.mainContainer}>
+                <Text style={textStyles.subtitle}>Rekisteröityminen</Text>
                 
-                    <Pressable 
-                        onPress={handleRegister}
-                        style={layout.button}
-                    >
-                        <Text style={textStyles.buttonText}>Register</Text>
-                    </Pressable>
+                {message ? 
+                    <View style={{ minHeight: 50 }}>
+                        <MessageBox message={message} type={messageType} />
+                    </View> 
+                : null}
+
+                <View style={[layout.formContainer, layout.shadowStyle]}>
+                    <Text style={textStyles.label}>Käyttäjätunnus</Text>
+                    <TextInput 
+                        value={userdata.username}
+                        onChangeText={(text) => handleChange('username', text)}
+                        style={layout.input}
+                    />
+
+                    <Text style={textStyles.label}>Sähköposti</Text>
+                    <TextInput 
+                        value={userdata.email}
+                        onChangeText={(text) => handleChange('email', text)}
+                        style={layout.input}
+                    />
+
+                    <Text style={textStyles.label}>Puhelinnumero</Text>
+                    <TextInput 
+                        value={userdata.phonenumber}
+                        onChangeText={(text) => handleChange('phonenumber', text)}
+                        style={layout.input}
+                    />
+
+                    <Text style={textStyles.label}>Password</Text>
+                    <TextInput 
+                        value={userdata.password}
+                        secureTextEntry={true}
+                        onChangeText={(text) => handleChange('password', text)}
+                        style={layout.input}
+                    />
+                    <View style={layout.center}>
+                        <Text style={textStyles.label}>Valitse kuva</Text>
+                        <AvatarsList 
+                            avatars={avatars} 
+                            onSelect={(imageID) => {
+                                setSelectedAvatar(imageID);
+                                handleChange('imageID', imageID.toString());
+                        }} />
+                    
+                        <Pressable 
+                            onPress={handleRegister}
+                            style={layout.button}
+                        >
+                            <Text style={textStyles.buttonText}>Register</Text>
+                        </Pressable>
+                    </View>
+                    
                 </View>
-                
             </View>
-            
-
-            <Pressable onPress={() => navigation.goBack()}>
-                <Text>Back</Text>
-            </Pressable>
-
-        </View>
+        </ScrollView>
     )
 } 
 

@@ -1,10 +1,11 @@
 import { Pressable } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { colors } from '../constants/layout';
 
 const BackButton = ({ navigation }) => {
     return (
         <Pressable onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back-circle" size={40} color='green' />
+            <Ionicons name="arrow-back-circle" size={40} color={colors.secondary} />
         </Pressable>
     )
 }
