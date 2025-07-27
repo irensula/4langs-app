@@ -1,4 +1,5 @@
 import { View, Text, Image } from 'react-native';
+import { layout, textStyles, spacing, colors } from '../constants/layout';
 
 const TextCard = ({ texts, API_BASE, selectedLanguage  }) => {
     const textMap = {
@@ -11,10 +12,10 @@ const TextCard = ({ texts, API_BASE, selectedLanguage  }) => {
         <View>
             <Image 
                 source={{ uri: `${API_BASE}${texts.text_image}` }}
-                style={{ width: 300, height: 200 }}
+                style={{ width: '100%', aspectRatio: 16/15, marginVertical: 15 }}
                 resizeMode='cover'
             />
-            <Text>{textMap[selectedLanguage]}</Text>
+            <Text style={textStyles.default}>{textMap[selectedLanguage]}</Text>
         </View>
     )
 }

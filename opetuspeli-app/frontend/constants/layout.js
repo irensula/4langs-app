@@ -15,6 +15,12 @@ export const spacing = {
 };
 
 export const textStyles = StyleSheet.create({
+  default: {
+    fontFamily: "ABeeZee",
+    color: colors.text,
+    fontSize: 16,
+    lineHeight: 19,
+  },
   mainTitle: {
     fontSize: 50,
     color: colors.white,
@@ -32,9 +38,12 @@ export const textStyles = StyleSheet.create({
     textAlign: 'center',
     alignSelf: 'center',
   },
-  text: {
-    fontFamily: 'ABeeZee',
-    color: colors.text,
+  title: {
+    fontFamily: 'LuckiestGuy',
+    color: colors.secondary,
+    fontSize: 35,
+    marginBottom: 10,
+    textAlign: 'center',
   },
   buttonText: {
     fontFamily: 'ABeeZee',
@@ -55,7 +64,6 @@ export const layout = StyleSheet.create({
     backgroundColor: colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 10,
   },
   container: {
     padding: 10,

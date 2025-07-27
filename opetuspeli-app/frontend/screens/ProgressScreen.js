@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import Navbar from '../components/Navbar';
+import { layout, textStyles, spacing, colors  } from '../constants/layout';
 
 const ProgressScreen = ({ route, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const [userProgress, setUserProgress] = useState([]);
     const [value, setValue] = useState(0);
-    // const { user } = route?.params || {};
     const { name, categoryID, user, logout } = route.params;
+    const toPercent = (score) => {
+        if (totalScores.maxScore === 0) return 0;
+        return Math.round((score / totalScores.maxScore) * 100);
+    }
     useEffect(() => {
         const fetchProgress = async () => {
             try {
@@ -52,61 +56,106 @@ const ProgressScreen = ({ route, navigation }) => {
     const totalMaxScore = totalMaxScorePerExercise * 4;
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={layout.container}>
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
-            <Text>Progress Screen</Text>
-            <Text>Progress in English: {totalScores.score_en} of {totalScores.maxScore}</Text>
-            <Text>Progress in Finnish: {totalScores.score_fi} of {totalScores.maxScore}</Text>
-            <Text>Progress in Ukrainian: {totalScores.score_ua} of {totalScores.maxScore}</Text>
-            <Text>Progress in Russian: {totalScores.score_ru} of {totalScores.maxScore}</Text>
-            <Text>Total Score: {totalScore} of {totalMaxScore}</Text>
-            <CircularProgress
-              radius={totalScores.maxScore}
-              value={totalScores.score_en}
-              textColor={'#222'}
-              fontSize={20}
-              valueSuffix={'%'}
-              inActiveStrokeColor={'#2ecc71'}
-              inActiveStrokeOpacity={'0.2'}
-              inActiveStrokeWidth={6}
-              duration={3000}                    
-             />
-            <CircularProgress
-              radius={totalScores.maxScore}
-              value={totalScores.score_fi}
-              textColor={'#222'}
-              fontSize={20}
-              valueSuffix={'%'}
-              inActiveStrokeColor={'#2ecc71'}
-              inActiveStrokeOpacity={'0.2'}
-              inActiveStrokeWidth={6}
-              duration={3000}
-             />
-            <CircularProgress
-              radius={totalScores.maxScore}
-              value={totalScores.score_ua}
-              textColor={'#222'}
-              fontSize={20}
-              valueSuffix={'%'}
-              inActiveStrokeColor={'#2ecc71'}
-              inActiveStrokeOpacity={'0.2'}
-              inActiveStrokeWidth={6}
-              duration={3000} 
-             />
-            <CircularProgress
-              radius={90}
-              value={totalScores.score_ru}
-              textColor={'#222'}
-              fontSize={20}
-              valueSuffix={'%'}
-              inActiveStrokeColor={'#2ecc71'}
-              inActiveStrokeOpacity={'0.2'}
-              inActiveStrokeWidth={6}
-              duration={3000}   
-             />
-        </View>
+            <View style={layout.mainContainer}>
+                <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>
+                    <Text style={textStyles.title}>Edistymisesi</Text>
+
+                    <CircularProgress
+                        radius={60}
+                        value={toPercent(totalScore)}
+                        textColor={''}
+                        fontSize={20}
+                        valueSuffix={''}
+                        progressFormatter={(value) => `${Math.round(value)}%`}
+                        inActiveStrokeColor={colors.secondary}
+                        inActiveStrokeOpacity={'0.2'}
+                        inActiveStrokeWidth={6}
+                        duration={3000}                    
+                    />
+                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                        <Text style={textStyles.default}>
+                            Total Score {totalScore} / {totalMaxScore}
+                        </Text>
+                    </View>
+                    
+                    <CircularProgress
+                        radius={60}
+                        value={toPercent(totalScores.score_en)}
+                        textColor={''}
+                        fontSize={20}
+                        valueSuffix={''}
+                        progressFormatter={(value) => `${Math.round(value)}%`}
+                        inActiveStrokeColor={colors.secondary}
+                        inActiveStrokeOpacity={'0.2'}
+                        inActiveStrokeWidth={6}
+                        duration={3000}                    
+                    />
+                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                            Edistyminen englanniksi {"\n"} {totalScores.score_en} / {totalScores.maxScore}
+                        </Text>
+                    </View>
+
+                    <CircularProgress
+                        radius={60}
+                        value={toPercent(totalScores.score_fi)}
+                        textColor={''}
+                        fontSize={20}
+                        valueSuffix={''}
+                        progressFormatter={(value) => `${Math.round(value)}%`}
+                        inActiveStrokeColor={'#2ecc71'}
+                        inActiveStrokeOpacity={'0.2'}
+                        inActiveStrokeWidth={6}
+                        duration={3000}
+                    />
+                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                            Edistyminen suomeksi {"\n"} {totalScores.score_fi} / {totalScores.maxScore}
+                        </Text>
+                    </View>
+
+                    <CircularProgress
+                        radius={60}
+                        value={toPercent(totalScores.score_ua)}
+                        textColor={''}
+                        fontSize={20}
+                        valueSuffix={''}
+                        progressFormatter={(value) => `${Math.round(value)}%`}
+                        inActiveStrokeColor={'#2ecc71'}
+                        inActiveStrokeOpacity={'0.2'}
+                        inActiveStrokeWidth={6}
+                        duration={3000} 
+                    />
+                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                            Edistyminen ukrainaksi {"\n"} {totalScores.score_ua} / {totalScores.maxScore}
+                        </Text>
+                    </View>
+
+                    <CircularProgress
+                        radius={60}
+                        value={toPercent(totalScores.score_ru)}
+                        textColor={''}
+                        fontSize={20}
+                        valueSuffix={''}
+                        progressFormatter={(value) => `${Math.round(value)}%`}
+                        inActiveStrokeColor={'#2ecc71'}
+                        inActiveStrokeOpacity={'0.2'}
+                        inActiveStrokeWidth={6}
+                        duration={3000}   
+                    />
+                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                            Edistyminen venäjäksi {"\n"} {totalScores.score_ru} / {totalScores.maxScore}
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 

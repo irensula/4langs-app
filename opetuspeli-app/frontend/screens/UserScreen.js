@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
-import { layout, textStyles, spacing  } from '../constants/layout';
+import { layout, textStyles, spacing, colors } from '../constants/layout';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
@@ -124,15 +124,15 @@ const UserScreen = ({ route, navigation }) => {
                         selectedImageID={selectedImageID} 
                 />}
 
-                {editMode && (<Text style={styles.label}>Username</Text>)}
+                {editMode && (<Text style={textStyles.label}>Username</Text>)}
                 <TextInput
                     value={userdata.username}
                     editable={editMode}
                     onChangeText={(val) => handleChange('username', val)}
                     autoCapitalize='none'
-                    style={styles.textInputName}
+                    style={textStyles.title}
                 />
-                <Text style={styles.label}>Email</Text>
+                <Text style={textStyles.label}>Email</Text>
                 <TextInput
                     value={userdata.email}
                     editable={editMode}
@@ -141,7 +141,7 @@ const UserScreen = ({ route, navigation }) => {
                     autoCapitalize='none'
                     style={styles.textInput}
                 />
-                <Text style={styles.label}>Phonenumber</Text>
+                <Text style={textStyles.label}>Phonenumber</Text>
                 <TextInput
                     value={userdata.phonenumber}
                     editable={editMode}
@@ -150,7 +150,7 @@ const UserScreen = ({ route, navigation }) => {
                     autoCapitalize='none'
                     style={styles.textInput}
                 />
-                <Text style={styles.label}>Password</Text>
+                <Text style={textStyles.label}>Password</Text>
                 <TextInput
                     value={userdata.password}
                     editable={editMode}
@@ -177,14 +177,13 @@ const UserScreen = ({ route, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    
     infoCard: {
         flexDirection: 'column',
         alignItems: 'center',
         padding: 10,
         borderRadius: 20,
         borderWidth: 2,
-        borderColor: '#55962f',
+        borderColor: colors.secondary,
         backgroundColor: '#f0f8eb',
         overflow: 'visible',
         marginVertical: 20,
@@ -209,13 +208,6 @@ const styles = StyleSheet.create({
         fontFamily: "ABeeZee",
         color: '#55962f',
         marginTop: 10,
-    },
-    textInputName: {
-        fontFamily: 'LuckiestGuy',
-        color: '#55962f',
-        fontSize: 35,
-        marginBottom: 10,
-        textAlign: 'center',
     },
     textInput : {
         marginBottom: 10,

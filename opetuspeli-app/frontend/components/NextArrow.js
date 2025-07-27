@@ -1,6 +1,7 @@
 import { View, Pressable, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Entypo from '@expo/vector-icons/Entypo';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { colors } from '../constants/layout';
 
 const NextArrow = ({ screen, name, categoryID, user, logout }) => {
     const navigation = useNavigation();
@@ -11,7 +12,7 @@ const NextArrow = ({ screen, name, categoryID, user, logout }) => {
                 style={styles.iconWrap}    
             >
                 <Text style={styles.icon}>
-                    <Entypo name="arrow-with-circle-right" size={24} />
+                    <Ionicons name="arrow-forward-circle" size={40} color={colors.secondary} />
                 </Text>
             </Pressable>
         </View>
@@ -21,9 +22,6 @@ const NextArrow = ({ screen, name, categoryID, user, logout }) => {
 const styles = StyleSheet.create({
     iconWrap: {
         alignItems: 'flex-end',
-    },
-    icon: {
-        color: '#55962f',
     }
 })
 
