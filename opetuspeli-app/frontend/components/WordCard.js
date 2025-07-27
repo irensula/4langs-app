@@ -1,23 +1,33 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { colors } from '../constants/layout';
 
 const WordCard = ({ word, selected, onPress }) => {
 
     return (
             <Pressable onPress={onPress} >
-                <View style={{ 
-                    justifyContent: 'center', 
-                    alignContent: 'center', 
-                    width: 100, 
-                    height: 50, 
-                    margin: 5,
-                    borderWidth: selected ? 2 : 1,
-                    borderColor: selected ? 'blue' : 'gray',
-                    backgroundColor: selected ? '#d0e8ff' : '#fff',
-                }}>
+                <View style={[
+                    styles.wordCard, 
+                    {
+                        borderWidth: selected ? 3 : 2, 
+                        borderColor: selected ? colors.secondary : 'gray',
+                        backgroundColor: selected ? '#d0e8ff' : '#fff',
+                    }
+                ]}>
                     <Text>{word.value}</Text>
                 </View>
             </Pressable>
     )
 }
+
+const styles = StyleSheet({
+    wordCard: {
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        width: 75, 
+        height: 75, 
+        margin: 5,    
+        borderRadius: 15,
+    }
+})
 
 export default WordCard;

@@ -132,5 +132,13 @@ export const layout = StyleSheet.create({
     borderWidth: 3,
     borderColor: 'green',
     borderRadius: 50
-}
+},
+  image: {
+    width: 75, 
+    height: 75, 
+    marginRight: 10,
+    borderWidth: 2,
+    borderColor: colors.secondary,
+    borderRadius: 15,
+  }
 });

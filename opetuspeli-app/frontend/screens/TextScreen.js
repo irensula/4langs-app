@@ -35,7 +35,7 @@ const TextScreen = ({ route, navigation }) => {
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
             <View>
-                <Text>Kategoria: {name}</Text>
+                <Text>Kategoria {name}</Text>
                 <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
                     <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
                     <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>

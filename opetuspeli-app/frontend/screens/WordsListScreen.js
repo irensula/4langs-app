@@ -31,22 +31,24 @@ const WordsListScreen = ({ route, navigation }) => {
 
     return (
         <ScrollView style={styles.container}>
+            
             {user && (
                 <Navbar user={user} logout={logout} navigation={navigation} />
             )}
-            <Text>Words List for the category {name}</Text>
+            <Text>Kategoria {name}</Text>
             
+            {/* tabs */}
             <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                <Text style={{ width: 50, height: 50, marginRight: 10 }}></Text>
                 {LANG_KEYS.map(({ key, label }) => (
                     <Text key={key} style={{ flex: 1 }}>{label}</Text>
                 ))}
             </View>
+            
             {words.map((word) => (
                 <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
             ))}
-
-           <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+            
+            <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
 
         </ScrollView>
     )
