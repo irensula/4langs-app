@@ -22,6 +22,8 @@ const NextArrow = ({ screen, name, categoryID, user, logout }) => {
 const styles = StyleSheet.create({
     iconWrap: {
         alignItems: 'flex-end',
+        marginBottom: 10,
+        marginRight: 10,
     }
 })
 

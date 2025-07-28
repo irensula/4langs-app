@@ -15,7 +15,7 @@ const TextCard = ({ texts, API_BASE, selectedLanguage  }) => {
                 style={{ width: '100%', aspectRatio: 16/15, marginVertical: 15 }}
                 resizeMode='cover'
             />
-            <Text style={textStyles.default}>{textMap[selectedLanguage]}</Text>
+            <Text style={[textStyles.default, {paddingHorizontal: 10, lineHeight: 30 }]}>{textMap[selectedLanguage]}</Text>
         </View>
     )
 }

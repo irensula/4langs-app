@@ -6,6 +6,7 @@ import MessageBox from '../components/MessageBox';
 import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
+import { ScrollView } from 'react-native-web';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
@@ -102,76 +103,82 @@ const UserScreen = ({ route, navigation }) => {
     };
     
     return (
-        <View style={layout.container}>
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+
+                <View style={{ minHeight: 50 }}>
+                    {message !== '' && (<MessageBox message={message} type={messageType} />)}
+                </View>
+
+                <View style={[styles.infoCard, layout.shadowStyle]}>
+                    <View style={styles.info}>
+                    {!editMode && <Image
+                        source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
+                        style={styles.image}
+                    />}
+                    {editMode && 
+                        <AvatarList 
+                            avatars={avatars} 
+                            onSelect={setSelectedImageID}
+                            selectedImageID={selectedImageID} 
+                    />}
+
+                    {editMode && (<Text style={textStyles.label}>Username</Text>)}
+                    <TextInput
+                        value={userdata.username}
+                        editable={editMode}
+                        onChangeText={(val) => handleChange('username', val)}
+                        autoCapitalize='none'
+                        style={textStyles.title}
+                    />
+                    <Text style={textStyles.label}>Email</Text>
+                    <TextInput
+                        value={userdata.email}
+                        editable={editMode}
+                        onChangeText={(val) => handleChange('email', val)}
+                        keyboardType="email-address"
+                        autoCapitalize='none'
+                        style={styles.textInput}
+                    />
+                    <Text style={textStyles.label}>Phonenumber</Text>
+                    <TextInput
+                        value={userdata.phonenumber}
+                        editable={editMode}
+                        onChangeText={(val) => handleChange('phonenumber', val)}
+                        keyboardType="phone-pad"
+                        autoCapitalize='none'
+                        style={styles.textInput}
+                    />
+                    <Text style={textStyles.label}>Password</Text>
+                    <TextInput
+                        value={userdata.password}
+                        editable={editMode}
+                        placeholder="●●●●●●"
+                        placeholderTextColor="lightgrey"
+                        onChangeText={(val) => handleChange('password', val)}
+                        secureTextEntry
+                        style={styles.textInput}
+                    />
+                    
+                    {editMode ? (
+                        <Pressable onPress={editUserData}>
+                            <Text>Tallenna</Text>
+                        </Pressable>
+                    ) : (
+                        <Pressable style={styles.button} onPress={() => setEditMode(true)}>
+                            <Text style={styles.buttonText}>Muokkaa</Text>
+                        </Pressable>
+                    )}
+                    </View>
+                </View>
+            </ScrollView>
+
             {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
+                <View style={layout.navbarWrapper}>
+                    <Navbar user={user} logout={logout} navigation={navigation} />
+                </View>
             )}
 
-            <View style={{ minHeight: 50 }}>
-                {message !== '' && (<MessageBox message={message} type={messageType} />)}
-            </View>
-
-            <View style={[styles.infoCard, layout.shadowStyle]}>
-                <View style={styles.info}>
-                {!editMode && <Image
-                    source={{ uri: userAvatarUrl ? `${API_BASE}${userAvatarUrl}` : `${API_BASE}${user?.url}` }}
-                    style={styles.image}
-                />}
-                {editMode && 
-                    <AvatarList 
-                        avatars={avatars} 
-                        onSelect={setSelectedImageID}
-                        selectedImageID={selectedImageID} 
-                />}
-
-                {editMode && (<Text style={textStyles.label}>Username</Text>)}
-                <TextInput
-                    value={userdata.username}
-                    editable={editMode}
-                    onChangeText={(val) => handleChange('username', val)}
-                    autoCapitalize='none'
-                    style={textStyles.title}
-                />
-                <Text style={textStyles.label}>Email</Text>
-                <TextInput
-                    value={userdata.email}
-                    editable={editMode}
-                    onChangeText={(val) => handleChange('email', val)}
-                    keyboardType="email-address"
-                    autoCapitalize='none'
-                    style={styles.textInput}
-                />
-                <Text style={textStyles.label}>Phonenumber</Text>
-                <TextInput
-                    value={userdata.phonenumber}
-                    editable={editMode}
-                    onChangeText={(val) => handleChange('phonenumber', val)}
-                    keyboardType="phone-pad"
-                    autoCapitalize='none'
-                    style={styles.textInput}
-                />
-                <Text style={textStyles.label}>Password</Text>
-                <TextInput
-                    value={userdata.password}
-                    editable={editMode}
-                    placeholder="●●●●●●"
-                    placeholderTextColor="lightgrey"
-                    onChangeText={(val) => handleChange('password', val)}
-                    secureTextEntry
-                    style={styles.textInput}
-                />
-                
-                {editMode ? (
-                    <Pressable onPress={editUserData}>
-                        <Text>Tallenna</Text>
-                    </Pressable>
-                ) : (
-                    <Pressable style={styles.button} onPress={() => setEditMode(true)}>
-                        <Text style={styles.buttonText}>Muokkaa</Text>
-                    </Pressable>
-                )}
-                </View>
-            </View>
         </View>
     )
 }

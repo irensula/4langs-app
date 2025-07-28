@@ -9,6 +9,7 @@ import Sentence from '../components/Sentence';
 import WordGap from '../components/WordGap';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import { layout, colors, spacing, textStyles } from '../constants/layout';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
@@ -125,55 +126,67 @@ const GapsScreen = ({ navigation, route }) => {
     }, [sentences]);
 
     return (
-        <ScrollView style={styles.container}>
-            {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
-            )}
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+                
+                <View style={layout.categoryWrapper}>
+                    <Text style={textStyles.title}>
+                        {route.params.name}
+                    </Text>
+                    <Text style={textStyles.subtitle}>Gaps Task</Text>
+                </View>
 
-            <Text>Gaps Screen</Text>
+                <MessageBox message={message} messageType={messageType} />
 
-            <MessageBox message={message} messageType={messageType} />
-
-            <LanguageTabs 
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={setSelectedLanguage}
-                activeLanguage={activeLanguage}
-            />
-            <View>
-                {shuffledWords.map((word, index) => (
-                    <WordGap 
-                        key={index}
-                        word={word}
-                        selectedLanguage={selectedLanguage}
-                    />
-                ))}
-            </View>
-            <View>
-                {sentences.map((sentence, index) => (
-                        <Sentence 
+                <LanguageTabs 
+                    selectedLanguage={selectedLanguage}
+                    setSelectedLanguage={setSelectedLanguage}
+                    activeLanguage={activeLanguage}
+                />
+                
+                <View>
+                    {shuffledWords.map((word, index) => (
+                        <WordGap 
                             key={index}
-                            sentence={sentence}
+                            word={word}
                             selectedLanguage={selectedLanguage}
-                            API_BASE={API_BASE}
-                            index={index}
-                            markAnswer={markAnswer}
-                            resetTrigger={resetTrigger}
                         />
-                    )
+                    ))}
+                </View>
+                <View>
+                    {sentences.map((sentence, index) => (
+                            <Sentence 
+                                key={index}
+                                sentence={sentence}
+                                selectedLanguage={selectedLanguage}
+                                API_BASE={API_BASE}
+                                index={index}
+                                markAnswer={markAnswer}
+                                resetTrigger={resetTrigger}
+                            />
+                        )
+                    )}
+                </View>
+                
+                <Pressable onPress={handleSendAnswers}>
+                    <Text>Send answers</Text>
+                </Pressable>
+
+                <Pressable onPress={resetGame}>
+                    <Text>Restart</Text>
+                </Pressable>
+                
+                <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
+            </ScrollView>
+
+            <View style={layout.navbarWrapper}>
+                {user && (
+                    <Navbar user={user} logout={logout} navigation={navigation} />
                 )}
             </View>
-            
-            <Pressable onPress={handleSendAnswers}>
-                <Text>Send answers</Text>
-            </Pressable>
 
-            <Pressable onPress={resetGame}>
-                <Text>Restart</Text>
-            </Pressable>
-            
-            <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
-
-        </ScrollView>
+        </View>
     )
 }
 

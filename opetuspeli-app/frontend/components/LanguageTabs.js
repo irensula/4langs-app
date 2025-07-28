@@ -1,38 +1,61 @@
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { layout, textStyles, colors, spacing } from '../constants/layout';
 
 const LanguageTabs = ({ selectedLanguage, setSelectedLanguage, activeLanguage }) => {
     return (
-        <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
+        <View style={styles.tabsWrapper}>
             <Pressable 
                 onPress={(() => {setSelectedLanguage('en')})}
                 disabled={activeLanguage}
-                style={{ opacity: activeLanguage && selectedLanguage !== 'en' ? 0.5 : 1 }}
+                style={[styles.tabWrapper, { backgroundColor: selectedLanguage == 'en' ? colors.orange : colors.lightorange }]}
             >
-                <Text>English</Text>
+                <Text style={styles.text}>English</Text>
             </Pressable>
             <Pressable 
                 onPress={(() => {setSelectedLanguage('fi')})}
                 disabled={activeLanguage}
-                style={{ opacity: activeLanguage && selectedLanguage !== 'fi' ? 0.5 : 1 }}
+                style={[styles.tabWrapper, { backgroundColor: selectedLanguage == 'fi' ? colors.orange : colors.lightorange }]}
             >
-                <Text>Finnish</Text>
+                <Text style={styles.text}>Finnish</Text>
             </Pressable>
             <Pressable 
                 onPress={(() => {setSelectedLanguage('ua')})}
                 disabled={activeLanguage}
-                style={{ opacity: activeLanguage && selectedLanguage !== 'ua' ? 0.5 : 1 }}
+                style={[styles.tabWrapper, { backgroundColor: selectedLanguage == 'ua' ? colors.orange : colors.lightorange }]}
             >
-                <Text>Ukrainian</Text>
+                <Text style={styles.text}>Ukrainian</Text>
             </Pressable>
             <Pressable 
                 onPress={(() => {setSelectedLanguage('ru')})}
                 disabled={activeLanguage}
-                style={{ opacity: activeLanguage && selectedLanguage !== 'ru' ? 0.5 : 1 }}
+                style={[styles.tabWrapper, { backgroundColor: selectedLanguage == 'ru' ? colors.orange : colors.lightorange }]}
             >
-                <Text>Russian</Text>
+                <Text style={styles.text}>Russian</Text>
             </Pressable>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    tabsWrapper: {
+        flexDirection: 'row', 
+        gap: 5, 
+        marginBottom: 15, 
+    },
+    tabWrapper: {
+        borderWidth: 2, 
+        backgroundColor: colors.orange,
+        borderColor: colors.lightorange,  
+        borderRadius: 50,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
+        marginVertical: 10,
+    },
+    text: {
+        color: colors.white,
+        fontFamily: 'ABeeZee',
+        fontSize: 14,
+    }
+})
 
 export default LanguageTabs;

@@ -56,106 +56,113 @@ const ProgressScreen = ({ route, navigation }) => {
     const totalMaxScore = totalMaxScorePerExercise * 4;
 
     return (
-        <ScrollView style={layout.container}>
-            {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
-            )}
-            <View style={layout.mainContainer}>
-                <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>
-                    <Text style={textStyles.title}>Edistymisesi</Text>
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+                
+                <View style={layout.mainContainer}>
+                    <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>
+                        <Text style={textStyles.title}>Edistymisesi</Text>
 
-                    <CircularProgress
-                        radius={60}
-                        value={toPercent(totalScore)}
-                        textColor={''}
-                        fontSize={20}
-                        valueSuffix={''}
-                        progressFormatter={(value) => `${Math.round(value)}%`}
-                        inActiveStrokeColor={colors.secondary}
-                        inActiveStrokeOpacity={'0.2'}
-                        inActiveStrokeWidth={6}
-                        duration={3000}                    
-                    />
-                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
-                        <Text style={textStyles.default}>
-                            Total Score {totalScore} / {totalMaxScore}
-                        </Text>
-                    </View>
-                    
-                    <CircularProgress
-                        radius={60}
-                        value={toPercent(totalScores.score_en)}
-                        textColor={''}
-                        fontSize={20}
-                        valueSuffix={''}
-                        progressFormatter={(value) => `${Math.round(value)}%`}
-                        inActiveStrokeColor={colors.secondary}
-                        inActiveStrokeOpacity={'0.2'}
-                        inActiveStrokeWidth={6}
-                        duration={3000}                    
-                    />
-                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
-                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
-                            Edistyminen englanniksi {"\n"} {totalScores.score_en} / {totalScores.maxScore}
-                        </Text>
-                    </View>
+                        <CircularProgress
+                            radius={60}
+                            value={toPercent(totalScore)}
+                            textColor={''}
+                            fontSize={20}
+                            valueSuffix={''}
+                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            inActiveStrokeColor={colors.secondary}
+                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeWidth={6}
+                            duration={3000}                    
+                        />
+                        <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                            <Text style={textStyles.default}>
+                                Total Score {totalScore} / {totalMaxScore}
+                            </Text>
+                        </View>
+                        
+                        <CircularProgress
+                            radius={60}
+                            value={toPercent(totalScores.score_en)}
+                            textColor={''}
+                            fontSize={20}
+                            valueSuffix={''}
+                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            inActiveStrokeColor={colors.secondary}
+                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeWidth={6}
+                            duration={3000}                    
+                        />
+                        <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                            <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                                Edistyminen englanniksi {"\n"} {totalScores.score_en} / {totalScores.maxScore}
+                            </Text>
+                        </View>
 
-                    <CircularProgress
-                        radius={60}
-                        value={toPercent(totalScores.score_fi)}
-                        textColor={''}
-                        fontSize={20}
-                        valueSuffix={''}
-                        progressFormatter={(value) => `${Math.round(value)}%`}
-                        inActiveStrokeColor={'#2ecc71'}
-                        inActiveStrokeOpacity={'0.2'}
-                        inActiveStrokeWidth={6}
-                        duration={3000}
-                    />
-                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
-                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
-                            Edistyminen suomeksi {"\n"} {totalScores.score_fi} / {totalScores.maxScore}
-                        </Text>
-                    </View>
+                        <CircularProgress
+                            radius={60}
+                            value={toPercent(totalScores.score_fi)}
+                            textColor={''}
+                            fontSize={20}
+                            valueSuffix={''}
+                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeWidth={6}
+                            duration={3000}
+                        />
+                        <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                            <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                                Edistyminen suomeksi {"\n"} {totalScores.score_fi} / {totalScores.maxScore}
+                            </Text>
+                        </View>
 
-                    <CircularProgress
-                        radius={60}
-                        value={toPercent(totalScores.score_ua)}
-                        textColor={''}
-                        fontSize={20}
-                        valueSuffix={''}
-                        progressFormatter={(value) => `${Math.round(value)}%`}
-                        inActiveStrokeColor={'#2ecc71'}
-                        inActiveStrokeOpacity={'0.2'}
-                        inActiveStrokeWidth={6}
-                        duration={3000} 
-                    />
-                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
-                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
-                            Edistyminen ukrainaksi {"\n"} {totalScores.score_ua} / {totalScores.maxScore}
-                        </Text>
-                    </View>
+                        <CircularProgress
+                            radius={60}
+                            value={toPercent(totalScores.score_ua)}
+                            textColor={''}
+                            fontSize={20}
+                            valueSuffix={''}
+                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeWidth={6}
+                            duration={3000} 
+                        />
+                        <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                            <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                                Edistyminen ukrainaksi {"\n"} {totalScores.score_ua} / {totalScores.maxScore}
+                            </Text>
+                        </View>
 
-                    <CircularProgress
-                        radius={60}
-                        value={toPercent(totalScores.score_ru)}
-                        textColor={''}
-                        fontSize={20}
-                        valueSuffix={''}
-                        progressFormatter={(value) => `${Math.round(value)}%`}
-                        inActiveStrokeColor={'#2ecc71'}
-                        inActiveStrokeOpacity={'0.2'}
-                        inActiveStrokeWidth={6}
-                        duration={3000}   
-                    />
-                    <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
-                        <Text style={[textStyles.default, { textAlign: 'center' }]}>
-                            Edistyminen venäjäksi {"\n"} {totalScores.score_ru} / {totalScores.maxScore}
-                        </Text>
+                        <CircularProgress
+                            radius={60}
+                            value={toPercent(totalScores.score_ru)}
+                            textColor={''}
+                            fontSize={20}
+                            valueSuffix={''}
+                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeWidth={6}
+                            duration={3000}   
+                        />
+                        <View style={[layout.button, {width: 'auto', paddingHorizontal: 20, marginTop: 5}]}>
+                            <Text style={[textStyles.default, { textAlign: 'center' }]}>
+                                Edistyminen venäjäksi {"\n"} {totalScores.score_ru} / {totalScores.maxScore}
+                            </Text>
+                        </View>
                     </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+
+            {user && (
+                <View style={layout.navbarWrapper}>
+                    <Navbar user={user} logout={logout} navigation={navigation} />
+                </View>
+            )}
+
+        </View>
     )
 }
 

@@ -6,6 +6,7 @@ import WordListCard from '../components/WordListCard';
 import LANG_KEYS from '../constants/langKeys';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import { layout, textStyles, colors, spacing } from '../constants/layout';
 
 const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
@@ -30,33 +31,60 @@ const WordsListScreen = ({ route, navigation }) => {
 }, []);
 
     return (
-        <ScrollView style={styles.container}>
-            
-            {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
-            )}
-            <Text>Kategoria {name}</Text>
-            
-            {/* tabs */}
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-                {LANG_KEYS.map(({ key, label }) => (
-                    <Text key={key} style={{ flex: 1 }}>{label}</Text>
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+                
+                <View style={layout.categoryWrapper}>
+                    <Text style={textStyles.title}>
+                        {route.params.name}
+                    </Text>
+                    <Text style={textStyles.subtitle}>Vocabulary</Text>
+                </View>
+                
+                {/* tabs */}
+                <View style={styles.tabsWrapper}>
+                    {LANG_KEYS.map(({ key, label }) => (
+                        <View style={styles.tabWrapper}>
+                            <Text key={key} style={styles.text}>{label}</Text>
+                        </View>
+                    ))}
+                </View>
+                
+                {words.map((word) => (
+                    <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
                 ))}
-            </View>
-            
-            {words.map((word) => (
-                <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
-            ))}
-            
-            <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                
+                <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
 
-        </ScrollView>
+            </ScrollView>
+            {user && (
+                <View style={layout.navbarWrapper}>
+                    <Navbar user={user} logout={logout} navigation={navigation} />
+                </View>
+            )}
+        </View>
     )
 } 
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
+    tabsWrapper: {
+        flexDirection: 'row', 
+        gap: 5, 
+        marginBottom: 15, 
+    },
+    tabWrapper: {
+        borderWidth: 2, 
+        backgroundColor: colors.lightorange,
+        borderColor: colors.orange,  
+        borderRadius: 50,
+        paddingVertical: 7,
+        paddingHorizontal: 10,
+        marginVertical: 10,
+    },
+    text: {
+        color: colors.white,
+        fontFamily: 'ABeeZee',
+        fontSize: 14,
     }
 })
 

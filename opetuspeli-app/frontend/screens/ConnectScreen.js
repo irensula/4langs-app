@@ -7,9 +7,10 @@ import shuffledArray from '../utils/shuffledArray';
 import WordCard from '../components/WordCard';
 import ImageCard from '../components/ImageCard';
 import LanguageTabs from '../components/LanguageTabs';
-import MessageBox from '../components/MessageBox';
+import MessageModal from '../components/MessageModal';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import { layout, textStyles } from '../constants/layout';
 
 const ConnectScreen = ({ navigation, route }) => {
 
@@ -23,7 +24,8 @@ const ConnectScreen = ({ navigation, route }) => {
     const [selectedWord, setSelectedWord] = useState(null);
     const [matchedPairs, setMatchedPairs] = useState([]);
     const [hasScored, setHasScored] = useState(false);
-    const [message, setMessage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
 
     useEffect(() => {
@@ -110,7 +112,6 @@ const ConnectScreen = ({ navigation, route }) => {
             const exerciseID = pairs[0]?.exerciseID;
             const currentProgress = progressArray.find(p => p.exerciseID === exerciseID);
             
-            // const currentProgress = existingProgress.find(p => p.exerciseID === categoryID);
 
             const body = {
                 userID: user.id,
@@ -161,52 +162,71 @@ const ConnectScreen = ({ navigation, route }) => {
         setMessage('');
     };
 
+    const showMessage = (msg) => {
+        setModalMessage(msg);
+        setModalVisible(true);
+    };
+// showMessage("🎉 You won!");
     return (
-        <ScrollView style={styles.container}>
-            {user && (
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+
+                <View style={layout.categoryWrapper}>
+                    <Text style={textStyles.title}>
+                        {route.params.name}
+                    </Text>
+                    <Text style={textStyles.subtitle}>Connect Task</Text>
+                </View>
+
+                <MessageModal
+                    visible={modalVisible} 
+                    message={modalMessage} 
+                    onClose={() => setModalVisible(false)} 
+                />
+                
+                <LanguageTabs 
+                    selectedLanguage={selectedLanguage}
+                    setSelectedLanguage={setSelectedLanguage}
+                    activeLanguage={activeLanguage}
+                />
+                
+                <View style={{ flexDirection: 'row', gap: 100 }}>
+                    <View>
+                        {shuffledImages.map((image, index) => (
+                            <ImageCard
+                                key={index}
+                                image={image}
+                                API_BASE={API_BASE}
+                                onPress={() => handleImagePress(image)}
+                                matched={matchedPairs.includes(image.image)}
+                            /> 
+                        ))}
+                    </View>
+                    <View>
+                        {shuffledWords.map((word, index) => (
+                            <WordCard
+                                key={index}
+                                word={word}
+                                selected={selectedWord?.word === word.word}
+                                onPress={() => handleWordPress(word)}
+                            /> 
+                        ))}
+                    </View>
+                </View>
+                <Pressable onPress={resetGame}>
+                    <Text>Restart</Text>
+                </Pressable>
+                
+            <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
+            </ScrollView>
+
+        {user && (
+            <View style={layout.navbarWrapper}>
                 <Navbar user={user} logout={logout} navigation={navigation} />
-            )}
-            <Text>Connect Screen to the category {name}</Text>
-            <Text>Connect Task</Text>
-
-            <MessageBox message={message} messageType={messageType} />
-            
-            <LanguageTabs 
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={setSelectedLanguage}
-                activeLanguage={activeLanguage}
-            />
-            
-            <View style={{ flexDirection: 'row', gap: 100 }}>
-                <View>
-                    {shuffledImages.map((image, index) => (
-                        <ImageCard
-                            key={index}
-                            image={image}
-                            API_BASE={API_BASE}
-                            onPress={() => handleImagePress(image)}
-                            matched={matchedPairs.includes(image.image)}
-                        /> 
-                    ))}
-                </View>
-                <View>
-                    {shuffledWords.map((word, index) => (
-                        <WordCard
-                            key={index}
-                            word={word}
-                            selected={selectedWord?.word === word.word}
-                            onPress={() => handleWordPress(word)}
-                        /> 
-                    ))}
-                </View>
             </View>
-            <Pressable onPress={resetGame}>
-                <Text>Restart</Text>
-            </Pressable>
-            
-           <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
-
-        </ScrollView>
+        )}
+        </View>
     )
 }
 

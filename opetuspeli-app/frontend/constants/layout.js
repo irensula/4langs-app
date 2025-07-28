@@ -1,8 +1,13 @@
 import { StyleSheet } from "react-native";
 
 export const colors = {
-  primary: "#5CED73",
-  secondary: "#6BBC3B",
+  primary: "#8DD54F",
+  secondary: "#54932f",
+  lightgreen: '#f0f8eb',
+  blue: '#A8F4FF',
+  orange: '#FFB425',
+  darkorange: '#FFB425',
+  lightorange: '#FFCA66',
   text: "#333333",
   white: '#ffffff',
 };
@@ -31,16 +36,16 @@ export const textStyles = StyleSheet.create({
     alignSelf: 'center',
   },
   subtitle: { 
-    fontSize: 30, 
+    fontSize: 22, 
     color: colors.white,
-    fontFamily: 'LuckiestGuy',
-    marginBottom: 15,
+    fontFamily: 'ABeeZee',
+    marginBottom: 10,
     textAlign: 'center',
     alignSelf: 'center',
   },
   title: {
     fontFamily: 'LuckiestGuy',
-    color: colors.secondary,
+    color: colors.white,
     fontSize: 35,
     marginBottom: 10,
     textAlign: 'center',
@@ -62,12 +67,7 @@ export const layout = StyleSheet.create({
   screen: {
       flex: 1,
   },
-  container: {
-      paddingVertical: 20,
-      paddingHorizontal: 10,
-  },
   scrollContent: {
-      padding: 10,
       paddingBottom: 80, 
   },
   mainContainer: {
@@ -75,6 +75,7 @@ export const layout = StyleSheet.create({
       backgroundColor: colors.primary,
       justifyContent: 'center',
       alignItems: 'center',
+      padding: 10,
     },
   navbarWrapper: {
       position: 'absolute',
@@ -82,11 +83,11 @@ export const layout = StyleSheet.create({
       left: 0,
       right: 0,
   },
-  // container: {
-  //   padding: 10,
-  //   flex: 1,
-  //   backgroundColor: colors.primary,
-  // },
+  container: {
+    padding: 10,
+    flex: 1,
+    backgroundColor: colors.primary,
+  },
   innerContainer: {
     flex: 1,
     backgroundColor: colors.white,
@@ -94,7 +95,7 @@ export const layout = StyleSheet.create({
     paddingVertical: 20,
   },
   formContainer: {
-    backgroundColor: '#f0f8eb',
+    backgroundColor: colors.lightgreen,
     borderColor: '#00C04B',
     borderWidth: 2,
     borderRadius: 20,
@@ -157,5 +158,16 @@ export const layout = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.secondary,
     borderRadius: 15,
-  }
+  },
+  categoryWrapper: {
+    backgroundColor: colors.primary,
+    borderBottomWidth: 2,
+    borderColor: colors.secondary,
+    paddingTop: 20,
+    marginBottom: 10,
+  },
+  textStroke: {
+    position: 'absolute',
+    color: colors.white,
+  },
 });

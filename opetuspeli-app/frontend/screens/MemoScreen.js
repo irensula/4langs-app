@@ -9,6 +9,7 @@ import MemoCard from '../components/MemoCard';
 import MessageBox from '../components/MessageBox';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import { layout, textStyles, colors, spacing } from '../constants/layout';
 
 const MemoScreen = ({ route, navigation }) => {
     const { name, categoryID, user, logout } = route.params;
@@ -192,50 +193,60 @@ useEffect(() => {
     console.log("originalCards:", originalCards);
 }, [originalCards]);
     return (
-        <ScrollView style={styles.container}>
+        <View style={layout.screen}>
+            <ScrollView style={styles.container}>
+
+                <View style={layout.categoryWrapper}>
+                    <Text style={textStyles.title}>
+                        {route.params.name}
+                    </Text>
+                    <Text style={textStyles.subtitle}>Memo Game</Text>
+                </View>
+                
+                <MessageBox message={message} messageType={messageType}/>
+                
+                <LanguageTabs 
+                    selectedLanguage={selectedLanguage}
+                    setSelectedLanguage={setSelectedLanguage}
+                    activeLanguage={activeLanguage}
+                />
+                
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                    {memoCards.map((card, index) => (
+                        <MemoCard
+                            key={index}
+                            index={index}
+                            memoCards={card} 
+                            isOpened={openedCards.includes(index)}
+                            isMatched={matchedCards.includes(index)}
+                            onPress={handleCardPress}
+                            API_BASE={API_BASE}
+                            selectedLanguage={selectedLanguage}
+                        />
+                    ))}
+                </View>
+                <Pressable onPress={() => {
+                    setMessage('');
+                    setOpenedCards([]);
+                    setMatchedCards([]);
+                    setHasScored(false);
+                    setMemoCards(doubleAndShuffle(originalCards));
+                    setActiveLanguage(false);
+                }}>
+                    <Text>Restart</Text>
+                </Pressable>
+
+                <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+
+            </ScrollView>
+
             {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
+                <View style={layout.navbarWrapper}>
+                    <Navbar user={user} logout={logout} navigation={navigation} />
+                </View>
             )}
 
-            <Text>Category {name}</Text>
-            <Text>Memo Game</Text>
-            
-            <MessageBox message={message} messageType={messageType}/>
-            
-            <LanguageTabs 
-                selectedLanguage={selectedLanguage}
-                setSelectedLanguage={setSelectedLanguage}
-                activeLanguage={activeLanguage}
-            />
-            
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                {memoCards.map((card, index) => (
-                    <MemoCard
-                        key={index}
-                        index={index}
-                        memoCards={card} 
-                        isOpened={openedCards.includes(index)}
-                        isMatched={matchedCards.includes(index)}
-                        onPress={handleCardPress}
-                        API_BASE={API_BASE}
-                        selectedLanguage={selectedLanguage}
-                    />
-                ))}
-            </View>
-            <Pressable onPress={() => {
-                setMessage('');
-                setOpenedCards([]);
-                setMatchedCards([]);
-                setHasScored(false);
-                setMemoCards(doubleAndShuffle(originalCards));
-                setActiveLanguage(false);
-            }}>
-                <Text>Restart</Text>
-            </Pressable>
-
-            <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
-
-        </ScrollView>
+        </View>
     )
 }
 

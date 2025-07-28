@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, Pressable } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextCard from '../components/TextCard';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import LanguageTabs from '../components/LanguageTabs';
+import { layout, textStyles, colors, spacing } from '../constants/layout';
 
 const TextScreen = ({ route, navigation }) => {
     const { name, categoryID, user, logout } = route.params;
     const [texts, setTexts] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
+    const [activeLanguage, setActiveLanguage] = useState(false);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     useEffect(() => {
@@ -30,37 +33,42 @@ const TextScreen = ({ route, navigation }) => {
 }, []);
     
     return (
-        <ScrollView style={styles.container}>
-            {user && (
-                <Navbar user={user} logout={logout} navigation={navigation} />
-            )}
-            <View>
-                <Text>Kategoria {name}</Text>
-                <View style={{flexDirection: 'row', gap: 10, marginBottom: 15}}>
-                    <Pressable onPress={(() => {setSelectedLanguage('en')})}><Text>English</Text></Pressable>
-                    <Pressable onPress={(() => {setSelectedLanguage('fi')})}><Text>Finnish</Text></Pressable>
-                    <Pressable onPress={(() => {setSelectedLanguage('ua')})}><Text>Ukrainian</Text></Pressable>
-                    <Pressable onPress={(() => {setSelectedLanguage('ru')})}><Text>Russian</Text></Pressable>
+        <View style={layout.screen}>
+            <ScrollView style={layout.scrollContent}>
+                <View style={layout.categoryWrapper}>
+                    <Text style={textStyles.title}>
+                        {route.params.name}
+                    </Text>
+                    <Text style={textStyles.subtitle}>Text</Text>
                 </View>
-                {texts.map((item, index) =>(
-                    <TextCard 
-                        key={index}
-                        texts={item} 
-                        API_BASE={API_BASE} 
-                        selectedLanguage={selectedLanguage}
-                    />)
-                )}
-            </View>
-            <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                <View>
+                    
+                    <LanguageTabs 
+                    selectedLanguage={selectedLanguage}
+                    setSelectedLanguage={setSelectedLanguage}
+                    activeLanguage={activeLanguage}
+                />
 
-        </ScrollView>
+                    {texts.map((item, index) =>(
+                        <TextCard 
+                            key={index}
+                            texts={item} 
+                            API_BASE={API_BASE} 
+                            selectedLanguage={selectedLanguage}
+                        />)
+                    )}
+                </View>
+                <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+            </ScrollView>
+
+            {user && (
+                <View style={layout.navbarWrapper}>
+                    <Navbar user={user} logout={logout} navigation={navigation} />
+                </View>
+            )}
+
+        </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    }
-})
 
 export default TextScreen;

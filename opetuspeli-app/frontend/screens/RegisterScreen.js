@@ -92,7 +92,7 @@ const RegisterScreen = ({ navigation }) => {
             </View>
 
                 <View style={layout.mainContainer}>
-                <Text style={textStyles.subtitle}>Rekisteröityminen</Text>
+                <Text style={textStyles.title}>Rekisteröityminen</Text>
                 
                 {message ? 
                     <View style={{ minHeight: 50 }}>
