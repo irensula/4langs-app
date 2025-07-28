@@ -1,7 +1,8 @@
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
-import { ScrollView, StyleSheet } from "react-native"; 
+import { ScrollView, View, Text } from "react-native"; 
+import { layout, colors, spacing, textStyles } from '../constants/layout';
 import Navbar from "../components/Navbar";
 import MessageBox from '../components/MessageBox';
 import HouseIcons from '../components/HouseIcons';
@@ -67,37 +68,27 @@ const HomeScreen = ({ route, navigation }) => {
     };
 
     return (
-        <ScrollView style={styles.container}>
+        <View style={layout.screen}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
 
+                <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory}/>
+                <Text>Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.
+
+                Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque sem placerat. In id cursus mi pretium tellus duis convallis. Tempus leo eu aenean sed diam urna tempor. Pulvinar vivamus fringilla lacus nec metus bibendum egestas. Iaculis massa nisl malesuada lacinia integer nunc posuere. Ut hendrerit semper vel class aptent taciti sociosqu. Ad litora torquent per conubia nostra inceptos himenaeos.</Text>
+
+            </ScrollView>
+            
             {user && (
-                <Navbar logout={logout} user={user} navigation={navigation} />
+                <View style={layout.navbarWrapper}>
+                    <Navbar logout={logout} user={user} navigation={navigation} />
+                </View>
             )}
-            {/* <Text>{user?.username}</Text> */}
-            <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory}/>
-
-        </ScrollView>
+            
+        </View>
     )
 } 
 
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    }
-})
-
 export default HomeScreen;
-
-// categories.map(category => (
-//   <Pressable
-//     key={category.categoryID}
-//     disabled={category.locked}
-//     onPress={() => navigation.navigate('CategoryScreen', {
-//       name: category.name,
-//       categoryID: category.categoryID
-//     })}
-//   >
-//     <Text style={{ opacity: category.locked ? 0.4 : 1 }}>
-//       {category.name} {category.locked ? '(Locked)' : ''}
-//     </Text>
-//   </Pressable>
-// ));

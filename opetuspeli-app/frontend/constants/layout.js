@@ -59,17 +59,34 @@ export const textStyles = StyleSheet.create({
 });
 
 export const layout = StyleSheet.create({ 
-  mainContainer: {
-    flex: 1,
-    backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+  screen: {
+      flex: 1,
   },
   container: {
-    padding: 10,
-    flex: 1,
-    backgroundColor: colors.primary,
+      paddingVertical: 20,
+      paddingHorizontal: 10,
   },
+  scrollContent: {
+      padding: 10,
+      paddingBottom: 80, 
+  },
+  mainContainer: {
+      flex: 1,
+      backgroundColor: colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+  navbarWrapper: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+  },
+  // container: {
+  //   padding: 10,
+  //   flex: 1,
+  //   backgroundColor: colors.primary,
+  // },
   innerContainer: {
     flex: 1,
     backgroundColor: colors.white,
@@ -127,11 +144,11 @@ export const layout = StyleSheet.create({
     padding: 10,
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 35,
+    height: 35,
     borderWidth: 3,
-    borderColor: 'green',
-    borderRadius: 50
+    borderColor: colors.secondary,
+    borderRadius: 100,
 },
   image: {
     width: 75, 

@@ -1,11 +1,11 @@
 import { Pressable } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import Entypo from '@expo/vector-icons/Entypo';
 import { colors } from '../constants/layout';
 
 const BackButton = ({ navigation }) => {
     return (
         <Pressable onPress={() => navigation.goBack()}>
-            <Ionicons name="arrow-back-circle" size={40} color={colors.secondary} />
+            <Entypo name="chevron-left" size={32} color={colors.secondary} />
         </Pressable>
     )
 }
