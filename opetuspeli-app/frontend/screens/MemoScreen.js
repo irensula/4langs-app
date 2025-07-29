@@ -6,7 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
 import MemoCard from '../components/MemoCard';
-import MessageBox from '../components/MessageBox';
+import MessageModal from '../components/MessageModal';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import { layout, textStyles, colors, spacing } from '../constants/layout';
@@ -28,7 +28,8 @@ const MemoScreen = ({ route, navigation }) => {
     const [scoreUa, setScoreUa] = useState(null);
     const [scoreRu, setScoreRu] = useState(null);
 
-    const [message, setMessage] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
 
     const doubleAndShuffle = (array) => shuffledArray([...array, ...array]);
@@ -107,29 +108,27 @@ const MemoScreen = ({ route, navigation }) => {
             if(selectedLanguage == 'ru' && scoreRu === null) {
                 setScoreRu(maxScore);
             }
-            setMessage('Congratulations! All cards matched.');
+            setModalMessage('Congratulations! All cards matched.');
             setMessageType('win');
+            setModalVisible(true);
 
-            const timer1 = setTimeout (() => {
-                setMessage(`You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
+            setTimeout(() => {
+                setModalMessage(
+                    `You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`
+                );
                 setMessageType('success');
             }, 2500);
 
             handleScore();
 
-            const timer2 = setTimeout(() => {
-                setMessage('');
+            setTimeout(() => {
+                setModalMessage('');
                 setOpenedCards([]);
                 setMatchedCards([]);
                 setMemoCards(doubleAndShuffle(originalCards));
                 setActiveLanguage(false);
                 setHasScored(false);
             }, 5000);
-
-            return () => {
-                clearTimeout(timer1);
-                clearTimeout(timer2);
-            };
         }
     }, [matchedCards, memoCards, originalCards]);
 
@@ -185,7 +184,7 @@ const MemoScreen = ({ route, navigation }) => {
             }
         } catch (error) {
             console.error(error);
-            setMessage("Network error");
+            setModalMessage("Network error");
             setMessageType('error');
         }
 };
@@ -194,7 +193,7 @@ useEffect(() => {
 }, [originalCards]);
     return (
         <View style={layout.screen}>
-            <ScrollView style={styles.container}>
+            <ScrollView style={layout.scrollContent}>
 
                 <View style={layout.categoryWrapper}>
                     <Text style={textStyles.title}>
@@ -203,15 +202,19 @@ useEffect(() => {
                     <Text style={textStyles.subtitle}>Memo Game</Text>
                 </View>
                 
-                <MessageBox message={message} messageType={messageType}/>
-                
                 <LanguageTabs 
                     selectedLanguage={selectedLanguage}
                     setSelectedLanguage={setSelectedLanguage}
                     activeLanguage={activeLanguage}
                 />
                 
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                <MessageModal
+                    visible={modalVisible} 
+                    message={modalMessage} 
+                    onClose={() => setModalVisible(false)} 
+                />
+
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
                     {memoCards.map((card, index) => (
                         <MemoCard
                             key={index}
@@ -225,18 +228,23 @@ useEffect(() => {
                         />
                     ))}
                 </View>
-                <Pressable onPress={() => {
-                    setMessage('');
-                    setOpenedCards([]);
-                    setMatchedCards([]);
-                    setHasScored(false);
-                    setMemoCards(doubleAndShuffle(originalCards));
-                    setActiveLanguage(false);
-                }}>
-                    <Text>Restart</Text>
-                </Pressable>
 
-                <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                <View style={styles.buttonsWrapper}>
+                    <Pressable 
+                        style={[layout.buttonInner, {width: 'auto', paddingHorizontal: 20, height: 40 }]} 
+                        onPress={() =>{
+                            setModalMessage('');
+                            setOpenedCards([]);
+                            setMatchedCards([]);
+                            setHasScored(false);
+                            setMemoCards(doubleAndShuffle(originalCards));
+                            setActiveLanguage(false);
+                    }}>
+                        <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
+                    </Pressable>
+                
+                    <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                </View>
 
             </ScrollView>
 
@@ -251,8 +259,11 @@ useEffect(() => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
+    buttonsWrapper: {
+        marginTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     }
 })
 

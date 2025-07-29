@@ -12,7 +12,7 @@ const NextArrow = ({ screen, name, categoryID, user, logout }) => {
                 style={styles.iconWrap}    
             >
                 <Text style={styles.icon}>
-                    <Ionicons name="arrow-forward-circle" size={40} color={colors.secondary} />
+                    <Ionicons name="arrow-forward-circle" size={42} color={colors.secondary} />
                 </Text>
             </Pressable>
         </View>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { View, Text, Image, Pressable } from 'react-native';
+import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { layout, colors, spacing, textStyles } from '../constants/layout';
 
 const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, selectedLanguage }) => {
 
@@ -45,26 +46,67 @@ const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, se
     return (
         <View>
             {isOpened || isMatched ? (
-                <View style={{ width: 120, height: 120, margin: 5, borderWidth: 2, borderColor: 'green' }}>
+                <View style={styles.container}>
                     <Image 
                         source={{ uri: `${API_BASE}${memoCards.word_url}` }}
-                        style={{ width: 50, height: 50, margin: 5 }}
+                        style={styles.image}
                         resizeMode='cover'
                     />
-                    <Text>{displayedWord}</Text>
-                    {soundFile && (
-                        <Pressable onPress={() => playSound(soundFile)} style={{ flex: 1 }}>
-                            <AntDesign name="playcircleo" size={24} color="black" />
-                        </Pressable>
-                    )}
+                    <View style={styles.textWrapper}>
+                        <Text style={styles.text}>{displayedWord}</Text>
+                    </View>
                 </View>
                 ) : (
                     <Pressable onPress={(() => onPress(index))}>
-                        <View style={{ width: 120, height: 120, backgroundColor: 'green', margin: 5 }}></View>
+                        <View style={styles.cover}></View>
                     </Pressable>
                 )
             }
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: { 
+        width: 100, 
+        height: 100, 
+        margin: 2.5, 
+        borderWidth: 2, 
+        borderColor: colors.violet,
+        borderRadius: 25,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    cover: { 
+        width: 100, 
+        height: 100, 
+        backgroundColor: colors.violet, 
+        margin: 2.5,
+        borderRadius: 25,
+        borderColor: colors.lightviolet,
+        borderWidth: 2,
+        position: 'relative',
+    },
+    image: { 
+        width: '100%',
+        height: '100%',  
+        borderRadius: 25,
+    },
+    text: {
+        textAlign: 'center',
+        fontFamily: 'ABeeZee',
+        fontSize: 12,
+    },
+    textWrapper: {
+        position: 'absolute',
+        top: 60,
+        alignSelf: 'center',
+        backgroundColor: colors.white,
+        padding: 5,
+        borderRadius: 15,
+        borderWidth: 1,
+        borderColor: colors.violet,
+    }
+})
+
 export default MemoCard;

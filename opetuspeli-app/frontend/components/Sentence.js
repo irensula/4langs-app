@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import ImageCard from './ImageCard';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { layout, colors, spacing, textStyles } from '../constants/layout';
 
 const Sentence = ({ sentence, selectedLanguage, API_BASE, index, markAnswer, resetTrigger }) => {
     const [userInput, setUserInput] = useState('');
@@ -28,36 +30,51 @@ const Sentence = ({ sentence, selectedLanguage, API_BASE, index, markAnswer, res
     }, [resetTrigger]);
 
     return (
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center' }}>
             <ImageCard 
                 API_BASE={API_BASE}
                 image={{ word_url: sentence.word_url }} 
             />
-
-            <Text>{parts[0]}</Text>
+        <View style={styles.sentence}>
+            <Text style={styles.text}>{parts[0]}</Text>
 
             <TextInput 
                 value={userInput}
                 onChangeText={setUserInput}
-                placeholder='Type your answer'
                 editable={!isCorrect}
                 style={styles.input}
             />
 
-            <Text>{parts[1]}</Text>
+            <Text style={styles.text}>{parts[1]}</Text>
 
-            {isCorrect && <Text>Correct!</Text>}
+        </View>
+        {isCorrect && <Text>
+                <AntDesign name="checkcircle" size={24} color={colors.primary} />    
+            </Text>}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    sentence: {
+        flex: 1, 
+        flexWrap: 'wrap', 
+        flexDirection: 'row', 
+        flexShrink: 1, 
+    },
+    text: {
+        marginBottom: 10, 
+        fontFamily: 'ABeeZee'
+    },
     input: {
         borderBottomWidth: 1,
-        borderColor: '#888',
-        padding: 4,
-        minWidth: 60,
+        paddingHorizontal: 5,
+        width: 80,
         marginHorizontal: 4,
+        borderBottomColor: colors.violet,
+        borderBottomWidth: 2,
+        marginBottom: 10,
+        fontFamily: 'ABeeZee'
     }
 })
 

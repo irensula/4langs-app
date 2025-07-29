@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
 import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
-import MessageBox from '../components/MessageBox';
+import MessageModal from '../components/MessageModal';
 import Sentence from '../components/Sentence';
 import WordGap from '../components/WordGap';
 import Navbar from '../components/Navbar';
@@ -17,14 +17,16 @@ const GapsScreen = ({ navigation, route }) => {
     const [sentences, setSentences] = useState([]);
     const [words, setWords] = useState([]);
     const [shuffledWords, setShuffledWords] = useState([]);
-    const [message, setMessage] = useState('');
-    const [messageType, setMessageType] = useState('success');
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
     const [score, setScore] = useState(0);
     const [correctAnswers, setCorrectAnswers] = useState({});
     const [resetTrigger, setResetTrigger] = useState(0);
     
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [messageType, setMessageType] = useState('success');
+
     useEffect (() => {
         const fetchGapsTask = async () => {
             try {
@@ -94,16 +96,18 @@ const GapsScreen = ({ navigation, route }) => {
         const correctCount = Object.values(correctAnswers).filter(Boolean).length;
         setScore(correctCount);
 
-        setMessage('Good job!');
+        setModalMessage('Good job!');
         setMessageType('win');
+        setModalVisible(true);
 
         setTimeout(() => {
-            setMessage(`You got ${correctCount} out of ${sentences.length} correct.`);
+            setModalMessage(`You got ${correctCount} out of ${sentences.length} correct.`);
             setMessageType(correctCount === sentences.length ? 'win' : 'info');
         }, 3000)
 
         setTimeout(() => {
-            setMessage('');
+            setModalMessage('');
+            setModalVisible(false);
         }, 6000);
 
         handleScore(correctCount);
@@ -117,7 +121,7 @@ const GapsScreen = ({ navigation, route }) => {
         const shuffled = shuffledArray(words);
         setShuffledWords(shuffled);
         setScore(0);
-        setMessage('');
+        setModalMessage('');
         setResetTrigger(prev => prev + 1);
     }
 
@@ -136,47 +140,54 @@ const GapsScreen = ({ navigation, route }) => {
                     <Text style={textStyles.subtitle}>Gaps Task</Text>
                 </View>
 
-                <MessageBox message={message} messageType={messageType} />
-
-                <LanguageTabs 
-                    selectedLanguage={selectedLanguage}
-                    setSelectedLanguage={setSelectedLanguage}
-                    activeLanguage={activeLanguage}
+                <MessageModal
+                    visible={modalVisible} 
+                    message={modalMessage} 
+                    onClose={() => setModalVisible(false)} 
                 />
-                
-                <View>
-                    {shuffledWords.map((word, index) => (
-                        <WordGap 
-                            key={index}
-                            word={word}
-                            selectedLanguage={selectedLanguage}
-                        />
-                    ))}
-                </View>
-                <View>
-                    {sentences.map((sentence, index) => (
-                            <Sentence 
+                <View style={layout.wrapper}>
+                    <LanguageTabs 
+                        selectedLanguage={selectedLanguage}
+                        setSelectedLanguage={setSelectedLanguage}
+                        activeLanguage={activeLanguage}
+                    />
+                    
+                    <View style={styles.wordsContainer}>
+                        {shuffledWords.map((word, index) => (
+                            <WordGap 
                                 key={index}
-                                sentence={sentence}
+                                word={word}
                                 selectedLanguage={selectedLanguage}
-                                API_BASE={API_BASE}
-                                index={index}
-                                markAnswer={markAnswer}
-                                resetTrigger={resetTrigger}
                             />
-                        )
-                    )}
-                </View>
-                
-                <Pressable onPress={handleSendAnswers}>
-                    <Text>Send answers</Text>
-                </Pressable>
+                        ))}
+                    </View>
+                    <View style={styles.row}>
+                        {sentences.map((sentence, index) => (
+                                <Sentence 
+                                    key={index}
+                                    sentence={sentence}
+                                    selectedLanguage={selectedLanguage}
+                                    API_BASE={API_BASE}
+                                    index={index}
+                                    markAnswer={markAnswer}
+                                    resetTrigger={resetTrigger}
+                                />
+                            )
+                        )}
+                    </View>
 
-                <Pressable onPress={resetGame}>
-                    <Text>Restart</Text>
-                </Pressable>
-                
-                <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                    <View style={styles.buttonsWrapper}>
+                        <Pressable style={[layout.buttonInner, {width: 'auto', paddingHorizontal: 18, height: 40 }]} onPress={handleSendAnswers}>
+                            <Text style={textStyles.buttonTextInner}>Lähetä</Text>
+                        </Pressable>
+
+                        <Pressable style={[layout.buttonInner, {width: 'auto', paddingHorizontal: 15, height: 40 }]} onPress={resetGame}>
+                            <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
+                        </Pressable>
+                    
+                        <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                    </View>
+                </View>
 
             </ScrollView>
 
@@ -191,8 +202,19 @@ const GapsScreen = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
+    wordsContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        columnGap: 5
+    },
+    row: {
+        justifyContent: 'center',
+    },
+    buttonsWrapper: {
+        marginTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     }
 })
 

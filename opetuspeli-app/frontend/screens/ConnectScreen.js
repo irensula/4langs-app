@@ -22,6 +22,7 @@ const ConnectScreen = ({ navigation, route }) => {
     const [shuffledWords, setShuffledWords] = useState([]);
     const [shuffledImages, setShuffledImages] = useState([]);
     const [selectedWord, setSelectedWord] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     const [matchedPairs, setMatchedPairs] = useState([]);
     const [hasScored, setHasScored] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -63,40 +64,54 @@ const ConnectScreen = ({ navigation, route }) => {
 
     const handleWordPress = (word) => {
         setSelectedWord(word);
+        if (selectedImage) {
+            const isMatch = selectedImage.image === word.word;
+            processMatch(isMatch, word.word);
+        }
     }
 
     const handleImagePress = (image) => {
-        if (!selectedWord) return;
-        const isMatch = image.image === selectedWord.word;
-        if (isMatch) {
-            setMatchedPairs(prev => [...prev, selectedWord.word]);
-            setSelectedWord(null);
-        } else {
-            setSelectedWord(null);
+        setSelectedImage(image);
+
+        if (selectedWord) {
+            const isMatch = image.image === selectedWord.word;
+            processMatch(isMatch, selectedWord.word);
         }
-        if ((matchedPairs.length + 1) === pairs.length) {
-
-            const maxScore = pairs[0]?.maxScore || 0;
-            setMessage('You did it!');
-            setMessageType('win');
-
-            const timer1 = setTimeout(() => {
-                setMessage(`You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
-                setMessageType('success');
-            }, 2500);
-
-            handleScore();
+    };
+     
+    const processMatch = (isMatch, wordID) => {
+         if (isMatch) {
+            setMatchedPairs((prev) => [...prev, wordID]);
+        } 
             
-            const timer2 = setTimeout (() => {
-                resetGame();
-            }, 5000);
+        setSelectedWord(null);
+        setSelectedImage(null);
 
-            return () => {
-                clearTimeout(timer1);
-                clearTimeout(timer2);
-            };
-         }
+        if ((matchedPairs.length + 1) === pairs.length) {
+            handleWin();
+        }
     }
+       
+    const handleWin = () => {
+        const maxScore = pairs[0]?.maxScore || 0;
+
+        setModalMessage('You did it!');
+        setMessageType('win');
+        setModalVisible(true);
+
+        setTimeout(() => {
+            setModalMessage(
+                `You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`
+            );
+            setMessageType('success');
+        }, 2500);
+
+        handleScore();
+
+        setTimeout(() => {
+            resetGame();
+        }, 5000);
+    };
 
     const handleScore = async () => {
         try {
@@ -162,11 +177,6 @@ const ConnectScreen = ({ navigation, route }) => {
         setMessage('');
     };
 
-    const showMessage = (msg) => {
-        setModalMessage(msg);
-        setModalVisible(true);
-    };
-// showMessage("🎉 You won!");
     return (
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
@@ -190,13 +200,14 @@ const ConnectScreen = ({ navigation, route }) => {
                     activeLanguage={activeLanguage}
                 />
                 
-                <View style={{ flexDirection: 'row', gap: 100 }}>
+                <View style={{ flexDirection: 'row', gap: 10, justifyContent: 'space-around' }}>
                     <View>
                         {shuffledImages.map((image, index) => (
                             <ImageCard
                                 key={index}
                                 image={image}
                                 API_BASE={API_BASE}
+                                selected={selectedImage?.image === image.image}
                                 onPress={() => handleImagePress(image)}
                                 matched={matchedPairs.includes(image.image)}
                             /> 
@@ -209,15 +220,20 @@ const ConnectScreen = ({ navigation, route }) => {
                                 word={word}
                                 selected={selectedWord?.word === word.word}
                                 onPress={() => handleWordPress(word)}
+                                matched={matchedPairs.includes(word.word)}
                             /> 
                         ))}
                     </View>
                 </View>
-                <Pressable onPress={resetGame}>
-                    <Text>Restart</Text>
-                </Pressable>
                 
-            <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                <View style={styles.buttonsWrapper}>
+                    <Pressable style={[layout.buttonInner, {width: 'auto', paddingHorizontal: 20, height: 40 }]} onPress={resetGame}>
+                        <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
+                    </Pressable>
+                
+                    <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                </View>
+                
 
             </ScrollView>
 
@@ -231,8 +247,11 @@ const ConnectScreen = ({ navigation, route }) => {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        padding: 10,
+    buttonsWrapper: {
+        marginTop: 15,
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
     }
 })
 

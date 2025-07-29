@@ -165,8 +165,8 @@ const UserScreen = ({ route, navigation }) => {
                             <Text>Tallenna</Text>
                         </Pressable>
                     ) : (
-                        <Pressable style={styles.button} onPress={() => setEditMode(true)}>
-                            <Text style={styles.buttonText}>Muokkaa</Text>
+                        <Pressable style={layout.buttonInner} onPress={() => setEditMode(true)}>
+                            <Text style={layout.buttonTextInner}>Muokkaa</Text>
                         </Pressable>
                     )}
                     </View>
@@ -221,19 +221,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontSize: 18,
     },
-    button: {
-      width: 120,
-      height: 50,
-      borderRadius: 50,
-      backgroundColor: '#6BBC3B',
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: 10,
-    },
-    buttonText: {
-        color: '#ffffff',
-        fontFamily: 'NunitoBold',
-    }
 })
 
 export default UserScreen;
