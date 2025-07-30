@@ -10,7 +10,7 @@ import { layout, textStyles, spacing, colors } from '../constants/layout';
 const Navbar = ({logout, user, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     return (
-        <View style={layout.navbarContainer}>
+        <View style={styles.navbarContainer}>
             
             <View style={styles.iconWrapper}>
                 <BackButton navigation={navigation} />
@@ -42,7 +42,20 @@ const Navbar = ({logout, user, navigation }) => {
 }
 
 const styles = StyleSheet.create({
-    
+    navbarContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'transparent',
+    },
+    navbarWrapper: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      backgroundColor: 'transparent',
+  },
     iconsWrapper: {
         flexDirection: 'row',
         alignItems: 'center',

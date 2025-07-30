@@ -1,6 +1,6 @@
 const LANG_KEYS = [
-  { key: 'fi', label: 'Suomi' },
   { key: 'en', label: 'English' },
+  { key: 'fi', label: 'Suomi' },
   { key: 'ua', label: 'Українська'},
   { key: 'ru', label: 'Русский' },
 ];

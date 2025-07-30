@@ -84,12 +84,6 @@ export const layout = StyleSheet.create({
       alignItems: 'center',
       padding: 10,
     },
-  navbarWrapper: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-  },
   container: {
       padding: 10,
       flex: 1,
@@ -148,12 +142,6 @@ export const layout = StyleSheet.create({
   row: {
       flexDirection: 'row',
       alignItems: 'center',
-  },
-  navbarContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      padding: 10,
   },
   avatar: {
       width: 35,

@@ -2,7 +2,6 @@ let express = require('express');
 let router = express.Router();
 const config = require('../utils/config');
 const knex = require('knex')(config.DATABASE_OPTIONS);
-const bcrypt = require('bcryptjs');
 
 router.get('/', (req, res, next) => {
     knex('progress')

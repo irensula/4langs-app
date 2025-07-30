@@ -35,13 +35,15 @@ const TextScreen = ({ route, navigation }) => {
     return (
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
+
                 <View style={layout.categoryWrapper}>
                     <Text style={textStyles.title}>
                         {route.params.name}
                     </Text>
                     <Text style={textStyles.subtitle}>Text</Text>
                 </View>
-                <View>
+
+                <View style={layout.wrapper}>
                     
                     <LanguageTabs 
                     selectedLanguage={selectedLanguage}

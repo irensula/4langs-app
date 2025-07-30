@@ -41,19 +41,11 @@ const WordsListScreen = ({ route, navigation }) => {
                     <Text style={textStyles.subtitle}>Vocabulary</Text>
                 </View>
                 
-                {/* tabs */}
-                <View style={styles.tabsWrapper}>
-                    {LANG_KEYS.map(({ key, label }) => (
-                        <View style={styles.tabWrapper}>
-                            <Text key={key} style={styles.text}>{label}</Text>
-                        </View>
+                <View style={layout.wrapper}>
+                    {words.map((word) => (
+                        <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
                     ))}
                 </View>
-                
-                {words.map((word) => (
-                    <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
-                ))}
-                
                 <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
 
             </ScrollView>

@@ -27,11 +27,21 @@ const ProgressScreen = ({ route, navigation }) => {
                 setUserProgress(data);
                 console.log(data);
             } catch (error) {
-                console.error('Error fetching texts:', error);
+                console.error('Error fetching user progress:', error);
             }
         };
         fetchProgress();
     }, [user])
+
+    useEffect = (() => {
+        const fetcTotalMaxScore = async () => {
+            try {
+                
+            } catch (error) {
+                console.error('Error fetching total max score', error);
+            }
+        }
+    }, []);
 
     const totalScores = userProgress.reduce((totals, progress) => {
         return {
@@ -56,12 +66,12 @@ const ProgressScreen = ({ route, navigation }) => {
     const totalMaxScore = totalMaxScorePerExercise * 4;
 
     return (
-        <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+        <View style={[layout.screen, { backgroundColor: colors.primary }]}>
+            <ScrollView style={[layout.scrollContent, { paddingBottom: 0 }]}>
                 
                 <View style={layout.mainContainer}>
                     <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>
-                        <Text style={textStyles.title}>Edistymisesi</Text>
+                        <Text style={[textStyles.title, { color: colors.secondary }]}>Edistymisesi</Text>
 
                         <CircularProgress
                             radius={60}
@@ -106,7 +116,7 @@ const ProgressScreen = ({ route, navigation }) => {
                             fontSize={20}
                             valueSuffix={''}
                             progressFormatter={(value) => `${Math.round(value)}%`}
-                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeColor={colors.secondary}
                             inActiveStrokeOpacity={'0.2'}
                             inActiveStrokeWidth={6}
                             duration={3000}
@@ -124,7 +134,7 @@ const ProgressScreen = ({ route, navigation }) => {
                             fontSize={20}
                             valueSuffix={''}
                             progressFormatter={(value) => `${Math.round(value)}%`}
-                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeColor={colors.secondary}
                             inActiveStrokeOpacity={'0.2'}
                             inActiveStrokeWidth={6}
                             duration={3000} 
@@ -142,7 +152,7 @@ const ProgressScreen = ({ route, navigation }) => {
                             fontSize={20}
                             valueSuffix={''}
                             progressFormatter={(value) => `${Math.round(value)}%`}
-                            inActiveStrokeColor={'#2ecc71'}
+                            inActiveStrokeColor={colors.secondary}
                             inActiveStrokeOpacity={'0.2'}
                             inActiveStrokeWidth={6}
                             duration={3000}   
@@ -161,7 +171,6 @@ const ProgressScreen = ({ route, navigation }) => {
                     <Navbar user={user} logout={logout} navigation={navigation} />
                 </View>
             )}
-
         </View>
     )
 }

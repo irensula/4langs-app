@@ -25,6 +25,7 @@ let sentencesRouter = require('./routes/sentencesRouter');
 let textsRouter = require('./routes/textsRouter');
 let usersRouter = require('./routes/usersRouter');
 let progressRouter = require('./routes/progressRouter');
+let exercisesRouter = require('./routes/exercisesRouter');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -44,5 +45,6 @@ app.use('/sentences', isAuthenticated, sentencesRouter);
 app.use('/texts', isAuthenticated, textsRouter);
 app.use('/users', isAuthenticated, usersRouter);
 app.use('/progress', isAuthenticated, progressRouter);
+app.use('/max-score', isAuthenticated, exercisesRouter);
 
 module.exports = app;
