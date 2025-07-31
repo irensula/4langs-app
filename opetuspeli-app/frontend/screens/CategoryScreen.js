@@ -21,11 +21,11 @@ export default function CategoryScreen({ route, navigation }) {
                     <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID, user, logout })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Text</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID, user, logout })} style={styles.category}>
-                        <Text style={styles.categoryTitle}>MemoGame</Text>
-                    </Pressable>
                     <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID, user, logout })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Connect Task</Text>
+                    </Pressable>
+                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID, user, logout })} style={styles.category}>
+                        <Text style={styles.categoryTitle}>MemoGame</Text>
                     </Pressable>
                     <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID, user, logout })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Gaps Task</Text>
@@ -51,14 +51,14 @@ const styles = StyleSheet.create({
     category: {
         width: '48%',
         padding: 10,
-        backgroundColor: colors.primary,
-        borderWidth: 2,
-        borderRadius: 15,
-        borderColor: colors.secondary,
         alignItems: 'center',
         marginVertical: 10,
         height: 100,
         justifyContent: 'center',
+        backgroundColor: colors.orange, 
+        borderColor: colors.lightorange,
+        borderRadius: 25,
+        borderWidth: 2,
     },
     categoryTitle: {
         color: colors.white,

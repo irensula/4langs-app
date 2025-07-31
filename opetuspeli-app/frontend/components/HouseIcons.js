@@ -1,52 +1,51 @@
-import { Text, View, Pressable } from 'react-native';
+import { Text, View, Pressable, StyleSheet } from 'react-native';
 import Svg, { Rect, Polygon, Path, G } from 'react-native-svg';
 import Entypo from '@expo/vector-icons/Entypo';
+import { layout, colors, textStyles, spacing } from '../constants/layout';
 
 const HouseIcons = ({ categories, onSelect }) => (
   <View>
-  <Svg width="300" height="100" viewBox="0 0 300 100">
-    {/* House 1 */}
+    {/* <Svg width="300" height="100" viewBox="0 0 300 100">
+      
+      {categories[0] && (
+        <>
+          <Polygon points="10,40 30,20 50,40" fill="#FF6347" />
+          <Rect x="15" y="40" width="30" height="30" fill="#FFD700" />
+        </>
+      )}
 
-    {categories[0] && (
-      <>
-        <Polygon points="10,40 30,20 50,40" fill="#FF6347" />
-        <Rect x="15" y="40" width="30" height="30" fill="#FFD700" />
-      </>
-    )}
-
-    {/* House 2 */}
-    {categories[1] && (
-      <>
-        <Rect x="65" y="35" width="40" height="35" fill="#4682B4" />
-        <Rect x="65" y="30" width="40" height="5" fill="#2F4F4F" />
-      </>
-    )}
-    {/* House 3 */}
-    {categories[2] && (
-      <>
-        <Polygon points="120,35 140,20 160,35" fill="#A52A2A" />
-        <Rect x="125" y="35" width="30" height="30" fill="#8FBC8F" />
-      </>
-    )}
-    {/* House 4 */}
-    {categories[3] && (
-      <>
-        <Polygon points="185,40 200,20 215,40" fill="#DA70D6" />
-        <Rect x="190" y="40" width="20" height="40" fill="#FFF8DC" />
-      </>
-    )}
-    {/* House 5 */}
-    {categories[4] && (
-      <>
-        <Path
-          d="M250 40 Q265 20 280 40 L280 70 L250 70 Z"
-          fill="#87CEEB"
-        />
-      </>
-    )}
-  </Svg>
+      {categories[1] && (
+        <>
+          <Rect x="65" y="35" width="40" height="35" fill="#4682B4" />
+          <Rect x="65" y="30" width="40" height="5" fill="#2F4F4F" />
+        </>
+      )}
+      
+      {categories[2] && (
+        <>
+          <Polygon points="120,35 140,20 160,35" fill="#A52A2A" />
+          <Rect x="125" y="35" width="30" height="30" fill="#8FBC8F" />
+        </>
+      )}
+      
+      {categories[3] && (
+        <>
+          <Polygon points="185,40 200,20 215,40" fill="#DA70D6" />
+          <Rect x="190" y="40" width="20" height="40" fill="#FFF8DC" />
+        </>
+      )}
+      
+      {categories[4] && (
+        <>
+          <Path
+            d="M250 40 Q265 20 280 40 L280 70 L250 70 Z"
+            fill="#87CEEB"
+          />
+        </>
+      )}
+    </Svg> */}
     {/* Pressable overlays */}
-    {categories[0] && (
+    {/* {categories[0] && (
       <Pressable
         style={{ position: 'absolute', left: 10, top: 20, width: 40, height: 50 }}
         onPress={() => onSelect(categories[0])}
@@ -112,22 +111,35 @@ const HouseIcons = ({ categories, onSelect }) => (
         color="black"
         style={{ position: 'absolute', left: 245, top: 35 }}
       />
-    )}
-
-  {/* {categories.map((category) => (
-    <Pressable
-      key={category.categoryID}
-      disabled={category.locked}
-      onPress={() => onSelect(category)}
-      style={{ padding: 10, backgroundColor: '#ccc', marginBottom: 5 }}
-    >
-      <Text style={{ opacity: category.locked ? 0.4 : 1 }}>
-        {category.name} {category.locked ? '(Locked)' : ''}
-      </Text>
-    </Pressable>
-  ))} */}
-
+    )} */}
+    <View style={[layout.center, { paddingTop: 15, }]}>
+      {categories.map((category) => (
+        <Pressable
+          key={category.categoryID}
+          disabled={category.locked}
+          onPress={() => onSelect(category)}
+          style={styles.category}
+        >
+          <Text style={[textStyles.subtitle, { opacity: category.locked ? 0.4 : 1 }]}>
+            {category.name} {category.locked ? '(Locked)' : ''}
+          </Text>
+        </Pressable>
+      ))}
+    </View>
   </View>
 );
+
+const styles = StyleSheet.create({
+  category: { 
+    padding: 10, 
+    backgroundColor: colors.violet, 
+    marginBottom: 5,
+    width: '90%',
+    borderColor: colors.lightviolet,
+    borderWidth: 2,
+    borderRadius: 25,
+    alignItems: 'center',
+  }
+})
 
 export default HouseIcons;

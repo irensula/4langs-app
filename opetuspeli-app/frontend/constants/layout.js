@@ -74,7 +74,7 @@ export const layout = StyleSheet.create({
       flex: 1,
   },
   scrollContent: {
-      paddingBottom: 80,
+      paddingBottom: 10,
       backgroundColor: colors.lightgreen,
   },
   mainContainer: {
@@ -138,6 +138,7 @@ export const layout = StyleSheet.create({
   center: {
       justifyContent: 'center',
       alignItems: 'center',
+      flex: 1,
   },
   row: {
       flexDirection: 'row',
