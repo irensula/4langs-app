@@ -19,9 +19,11 @@ npx knex seed:run
 
 BACKEND:
 npm init
-
-    npm install dotenv
-    npm i cors
+npm install dotenv
+npm i cors
+npm install --save-dev nodemon
+$env:NODE_ENV="production"; npx nodemon ./bin/www
+$env:NODE_ENV="development"; npx nodemon ./bin/www
 
 DOCKER
 docker ps
@@ -52,6 +54,16 @@ npm i @expo/vector-icons // for icons
 npm install jwt-decode
 npm install react-native-linear-gradient // for gradient
 npm install react-native-circular-progress
+npm install react-native-dotenv
+
+npx expo install expo@53.0.20 expo-constants@~17.1.7 react-native@0.79.5 // upfrading packages
+
+$env:NODE_ENV="development"; npx expo start
+
+DEPLOYNIG:
+npm install -g eas-cli
+eas login
+eas build:configure
 
 PYTHON
 python -m pip --version

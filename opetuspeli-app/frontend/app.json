@@ -3,7 +3,7 @@
     "name": "opetuspeli-app",
     "slug": "opetuspeli-app",
     "version": "1.0.0",
-    "orientation": "landscape",
+    "orientation": "default",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -18,12 +18,13 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.opetuspeliapp"
+      "package": "com.anonymous.opetuspeliapp",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {},
-    "extra": {
-      "API_BASE": "http://192.168.1.162:3001"
-    },
     "plugins": [
       "expo-font",
       "expo-audio"

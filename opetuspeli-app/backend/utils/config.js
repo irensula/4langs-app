@@ -1,21 +1,30 @@
-require('dotenv').config()
+const dotenv = require('dotenv');
 
-let PORT = process.env.PORT
-let SECRET = process.env.SECRET
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development';
+console.log('Loading env file:', envFile);
+dotenv.config({ path: envFile });
 
-let DATABASE_OPTIONS = {
-    client: process.env.DB_CLIENT,
-    connection: {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME
-    }
-}
+console.log('NODE_ENV:', process.env.NODE_ENV);
+console.log('SECRET:', process.env.SECRET);
+
+const PORT = process.env.PORT;
+const SECRET = process.env.SECRET;
+
+const DATABASE_OPTIONS = {
+  client: process.env.DB_CLIENT,
+  connection: {
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+  },
+};
+
+const knex = require('knex')(DATABASE_OPTIONS);
 
 module.exports = {
   DATABASE_OPTIONS,
   PORT,
-  SECRET
-}
-const knex = require('knex')(DATABASE_OPTIONS);
+  SECRET,
+  knex,
+};
