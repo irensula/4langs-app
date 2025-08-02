@@ -55,7 +55,11 @@ _Kuva 6. Memopeli-näkymä_
 
 _Kuva 7. Aukkotehtävä-näkymä_
 
-• Pelin pääideana on opettaa englantia, suomea ja ukrainaa. Esineet ovat tehtäviä, joita suorittaessaan käyttäjä saa pisteitä.
+![Edistyminen](images/progress.png)
+
+_Kuva 7. Aukkotehtävä-näkymä_
+
+• Pelin pääideana on opettaa englantia, suomea ja ukrainaa. Haluaisin auttaa Ukrainasta tulleita lapsia oppimaan kieliä: suomea, englantia ja myös ukrainaa. Minulle tällainen lomake voi olla hyödyllinen tässä tarkoituksessa. Esineet ovat tehtäviä, joita suorittaessaan käyttäjä saa pisteitä.
 
 ### Itsearvio - hyvä 3
 
