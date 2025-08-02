@@ -15,12 +15,12 @@ kaavion avulla.
 
 ```mermaid
 pie title Использование времени
-    "Планирование" : 10
-    "Разработка структуры" : 15
-    "Реализация функций" : 50
-    "Тестирование" : 20
-    "Исправление ошибок" : 15
-    "Подготовка отчёта" : 5
+    "Suunnittelu" : 10
+    "Rakenteen kehitys" : 15
+    "Toimintojen toteutus" : 50
+    "Testaus" : 20
+    "Virheenkorjaukset" : 15
+    "Raportin laatiminen" : 5
 
 
 Общие сведения
