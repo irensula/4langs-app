@@ -23,33 +23,41 @@ pie title Ajankäyttö
     "Raportin laatiminen" : 3.4
 ```
 
-# Käyttöliittymä
+### Käyttöliittymä
 
 • Kuvaruutukaappaukset tärkeimmistä näkymistä:
+
 ![Kategoriat](images/categories.png)
+
 _Kuva 1. Kategoriat-näkymä_
 
 ![Tehtävät](images/tasks.png)
+
 _Kuva 2. Tehtävät-näkymä_
 
 ![Sanasto](images/wordslist.png)
+
 _Kuva 3. Sanasto-näkymä_
 
 ![Teksti](images/text.png)
+
 _Kuva 4. Teksti-näkymä_
 
 ![Yhdistätehtävä](images/connecttask.png)
+
 _Kuva 5. Yhdistätehtävä-näkymä_
 
 ![Memopeli](images/memogame.png)
+
 _Kuva 6. Memopeli-näkymä_
 
 ![Aukkotehtävä](images/gapstask.png)
+
 _Kuva 7. Aukkotehtävä-näkymä_
 
 • Pelin pääideana on opettaa englantia, suomea ja ukrainaa. Esineet ovat tehtäviä, joita suorittaessaan käyttäjä saa pisteitä.
 
-# Itsearvio - hyvä 3
+### Itsearvio - hyvä 3
 
 • toteutin työkokonaisuuden itsenäisesti
 • toimin yhteistyökykyisesti ja aloitteellisesti vuorovaikutustilanteissa
@@ -57,4 +65,4 @@ _Kuva 7. Aukkotehtävä-näkymä_
 • hyödynnän työssä tarvittavaa tietoa monipuolisesti
 • arvioin suoriutumistani realistisesti
 
-React Native:n osa oli aika hyvä, svg-componentit (käytin Inkscape ohjelmaa) - minun pitäisi opetella paremmin SVG-kuvien tekemistä; tämä osuus ei vielä onnistunut..
+React Native:n osa oli aika hyvä, svg-componentit (käytin Inkscape ohjelmaa) - minun pitäisi opetella paremmin SVG-kuvien tekemistä; tämä osuus ei vielä onnistunut.
