@@ -26,25 +26,25 @@ pie title Ajankäyttö
 # Käyttöliittymä
 
 • Kuvaruutukaappaukset tärkeimmistä näkymistä:
-![Kategoriat](/images/categories.png)
+![Kategoriat](images/categories.png)
 _Kuva 1. Kategoriat-näkymä_
 
-![Tehtävät](/images/tasks.png)
+![Tehtävät](images/tasks.png)
 _Kuva 2. Tehtävät-näkymä_
 
-![Sanasto](/images/wordslist.png)
+![Sanasto](images/wordslist.png)
 _Kuva 3. Sanasto-näkymä_
 
-![Teksti](/images/text.png)
+![Teksti](images/text.png)
 _Kuva 4. Teksti-näkymä_
 
-![Yhdistätehtävä](/images/connecttask.png)
+![Yhdistätehtävä](images/connecttask.png)
 _Kuva 5. Yhdistätehtävä-näkymä_
 
-![Memopeli](/images/memogame.png)
+![Memopeli](images/memogame.png)
 _Kuva 6. Memopeli-näkymä_
 
-![Aukkotehtävä](/images/gapstask.png)
+![Aukkotehtävä](images/gapstask.png)
 _Kuva 7. Aukkotehtävä-näkymä_
 
 • Pelin pääideana on opettaa englantia, suomea ja ukrainaa. Esineet ovat tehtäviä, joita suorittaessaan käyttäjä saa pisteitä.
