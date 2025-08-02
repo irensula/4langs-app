@@ -14,14 +14,14 @@ Opin React Nativen (expo framework) aika hyvin. Minun pitäisi paremmin opetella
 kaavion avulla.
 
 ```mermaid
-pie title Использование времени
+pie title Ajankäyttö
     "Suunnittelu" : 10
     "Rakenteen kehitys" : 15
     "Toimintojen toteutus" : 50
     "Testaus" : 20
     "Virheenkorjaukset" : 15
     "Raportin laatiminen" : 5
-
+```
 
 Общие сведения
 • Опишите тему вашего проекта и ваши достижения.
@@ -63,4 +63,3 @@ https://eperusteet.opintopolku.fi/#/fi/ammatillinen/6779583/tutkinnonosat/681683
 критерии оценки для раздела «Реализация программного обеспечения с помощью библиотеки компонентов» можно найти здесь:
 https://epursteet.opintopolku.fi/#/fi/ammatillinen/6779583/tuuksinonosat/6816830
 • Насколько вы считаете, что достигли успеха? Как бы вы оценили себя на основе этих критериев?
-```
