@@ -11,7 +11,9 @@ const HomeScreen = ({ route, navigation }) => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
-    const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    // const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const API_BASE = Constants.expoConfig.extra.API_BASE;
+    console.log("API_BASE =", API_BASE);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
     
