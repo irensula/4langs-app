@@ -16,6 +16,7 @@ npx knex migrate:rollback
 npx knex seed:make 01_user_images
 npm install bcryptjs --save
 npx knex seed:run
+npm install dotenv
 
 BACKEND:
 npm init
@@ -65,6 +66,7 @@ DEPLOYNIG:
 npm install -g eas-cli
 eas login
 eas build:configure
+eas build --platform android
 
 PYTHON
 python -m pip --version
