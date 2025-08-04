@@ -78,4 +78,3 @@ python word_sond.py
 "remove word from my list"
 "practice my saved words"
 "track progress for my words"
-// "API_BASE": "http://172.20.10.2:3001"-->

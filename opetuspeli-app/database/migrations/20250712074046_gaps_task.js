@@ -17,10 +17,10 @@ exports.up = function(knex) {
           .references('sentenceID')
           .inTable('sentences')
           .onDelete('CASCADE');
-        t.text('answer_ru').notNullable()
         t.text('answer_en').notNullable()
         t.text('answer_fi').notNullable()
         t.text('answer_ua').notNullable()
+        t.text('answer_ru').notNullable()
         t.integer('maxScore').notNullable().defaultTo(1);
     }) 
 };

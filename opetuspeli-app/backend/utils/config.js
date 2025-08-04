@@ -5,7 +5,6 @@ console.log('Loading env file:', envFile);
 dotenv.config({ path: envFile });
 
 console.log('NODE_ENV:', process.env.NODE_ENV);
-console.log('SECRET:', process.env.SECRET);
 
 const PORT = process.env.PORT;
 const SECRET = process.env.SECRET;

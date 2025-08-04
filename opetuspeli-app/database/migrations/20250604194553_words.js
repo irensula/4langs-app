@@ -11,10 +11,10 @@ exports.up = function(knex) {
                     .references('categoryID')
                     .inTable('categories')
                     .onDelete('SET NULL');
-                t.string('value_ru', 255).notNullable()
                 t.string('value_en', 255).notNullable()
                 t.string('value_fi', 255).notNullable()
                 t.string('value_ua', 255).notNullable()
+                t.string('value_ru', 255).notNullable()
                 t.string('part_of_speech', 255).notNullable()
         })
 };

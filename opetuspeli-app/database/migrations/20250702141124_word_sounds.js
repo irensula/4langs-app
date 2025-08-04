@@ -7,10 +7,10 @@ exports.up = function(knex) {
         t.increments('soundID').primary();
         t.integer('wordID').unsigned().references('wordID').inTable('words').onDelete('CASCADE');
         t.integer('categoryID').unsigned().references('categoryID').inTable('categories').onDelete('CASCADE');
-        t.string('sound_ru');
         t.string('sound_en');
         t.string('sound_fi');
         t.string('sound_ua');
+        t.string('sound_ru');
         t.timestamps(true, true);
 });
 };

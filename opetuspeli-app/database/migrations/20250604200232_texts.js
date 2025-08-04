@@ -12,10 +12,10 @@ exports.up = function(knex) {
                     .references('categoryID')
                     .inTable('categories')
                     .onDelete('SET NULL');
-                t.text('text_ru').notNullable()
                 t.text('text_en').notNullable()
                 t.text('text_fi').notNullable()
                 t.text('text_ua').notNullable()
+                t.text('text_ru').notNullable()
                 t.string('text_image').notNullable()
         })
 };
