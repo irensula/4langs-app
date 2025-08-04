@@ -50,7 +50,8 @@ const ConnectScreen = ({ navigation, route }) => {
     useEffect (() => {
         const words = pairs.map(pair => ({
             word: pair.wordID,
-            value: pair[`value_${selectedLanguage}`]
+            value: pair[`value_${selectedLanguage}`],
+            [`sound_${selectedLanguage}`]: pair[`sound_${selectedLanguage}`]
         }))
 
         const images = pairs.map(pair => ({
@@ -95,16 +96,9 @@ const ConnectScreen = ({ navigation, route }) => {
     const handleWin = () => {
         const maxScore = pairs[0]?.maxScore || 0;
 
-        setModalMessage('You did it!');
+        setModalMessage(`You did it!\nYou've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`);
         setMessageType('win');
         setModalVisible(true);
-
-        setTimeout(() => {
-            setModalMessage(
-                `You've got ${maxScore} stars for ${selectedLanguage.toUpperCase()}.`
-            );
-            setMessageType('success');
-        }, 2500);
 
         handleScore();
 
@@ -174,7 +168,6 @@ const ConnectScreen = ({ navigation, route }) => {
         setSelectedWord(null);
         setActiveLanguage(false);
         setHasScored(false);
-        setMessage('');
     };
 
     return (
@@ -221,6 +214,8 @@ const ConnectScreen = ({ navigation, route }) => {
                                 selected={selectedWord?.word === word.word}
                                 onPress={() => handleWordPress(word)}
                                 matched={matchedPairs.includes(word.word)}
+                                API_BASE={API_BASE}
+                                selectedLanguage={selectedLanguage}
                             /> 
                         ))}
                     </View>

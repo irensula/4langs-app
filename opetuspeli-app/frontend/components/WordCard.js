@@ -1,10 +1,20 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { colors } from '../constants/layout';
+import { playSound } from '../utils/soundUtils';
 
-const WordCard = ({ word, selected, onPress, matched }) => {
-    console.log(styles.wordCard);
+
+const WordCard = ({ word, selected, onPress, matched, API_BASE, selectedLanguage }) => {
+    
+    const soundFile = word[`sound_${selectedLanguage}`];
+
+    const handlePress = () => {
+        onPress(word);
+        playSound(soundFile, API_BASE);
+        console.log('soundFile', soundFile);
+    };
+        
     return (
-            <Pressable onPress={onPress} style={({ pressed }) => [
+            <Pressable onPress={handlePress} style={({ pressed }) => [
                 { opacity: pressed ? 0.7 : 1 },
                 { opacity: matched ? 0.3 : 1 },
             ]}>

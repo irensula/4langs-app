@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { playSound } from '../utils/soundUtils';
 import { layout, colors, spacing, textStyles } from '../constants/layout';
 
 const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, selectedLanguage }) => {
@@ -18,28 +17,13 @@ const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, se
         ua: memoCards.sound_ua,
         ru: memoCards.sound_ru
     };
-    const [currentSound, setCurrentSound] = useState(null);
-    const playSound = async (file) => {
-        if (!file) return;
-        try {
-            if (currentSound) {
-                await currentSound.unloadAsync();
-            }
-            const { sound } = await Audio.Sound.createAsync(
-                {uri: `${API_BASE}${file}`}
-            );
-            setCurrentSound(sound);
-            await sound.playAsync();
-        } catch (err) {
-            console.error('Sound play error:', err);
-        }
-    };
+    
     const displayedWord = wordMap[selectedLanguage];
     const soundFile = soundMap[selectedLanguage];  
 
     useEffect(() => {
         if (isOpened && !isMatched) {
-            playSound(soundFile);
+            playSound(soundFile, API_BASE);
         }
     }, [isOpened]);
 

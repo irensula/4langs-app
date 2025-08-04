@@ -161,13 +161,18 @@ router.get('/:id/connect_task', (req, res, next) => {
     knex('connect_task')
         .join('words', 'words.wordID', 'connect_task.wordID')
         .join('word_images', 'word_images.imageID', 'connect_task.imageID')
+        .join('word_sounds', 'words.wordID', 'word_sounds.wordID')
         .where('words.categoryID', categoryID)
         .select('connect_task.*',
             'words.value_ru',
             'words.value_fi',
             'words.value_en',
             'words.value_ua',
-            'word_images.word_url'
+            'word_images.word_url',
+            'word_sounds.sound_en',
+            'word_sounds.sound_fi',
+            'word_sounds.sound_ua',
+            'word_sounds.sound_ru'
         )
         .then((rows) => {
             res.json(rows);

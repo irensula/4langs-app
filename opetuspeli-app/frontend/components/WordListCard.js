@@ -1,28 +1,10 @@
-import { useState } from 'react';
 import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
-import { Audio } from 'expo-av';
+import { playSound } from '../utils/soundUtils';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import LANG_KEYS from '../constants/langKeys';
 import { layout, colors } from '../constants/layout';
 
 const WordListCard = ({ word, API_BASE }) => {
-    const [currentSound, setCurrentSound] = useState(null);
-
-    const playSound = async (file) => {
-        if (!file) return;
-        try {
-            if (currentSound) {
-                await currentSound.unloadAsync();
-            }
-            const { sound } = await Audio.Sound.createAsync(
-                {uri: `${API_BASE}${file}`}
-            );
-            setCurrentSound(sound);
-            await sound.playAsync();
-        } catch (err) {
-            console.error('Sound play error:', err);
-        }
-    };
 
     return (        
         <View style={styles.rowWrapper}>
@@ -43,7 +25,10 @@ const WordListCard = ({ word, API_BASE }) => {
                         <View key={key} style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 3, marginLeft: 15 }}>
                             <Text style={{ flex: 1, padding: 5 }}>{value}</Text>
                             {soundFile && (
-                                <Pressable onPress={() => playSound(soundFile)} style={{ flex: 1, alignItems: 'center' }}>
+                                <Pressable 
+                                    onPress={() => playSound(soundFile, API_BASE)} 
+                                    style={{ flex: 1, alignItems: 'center' }}
+                                >
                                     <AntDesign name="playcircleo" size={24} color={colors.darkorange} />
                                 </Pressable>
                             )}
