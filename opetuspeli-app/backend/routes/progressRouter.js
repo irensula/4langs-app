@@ -115,5 +115,23 @@ router.put('/:id', async (req, res) => {
         res.status(500).json({ error: 'Database update error' });
   }
 });
+
+router.get('/:id/:categoryID', (req, res, next) => {
+    const userId = req.params.id;
+    const categoryID = req.params.categoryID;;
+    knex('progress')
+        .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
+        .select('progress.*',
+            'exercises.categoryID',
+            'exercises.maxScore')
+        .where({ userID: userId, categoryID })
+        .then((rows) => {
+            res.json(rows);
+        })
+        .catch((err) => {
+            console.error("Error fetching users' progress:", err.message);
+            res.status(500).json({ error: "Failed to fetch users' progress" })
+    })
+})
     
 module.exports = router;

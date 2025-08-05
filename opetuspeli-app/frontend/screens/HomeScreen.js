@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { ScrollView, View, Text } from "react-native"; 
 import { layout, colors, spacing, textStyles } from '../constants/layout';
 import Navbar from "../components/Navbar";
-import MessageBox from '../components/MessageBox';
+import MessageModal from '../components/MessageModal';
 import HouseIcons from '../components/HouseIcons';
 
 const HomeScreen = ({ route, navigation }) => {
@@ -13,7 +13,8 @@ const HomeScreen = ({ route, navigation }) => {
     const [categories, setCategories] = useState([]);
     // const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const API_BASE = Constants.expoConfig.extra.API_BASE;
-    console.log("API_BASE =", API_BASE);
+    const [unlocked, setUnlocked] = useState(false);
+    const [progress, setProgress] = useState(0);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
     
@@ -69,11 +70,32 @@ const HomeScreen = ({ route, navigation }) => {
         });
     };
 
+    useEffect (() => {
+        const fetchProgress = async () => {
+            const token = await AsyncStorage.getItem('token');
+            if (!token) return;
+            
+            fetch(`${API_BASE}/progress`, {
+                headers: { 'Authorization': `Bearer ${token}` }
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                setProgress(Number(data));
+            })
+            .catch((err) => console.error('Fetch error:', err));
+        }
+        fetchProgress();
+    }, [user]);
+
+    useEffect (() => {
+        console.log('Fetch progress', progress);
+    }, []);
+
     return (
         <View style={layout.screen}>
             <ScrollView contentContainerStyle={layout.scrollContent}>
 
-                <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory}/>
+                <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory} unlocked={unlocked} />
             
             </ScrollView>
             

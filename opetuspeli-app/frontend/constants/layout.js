@@ -127,7 +127,7 @@ export const layout = StyleSheet.create({
       marginVertical: 15,
   },
   input : {
-      height: 30,
+      height: 50,
       lineHeight: 30,
       borderColor: colors.secondary,
       borderWidth: 2,
