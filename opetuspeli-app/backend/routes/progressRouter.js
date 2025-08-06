@@ -116,22 +116,54 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.get('/:id/:categoryID', (req, res, next) => {
+router.get('/:id/:categoryID', async (req, res, next) => {
     const userId = req.params.id;
-    const categoryID = req.params.categoryID;;
-    knex('progress')
-        .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
-        .select('progress.*',
-            'exercises.categoryID',
-            'exercises.maxScore')
-        .where({ userID: userId, categoryID })
-        .then((rows) => {
-            res.json(rows);
+    const categoryID = req.params.categoryID;
+    
+    try {
+        const rows = await knex('progress')
+            .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
+            .sum({ 
+                    totalMaxScore: 'maxScore', 
+                    totalScoreEn: 'score_en',
+                    totalScoreFi: 'score_fi',
+                    totalScoreUa: 'score_ua',
+                    totalScoreRu: 'score_ru'
+                })
+            .where({ userID: userId, categoryID });
+
+        const totals = rows[0] || {};
+        
+        const totalMaxScore = Number(totals.totalMaxScore) || 0;
+        const totalScoreEn = Number(totals.totalScoreEn) || 0;
+        const totalScoreFi = Number(totals.totalScoreFi) || 0;
+        const totalScoreUa = Number(totals.totalScoreUa) || 0;
+        const totalScoreRu = Number(totals.totalScoreRu) || 0;
+
+        const totalMaxScoreAllLanguages = totalMaxScore * 4;
+        const totalProgressAllLanguages = totalScoreEn + totalScoreFi + totalScoreUa + totalScoreRu;
+        const totalCategoryProgress = totalMaxScoreAllLanguages > 0 
+            ? Math.round((totalProgressAllLanguages / totalMaxScoreAllLanguages) * 100 )
+            : 0;
+
+        let unlockNext = false;
+        if (totalCategoryProgress >= 80) {
+            unlockNext = true;
+        }
+        res.json({
+            totalMaxScore,
+            totalScoreEn,
+            totalScoreFi,
+            totalScoreUa,
+            totalScoreRu,
+            totalMaxScoreAllLanguages,
+            totalProgressAllLanguages,
+            unlockNext
         })
-        .catch((err) => {
+    } catch (err) {
             console.error("Error fetching users' progress:", err.message);
-            res.status(500).json({ error: "Failed to fetch users' progress" })
-    })
+            res.status(500).json({ error: "Failed to fetch users' progress in current category" })
+    }
 })
     
 module.exports = router;
