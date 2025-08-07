@@ -7,9 +7,10 @@ import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import LanguageTabs from '../components/LanguageTabs';
 import { layout, textStyles, colors, spacing } from '../constants/layout';
+import CategoryTitle from '../components/CategoryTitle';
 
 const TextScreen = ({ route, navigation }) => {
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;
     const [texts, setTexts] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
@@ -36,12 +37,12 @@ const TextScreen = ({ route, navigation }) => {
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
 
-                <View style={layout.categoryWrapper}>
-                    <Text style={textStyles.title}>
-                        {route.params.name}
-                    </Text>
-                    <Text style={textStyles.subtitle}>Text</Text>
-                </View>
+                <CategoryTitle 
+                    user={user}
+                    categoryID={categoryID} 
+                    name={name} 
+                    subtitle="Teksti"
+                />
 
                 <View style={layout.wrapper}>
                     
@@ -60,12 +61,12 @@ const TextScreen = ({ route, navigation }) => {
                         />)
                     )}
                 </View>
-                <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} />
             </ScrollView>
 
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar user={user} logout={logout} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} />
                 </View>
             )}
 

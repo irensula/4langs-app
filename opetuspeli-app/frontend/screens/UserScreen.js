@@ -7,6 +7,7 @@ import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 import { ScrollView } from 'react-native-web';
+import Entypo from '@expo/vector-icons/Entypo';
 
 const UserScreen = ({ route, navigation }) => {
     const { user: initialUser } = route.params;
@@ -172,12 +173,15 @@ const UserScreen = ({ route, navigation }) => {
                         )}
                         </View>
                     </View>
+                    <Pressable onPress={logout}>
+                        <Entypo name="log-out" size={31} color={colors.secondary} />
+                    </Pressable>
                 </View>
             </ScrollView>
             <View style={{ backgroundColor: 'transparent' }}>
                 {user && (
                     <View style={layout.navbarWrapper}>
-                        <Navbar user={user} logout={logout} navigation={navigation} />
+                        <Navbar user={user} navigation={navigation} />
                     </View>
                 )}
             </View>

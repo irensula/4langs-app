@@ -56,6 +56,7 @@ npm install jwt-decode
 npm install react-native-linear-gradient // for gradient
 npm install react-native-circular-progress
 npm install react-native-dotenv
+npm install react-native-safe-area-context
 
 npx expo install expo@53.0.20 expo-constants@~17.1.7 react-native@0.79.5 // upfrading packages
 

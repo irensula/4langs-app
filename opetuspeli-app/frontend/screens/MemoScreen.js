@@ -10,9 +10,10 @@ import MessageModal from '../components/MessageModal';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import { layout, textStyles, colors, spacing } from '../constants/layout';
+import CategoryTitle from '../components/CategoryTitle';
 
 const MemoScreen = ({ route, navigation }) => {
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const [originalCards, setOriginalCards] = useState([]);
     const [memoCards, setMemoCards] = useState([]);
@@ -195,12 +196,12 @@ useEffect(() => {
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
 
-                <View style={layout.categoryWrapper}>
-                    <Text style={textStyles.title}>
-                        {route.params.name}
-                    </Text>
-                    <Text style={textStyles.subtitle}>Memo Game</Text>
-                </View>
+                <CategoryTitle 
+                    user={user}
+                    categoryID={categoryID} 
+                    name={name} 
+                    subtitle="Memopeli"
+                />
                 
                 <LanguageTabs 
                     selectedLanguage={selectedLanguage}
@@ -243,14 +244,14 @@ useEffect(() => {
                         <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
                     </Pressable>
                 
-                    <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                    <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} />
                 </View>
 
             </ScrollView>
 
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar user={user} logout={logout} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} />
                 </View>
             )}
 

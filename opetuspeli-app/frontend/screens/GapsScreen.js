@@ -10,10 +10,11 @@ import WordGap from '../components/WordGap';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import { layout, colors, spacing, textStyles } from '../constants/layout';
+import CategoryTitle from '../components/CategoryTitle';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;
     const [sentences, setSentences] = useState([]);
     const [words, setWords] = useState([]);
     const [shuffledWords, setShuffledWords] = useState([]);
@@ -133,12 +134,12 @@ const GapsScreen = ({ navigation, route }) => {
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
                 
-                <View style={layout.categoryWrapper}>
-                    <Text style={textStyles.title}>
-                        {route.params.name}
-                    </Text>
-                    <Text style={textStyles.subtitle}>Gaps Task</Text>
-                </View>
+                <CategoryTitle 
+                    user={user}
+                    categoryID={categoryID} 
+                    name={name} 
+                    subtitle="Aukkotehtävä"
+                />
 
                 <MessageModal
                     visible={modalVisible} 
@@ -185,7 +186,7 @@ const GapsScreen = ({ navigation, route }) => {
                             <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
                         </Pressable>
                     
-                        <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                        <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} />
                     </View>
                 </View>
 
@@ -193,7 +194,7 @@ const GapsScreen = ({ navigation, route }) => {
 
             <View style={layout.navbarWrapper}>
                 {user && (
-                    <Navbar user={user} logout={logout} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} />
                 )}
             </View>
 

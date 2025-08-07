@@ -1,40 +1,41 @@
 import { ScrollView, Text, View, Pressable, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import { layout, colors, textStyles, spacing } from '../constants/layout';
+import CategoryTitle from '../components/CategoryTitle';
 
 export default function CategoryScreen({ route, navigation }) {
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;   
     
     return (
         <View style={layout.screen}>
             <ScrollView contentContainerStyle={layout.scrollContent}>
-                <View style={layout.categoryWrapper}>
-                    <Text style={textStyles.title}>
-                        {route.params.name}
-                    </Text>
-                </View>
+                <CategoryTitle 
+                    user={user}
+                    categoryID={categoryID} 
+                    name={name} 
+                />
                 
                 <View style={styles.categoriesWrap}>
-                    <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID, user, logout })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID, user })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Words list</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID, user, logout })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID, user })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Text</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID, user, logout })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID, user })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Connect Task</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID, user, logout })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID, user })} style={styles.category}>
                         <Text style={styles.categoryTitle}>MemoGame</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID, user, logout })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID, user })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Gaps Task</Text>
                     </Pressable>
                 </View>
             </ScrollView>
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar user={user} logout={logout} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} />
                 </View>
             )}
         </View>
@@ -63,5 +64,6 @@ const styles = StyleSheet.create({
     categoryTitle: {
         color: colors.white,
         fontFamily: 'ABeeZee',
-    }
+        fontSize: 16,
+    },
 })

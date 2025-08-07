@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import StartScreen from './screens/StartScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -14,6 +15,7 @@ import MemoScreen from "./screens/MemoScreen";
 import ProgressScreen from "./screens/ProgressScreen";
 import ConnectScreen from "./screens/ConnectScreen";
 import GapsScreen from "./screens/GapsScreen";
+import { colors } from "./constants/layout";
 
 const Stack = createNativeStackNavigator();
 
@@ -52,7 +54,9 @@ function AppContent() {
 
 export default function App() {
   return (
-    <AppContent />
+    <SafeAreaProvider style={{ flex: 1, backgroundColor: colors.primary }}>
+      <AppContent />
+    </SafeAreaProvider>
   );
 }
 

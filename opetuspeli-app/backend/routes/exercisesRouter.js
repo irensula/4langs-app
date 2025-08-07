@@ -15,4 +15,19 @@ router.get('/', (req, res, next) => {
         });
 })
 
+router.get('/:categoryID', (req, res, next) => {
+    const categoryID = req.params.categoryID;
+
+    knex('exercises')
+        .sum({ categoryMaxScore: 'maxScore' })
+        .where('categoryID', categoryID)
+        .then((rows) => {
+            res.json({ totalMaxScore: rows[0].categoryMaxScore || 0 });
+        })
+        .catch(err => {
+            console.error('Error fetching total max score:', err);
+            res.status(500).json({ error: 'Server error' });
+        });
+})
+
 module.exports = router;

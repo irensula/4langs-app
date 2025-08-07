@@ -11,10 +11,7 @@ const HomeScreen = ({ route, navigation }) => {
     const [token, setToken] = useState('');
     const [user, setUser] = useState(null);
     const [categories, setCategories] = useState([]);
-    // const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const API_BASE = Constants.expoConfig.extra.API_BASE;
-    const [unlocked, setUnlocked] = useState(false);
-    const [progress, setProgress] = useState(0);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
     
@@ -22,8 +19,10 @@ const HomeScreen = ({ route, navigation }) => {
         const fetchToken = async () => {
             const savedToken = await AsyncStorage.getItem('token');
             const savedUser = await AsyncStorage.getItem('user');
+            
             if (savedToken) setToken(savedToken);
             if (savedUser) setUser(JSON.parse(savedUser));
+            console.log('User', savedUser);
         };
         fetchToken();
     }, []);
@@ -65,43 +64,25 @@ const HomeScreen = ({ route, navigation }) => {
         navigation.navigate('Category', { 
             name: category.name,
             categoryID: category.categoryID,
-            user,
-            logout
+            user
         });
     };
-
-    useEffect (() => {
-        const fetchProgress = async () => {
-            const token = await AsyncStorage.getItem('token');
-            if (!token) return;
-            
-            fetch(`${API_BASE}/progress`, {
-                headers: { 'Authorization': `Bearer ${token}` }
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                setProgress(Number(data));
-            })
-            .catch((err) => console.error('Fetch error:', err));
-        }
-        fetchProgress();
-    }, [user]);
-
-    useEffect (() => {
-        console.log('Fetch progress', progress);
-    }, []);
 
     return (
         <View style={layout.screen}>
             <ScrollView contentContainerStyle={layout.scrollContent}>
 
-                <HouseIcons user={user} categories={categories} onSelect={handleSelectCategory} unlocked={unlocked} />
+                <HouseIcons 
+                    user={user} 
+                    categories={categories} 
+                    onSelect={handleSelectCategory} 
+                />
             
             </ScrollView>
             
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar logout={logout} user={user} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} logout={logout} />
                 </View>
             )}
             

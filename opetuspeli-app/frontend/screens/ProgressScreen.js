@@ -11,7 +11,7 @@ const ProgressScreen = ({ route, navigation }) => {
     const [userProgress, setUserProgress] = useState([]);
     const [value, setValue] = useState(0);
     const [totalMaxScore, setTotalMaxScore] = useState(0);
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;
     
     useEffect(() => {
         const fetchProgress = async () => {
@@ -177,7 +177,7 @@ const ProgressScreen = ({ route, navigation }) => {
 
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar user={user} logout={logout} navigation={navigation} />
+                    <Navbar user={user} navigation={navigation} />
                 </View>
             )}
         </View>

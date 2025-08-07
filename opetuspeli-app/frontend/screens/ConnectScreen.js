@@ -10,12 +10,13 @@ import LanguageTabs from '../components/LanguageTabs';
 import MessageModal from '../components/MessageModal';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
+import CategoryTitle from '../components/CategoryTitle';
 import { layout, textStyles } from '../constants/layout';
 
 const ConnectScreen = ({ navigation, route }) => {
 
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { name, categoryID, user, logout } = route.params;
+    const { name, categoryID, user } = route.params;
     const [pairs, setPairs] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
@@ -173,13 +174,12 @@ const ConnectScreen = ({ navigation, route }) => {
     return (
         <View style={layout.screen}>
             <ScrollView style={layout.scrollContent}>
-
-                <View style={layout.categoryWrapper}>
-                    <Text style={textStyles.title}>
-                        {route.params.name}
-                    </Text>
-                    <Text style={textStyles.subtitle}>Connect Task</Text>
-                </View>
+                <CategoryTitle 
+                    user={user}
+                    categoryID={categoryID} 
+                    name={name} 
+                    subtitle="Yhdistä"
+                />
 
                 <MessageModal
                     visible={modalVisible} 
@@ -226,7 +226,7 @@ const ConnectScreen = ({ navigation, route }) => {
                         <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
                     </Pressable>
                 
-                    <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} logout={logout} />
+                    <NextArrow screen={'MemoScreen'} name={name} categoryID={categoryID} user={user} />
                 </View>
                 
 
@@ -234,7 +234,7 @@ const ConnectScreen = ({ navigation, route }) => {
 
         {user && (
             <View style={layout.navbarWrapper}>
-                <Navbar user={user} logout={logout} navigation={navigation} />
+                <Navbar user={user} navigation={navigation} />
             </View>
         )}
         </View>

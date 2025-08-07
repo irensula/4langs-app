@@ -7,6 +7,7 @@ export const colors = {
     blue: '#A8F4FF',
     orange: '#FFB425',
     darkorange: '#FFB425',
+    yellow: '#FFE662',
     lightorange: '#FFCA66',
     violet: '#BF8FFD',
     lightviolet: '#d8bbfe',
@@ -158,12 +159,6 @@ export const layout = StyleSheet.create({
       borderWidth: 2,
       borderColor: colors.secondary,
       borderRadius: 15,
-  },
-  categoryWrapper: {
-      backgroundColor: colors.primary,
-      borderBottomWidth: 2,
-      borderColor: colors.secondary,
-      paddingTop: 15,
   },
   buttonInner: {
       width: 120,

@@ -1,13 +1,12 @@
 import Constants from 'expo-constants';
 import { View, Image, Text, Pressable, StyleSheet } from "react-native";
 // icons
-import Entypo from '@expo/vector-icons/Entypo';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import BackButton from './BackButton';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 
-const Navbar = ({logout, user, navigation }) => {
+const Navbar = ({ user, navigation, logout }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     return (
         <View style={styles.navbarContainer}>
@@ -20,16 +19,12 @@ const Navbar = ({logout, user, navigation }) => {
                 <Pressable onPress={() => navigation.navigate('Home')}>
                     <Fontisto name="home" size={29} color={colors.secondary} />
                 </Pressable>
-
-                <Pressable onPress={logout}>
-                    <Entypo name="log-out" size={31} color={colors.secondary} />
-                </Pressable>
                 
                 <Pressable onPress={() => navigation.navigate('ProgressScreen', { user })}>
                     <AntDesign name="star" size={32} color={colors.secondary} />
                 </Pressable>
 
-                <Pressable onPress={() => navigation.navigate('UserScreen', { user })}>
+                <Pressable onPress={() => navigation.navigate('UserScreen', { user, logout })}>
                     <Image
                         source={{ uri: `${API_BASE}${user?.url}` }}
                         style={layout.avatar}
