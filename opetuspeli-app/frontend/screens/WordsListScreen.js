@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
-import {View, Text, Pressable, Image, ScrollView, StyleSheet} from 'react-native';
+import {View, ScrollView, StyleSheet} from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordListCard from '../components/WordListCard';
-import LANG_KEYS from '../constants/langKeys';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import { layout, textStyles, colors, spacing } from '../constants/layout';
@@ -33,7 +32,7 @@ const WordsListScreen = ({ route, navigation }) => {
 
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+            <ScrollView style={layout.scrollContent} contentContainerStyle={{ paddingBottom: 100 }}>
                 
                 <CategoryTitle 
                     user={user}

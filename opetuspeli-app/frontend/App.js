@@ -1,8 +1,7 @@
-import { StyleSheet } from "react-native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import StartScreen from './screens/StartScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -32,7 +31,6 @@ function AppContent() {
     return null;
   }
   return (
-      // <NavigationContainer theme={isDark ? customDarkTheme : customLightTheme}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Start" component={StartScreen} />
@@ -54,17 +52,10 @@ function AppContent() {
 
 export default function App() {
   return (
-    <SafeAreaProvider style={{ flex: 1, backgroundColor: colors.primary }}>
-      <AppContent />
+    <SafeAreaProvider style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }} edges={['top', 'bottom']}>
+        <AppContent />
+      </SafeAreaView>
     </SafeAreaProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

@@ -22,7 +22,9 @@ router.get('/:categoryID', (req, res, next) => {
         .sum({ categoryMaxScore: 'maxScore' })
         .where('categoryID', categoryID)
         .then((rows) => {
-            res.json({ totalMaxScore: rows[0].categoryMaxScore || 0 });
+            const sum = rows[0].categoryMaxScore || 0;
+            const totalMaxScore = sum * 4;
+            res.json({ totalMaxScore });
         })
         .catch(err => {
             console.error('Error fetching total max score:', err);
