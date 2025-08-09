@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,10 +8,12 @@ import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 import { ScrollView } from 'react-native-web';
 import Entypo from '@expo/vector-icons/Entypo';
+import { AuthProvider } from '../utils/AuthContext';
 
 const UserScreen = ({ route, navigation }) => {
+    const { token, setToken } = useContext(AuthContext);
     const { user: initialUser } = route.params;
-    const { name, categoryID, logout } = route.params;
+    const { name, categoryID } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     const [user, setUser] = useState(initialUser);
@@ -102,10 +104,16 @@ const UserScreen = ({ route, navigation }) => {
             setMessage('Verkko- tai palvelinvirhe');
         }
     };
-    
+
+    const logout = async () => {
+            setToken(null);
+            await AsyncStorage.removeItem('token');
+            navigation.navigate("Start");
+        }
+
     return (
         <View style={[layout.screen, {paddingHorizontal: 10, backgroundColor: colors.primary }]}>
-            <ScrollView style={[layout.scrollContent, {paddingBottom: 0 }]}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
                 <View style={layout.container}>
 
                     <View style={{ minHeight: 50 }}>
@@ -181,7 +189,7 @@ const UserScreen = ({ route, navigation }) => {
             <View style={{ backgroundColor: 'transparent' }}>
                 {user && (
                     <View style={layout.navbarWrapper}>
-                        <Navbar user={user} navigation={navigation} />
+                        <Navbar user={user} navigation={navigation} logout={logout} />
                     </View>
                 )}
             </View>

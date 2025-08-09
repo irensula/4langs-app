@@ -76,7 +76,7 @@ const ProgressScreen = ({ route, navigation }) => {
     }
     return (
         <View style={[layout.screen, { backgroundColor: colors.primary }]}>
-            <ScrollView style={[layout.scrollContent, { paddingBottom: 0 }]}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
 
                 <View style={layout.mainContainer}>
                     <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>

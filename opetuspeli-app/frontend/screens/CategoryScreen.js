@@ -1,10 +1,15 @@
+import { useState } from 'react';
 import { ScrollView, Text, View, Pressable, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import { layout, colors, textStyles, spacing } from '../constants/layout';
+import { useIsFocused } from '@react-navigation/native';
 import CategoryTitle from '../components/CategoryTitle';
 
 export default function CategoryScreen({ route, navigation }) {
     const { name, categoryID, user } = route.params;   
+    const isFocused = useIsFocused();
+    const [unlocked, setUnlocked] = useState(false);
+    console.log('Unlock next category', unlocked);
     
     return (
         <View style={layout.screen}>
@@ -13,6 +18,8 @@ export default function CategoryScreen({ route, navigation }) {
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
+                    isFocused={isFocused}
+                    setUnlocked={setUnlocked}
                 />
                 
                 <View style={styles.categoriesWrap}>

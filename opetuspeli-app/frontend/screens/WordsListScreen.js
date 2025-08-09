@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordListCard from '../components/WordListCard';
@@ -12,7 +13,9 @@ const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
     const { name, categoryID, user } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    
+    const isFocused = useIsFocused();
+    const [progress, setProgress] = useState([]);
+
     useEffect(() => {
         const fetchWords = async () => {
             try {
@@ -32,13 +35,14 @@ const WordsListScreen = ({ route, navigation }) => {
 
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent} contentContainerStyle={{ paddingBottom: 100 }}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
                 
                 <CategoryTitle 
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Sanalista"
+                    isFocused={isFocused}
                 />
                 
                 <View style={layout.wrapper}>
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
         color: colors.white,
         fontFamily: 'ABeeZee',
         fontSize: 14,
-    }
+    },
 })
 
 export default WordsListScreen;

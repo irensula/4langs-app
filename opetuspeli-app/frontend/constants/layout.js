@@ -75,7 +75,7 @@ export const layout = StyleSheet.create({
       flex: 1,
   },
   scrollContent: {
-      paddingBottom: 10,
+      paddingBottom: 80,
       backgroundColor: colors.lightgreen,
   },
   mainContainer: {
@@ -93,6 +93,13 @@ export const layout = StyleSheet.create({
   wrapper: {
         padding: 10,
         backgroundColor: colors.lightgreen
+  },
+  navbarWrapper: {
+        position: 'absolute',
+        bottom: 20,
+        left: 20,
+        right: 20,
+        backgroundColor: 'transparent',
   },
   innerContainer: {
       flex: 1,

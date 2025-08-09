@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+import { layout, textStyles, colors, spacing } from '../constants/layout';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextCard from '../components/TextCard';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import LanguageTabs from '../components/LanguageTabs';
-import { layout, textStyles, colors, spacing } from '../constants/layout';
 import CategoryTitle from '../components/CategoryTitle';
 
 const TextScreen = ({ route, navigation }) => {
@@ -15,6 +16,7 @@ const TextScreen = ({ route, navigation }) => {
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const isFocused = useIsFocused();
     
     useEffect(() => {
         const fetchTexts = async () => {
@@ -35,13 +37,14 @@ const TextScreen = ({ route, navigation }) => {
     
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
 
                 <CategoryTitle 
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Teksti"
+                    isFocused={isFocused}
                 />
 
                 <View style={layout.wrapper}>

@@ -12,6 +12,7 @@ import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import CategoryTitle from '../components/CategoryTitle';
 import { layout, textStyles } from '../constants/layout';
+import { useIsFocused } from '@react-navigation/native';
 
 const ConnectScreen = ({ navigation, route }) => {
 
@@ -29,6 +30,8 @@ const ConnectScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
+    const isFocused = useIsFocused();
+    const [refreshProgress, setRefreshProgress] = useState(0);
 
     useEffect(() => {
         const fetchConnectTask = async () => {
@@ -169,16 +172,19 @@ const ConnectScreen = ({ navigation, route }) => {
         setSelectedWord(null);
         setActiveLanguage(false);
         setHasScored(false);
+        setRefreshProgress(Date.now());
     };
 
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
                 <CategoryTitle 
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Yhdistä"
+                    isFocused={isFocused}
+                    refreshProgress={refreshProgress}
                 />
 
                 <MessageModal

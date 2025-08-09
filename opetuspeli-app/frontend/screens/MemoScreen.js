@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -32,6 +33,8 @@ const MemoScreen = ({ route, navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
+    const [refreshProgress, setRefreshProgress] = useState(0);
+    const isFocused = useIsFocused();
 
     const doubleAndShuffle = (array) => shuffledArray([...array, ...array]);
     
@@ -129,6 +132,7 @@ const MemoScreen = ({ route, navigation }) => {
                 setMemoCards(doubleAndShuffle(originalCards));
                 setActiveLanguage(false);
                 setHasScored(false);
+                setRefreshProgress(Date.now());
             }, 5000);
         }
     }, [matchedCards, memoCards, originalCards]);
@@ -194,13 +198,15 @@ useEffect(() => {
 }, [originalCards]);
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
 
                 <CategoryTitle 
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Memopeli"
+                    isFocused={isFocused}
+                    refreshProgress={refreshProgress}
                 />
                 
                 <LanguageTabs 

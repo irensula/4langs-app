@@ -52,8 +52,8 @@ const MemoCard = ({ memoCards, index, isOpened, isMatched, onPress, API_BASE, se
 
 const styles = StyleSheet.create({
     container: { 
-        width: 100, 
-        height: 100, 
+        width: 80, 
+        height: 80, 
         margin: 2.5, 
         borderWidth: 2, 
         borderColor: colors.violet,
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     cover: { 
-        width: 100, 
-        height: 100, 
+        width: 80, 
+        height: 80, 
         backgroundColor: colors.violet, 
         margin: 2.5,
         borderRadius: 25,
@@ -83,10 +83,10 @@ const styles = StyleSheet.create({
     },
     textWrapper: {
         position: 'absolute',
-        top: 60,
+        top: 50,
         alignSelf: 'center',
         backgroundColor: colors.white,
-        padding: 5,
+        padding: 3,
         borderRadius: 15,
         borderWidth: 1,
         borderColor: colors.violet,

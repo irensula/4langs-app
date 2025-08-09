@@ -40,13 +40,6 @@ const HomeScreen = ({ route, navigation }) => {
         return () => clearTimeout(timer);
     }, [route.params?.welcomeMessage]);
 
-    const logout = async () => {
-        await AsyncStorage.removeItem('token');
-        setToken('');
-        const check = await AsyncStorage.getItem('token');
-        navigation.navigate("Start");
-    }
-
     useEffect(() => {
         if (!token) return;
 
@@ -64,7 +57,8 @@ const HomeScreen = ({ route, navigation }) => {
         navigation.navigate('Category', { 
             name: category.name,
             categoryID: category.categoryID,
-            user
+            user,
+            unlocked: category.unlocked,
         });
     };
 
@@ -82,7 +76,7 @@ const HomeScreen = ({ route, navigation }) => {
             
             {user && (
                 <View style={layout.navbarWrapper}>
-                    <Navbar user={user} navigation={navigation} logout={logout} />
+                    <Navbar user={user} navigation={navigation} />
                 </View>
             )}
             

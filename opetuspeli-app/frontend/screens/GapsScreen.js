@@ -11,6 +11,7 @@ import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
 import { layout, colors, spacing, textStyles } from '../constants/layout';
 import CategoryTitle from '../components/CategoryTitle';
+import { useIsFocused } from '@react-navigation/native';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
@@ -27,6 +28,9 @@ const GapsScreen = ({ navigation, route }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
+    const [refreshProgress, setRefreshProgress] = useState(0);
+    const isFocused = useIsFocused();
+    
 
     useEffect (() => {
         const fetchGapsTask = async () => {
@@ -124,6 +128,7 @@ const GapsScreen = ({ navigation, route }) => {
         setScore(0);
         setModalMessage('');
         setResetTrigger(prev => prev + 1);
+        setRefreshProgress(Date.now());
     }
 
     useEffect (() => {
@@ -132,13 +137,15 @@ const GapsScreen = ({ navigation, route }) => {
 
     return (
         <View style={layout.screen}>
-            <ScrollView style={layout.scrollContent}>
+            <ScrollView contentContainerStyle={layout.scrollContent}>
                 
                 <CategoryTitle 
                     user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Aukkotehtävä"
+                    isFocused={isFocused}
+                    refreshProgress={refreshProgress}
                 />
 
                 <MessageModal

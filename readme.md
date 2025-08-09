@@ -63,6 +63,9 @@ npx expo install expo@53.0.20 expo-constants@~17.1.7 react-native@0.79.5 // upfr
 $env:NODE_ENV="development"; npx expo start
 $env:NODE_ENV="production"; npx expo start
 
+Remove-Item -Recurse -Force .expo // deletes .expo folder (for reloading the app)
+npx expo start -c
+
 DEPLOYNIG:
 npm install -g eas-cli
 eas login

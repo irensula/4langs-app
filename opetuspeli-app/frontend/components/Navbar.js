@@ -6,7 +6,7 @@ import BackButton from './BackButton';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 
-const Navbar = ({ user, navigation, logout }) => {
+const Navbar = ({ user, navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     return (
         <View style={styles.navbarContainer}>
@@ -24,7 +24,7 @@ const Navbar = ({ user, navigation, logout }) => {
                     <AntDesign name="star" size={32} color={colors.secondary} />
                 </Pressable>
 
-                <Pressable onPress={() => navigation.navigate('UserScreen', { user, logout })}>
+                <Pressable onPress={() => navigation.navigate('UserScreen', { user })}>
                     <Image
                         source={{ uri: `${API_BASE}${user?.url}` }}
                         style={layout.avatar}
@@ -43,13 +43,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: 'transparent',
     },
-    navbarWrapper: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-      backgroundColor: 'transparent',
-  },
     iconsWrapper: {
         flexDirection: 'row',
         alignItems: 'center',

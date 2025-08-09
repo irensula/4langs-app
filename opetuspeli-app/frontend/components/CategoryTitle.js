@@ -5,41 +5,46 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CategoryTitle = ({ user, categoryID, name, subtitle }) => {
+const CategoryTitle = ({ user, categoryID, name, subtitle, isFocused, refreshProgress, setUnlocked }) => {
     const API_BASE = Constants.expoConfig.extra.API_BASE;
     const [progress, setProgress] = useState(0);
     const [progressMax, setProgressMax] = useState(0);
-
+    
     useEffect (() => {
-            const fetchProgress = async () => {
-                const token = await AsyncStorage.getItem('token');
+        if (!isFocused) return;
+        const fetchProgress = async () => {
+            
+            const token = await AsyncStorage.getItem('token');
 
-                if (!token || !user || !categoryID) return;
+            if (!token || !user || !categoryID) return;
 
-                try {
-                    const [progressRes, maxScoreRes] = await Promise.all([
-                        fetch(`${API_BASE}/progress/${user.id}/${categoryID}`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        }),
-                        fetch(`${API_BASE}/max-score/${categoryID}`, {
-                            headers: { 'Authorization': `Bearer ${token}` }
-                        })
-                    ]);
+            try {
+                const [progressRes, maxScoreRes] = await Promise.all([
+                    fetch(`${API_BASE}/progress/${user.id}/${categoryID}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    }),
+                    fetch(`${API_BASE}/max-score/${categoryID}`, {
+                        headers: { 'Authorization': `Bearer ${token}` }
+                    })
+                ]);
 
-                    const progressData = await progressRes.json();
-                    const maxScoreData = await maxScoreRes.json();
+                const progressData = await progressRes.json();
+                const maxScoreData = await maxScoreRes.json();
 
-                    console.log('Progress:', progressData);
-                    console.log('Max score:', maxScoreData);
+                console.log('Progress:', progressData);
+                console.log('Max score:', maxScoreData);
 
-                    setProgress(progressData);
-                    setProgressMax(maxScoreData.totalMaxScore);
-                } catch (err) {
-                    console.error('Error fetching progress or max score:', err);
-                }
-            };
-            fetchProgress();
-        }, [user, categoryID]);
+                setProgress(progressData);
+                setProgressMax(maxScoreData.totalMaxScore);
+                setUnlocked(progressData.unlockNext);
+
+            } catch (err) {
+                console.error('Error fetching progress or max score:', err);
+            }
+        };
+        fetchProgress();
+        }, [user, categoryID, isFocused, refreshProgress]);
+
     return (
         <View style={styles.categoryWrapper}>
             <View style={styles.progressWrapper}>

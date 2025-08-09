@@ -15,6 +15,7 @@ import ProgressScreen from "./screens/ProgressScreen";
 import ConnectScreen from "./screens/ConnectScreen";
 import GapsScreen from "./screens/GapsScreen";
 import { colors } from "./constants/layout";
+import { AuthProvider } from './utils/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -52,10 +53,12 @@ function AppContent() {
 
 export default function App() {
   return (
-    <SafeAreaProvider style={{ flex: 1 }}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }} edges={['top', 'bottom']}>
-        <AppContent />
-      </SafeAreaView>
-    </SafeAreaProvider>
+    <AuthProvider>
+      <SafeAreaProvider style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: colors.primary }} edges={['top', 'bottom']}>
+          <AppContent />
+        </SafeAreaView>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }
