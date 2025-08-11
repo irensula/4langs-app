@@ -1,20 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { textStyles, colors, layout, spacing } from '../constants/layout';
+import { AuthContext } from '../utils/AuthContext';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CategoryTitle = ({ user, categoryID, name, subtitle, isFocused, refreshProgress, setUnlocked }) => {
+const CategoryTitle = ({ categoryID, name, subtitle, isFocused, refreshProgress, setUnlocked }) => {
     const API_BASE = Constants.expoConfig.extra.API_BASE;
     const [progress, setProgress] = useState(0);
     const [progressMax, setProgressMax] = useState(0);
-    
+    const { token, user } = useContext(AuthContext);
+
     useEffect (() => {
         if (!isFocused) return;
         const fetchProgress = async () => {
-            
-            const token = await AsyncStorage.getItem('token');
 
             if (!token || !user || !categoryID) return;
 
@@ -43,7 +42,7 @@ const CategoryTitle = ({ user, categoryID, name, subtitle, isFocused, refreshPro
             }
         };
         fetchProgress();
-        }, [user, categoryID, isFocused, refreshProgress]);
+        }, [token, user, categoryID, isFocused, refreshProgress]);
 
     return (
         <View style={styles.categoryWrapper}>

@@ -1,6 +1,7 @@
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { AuthContext } from '../utils/AuthContext';
 import { ScrollView, View, Text } from "react-native"; 
 import { layout, colors, spacing, textStyles } from '../constants/layout';
 import Navbar from "../components/Navbar";
@@ -8,49 +9,42 @@ import MessageModal from '../components/MessageModal';
 import HouseIcons from '../components/HouseIcons';
 
 const HomeScreen = ({ route, navigation }) => {
-    const [token, setToken] = useState('');
-    const [user, setUser] = useState(null);
-    const [categories, setCategories] = useState([]);
     const API_BASE = Constants.expoConfig.extra.API_BASE;
+    const { user, token } = useContext(AuthContext);
+    const [categories, setCategories] = useState([]);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
-    
-    useEffect(() => {
-        const fetchToken = async () => {
-            const savedToken = await AsyncStorage.getItem('token');
-            const savedUser = await AsyncStorage.getItem('user');
-            
-            if (savedToken) setToken(savedToken);
-            if (savedUser) setUser(JSON.parse(savedUser));
-            console.log('User', savedUser);
-        };
-        fetchToken();
-    }, []);
 
     useEffect(() => {
-        let timer;
         if (route.params?.welcomeMessage) {
             setMessage(route.params.welcomeMessage);
             setMessageType('success');
-            setTimeout(() => {
+            const timer = setTimeout(() => {
                 setMessage('');
             }, 5000);
+
             navigation.setParams({ welcomeMessage: null });
-            }
-        return () => clearTimeout(timer);
+
+            return () => clearTimeout(timer);
+        }
     }, [route.params?.welcomeMessage]);
 
     useEffect(() => {
-        if (!token) return;
+        if (!token || !user) return;
 
         fetch(`${API_BASE}/categories`, {
         headers: { 'Authorization': `Bearer ${token}` }
     })
-        .then((res) => res.json())
-        .then((data) => {
-            setCategories(data);
+        .then((res) => {
+            if (!res.ok) throw new Error('Failed to fetch categories');
+            return res.json();
         })
-        .catch((err) => console.error('Fetch error:', err));
+        .then(setCategories)
+        .catch((err) => {
+            console.error('Fetch error:', err);
+            setMessage('Could not load categories');
+            setMessageType('error');
+        });
     }, [token]);
 
     const handleSelectCategory = (category) => {

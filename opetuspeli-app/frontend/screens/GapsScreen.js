@@ -1,7 +1,8 @@
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { AuthContext } from '../utils/AuthContext';
 import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
 import MessageModal from '../components/MessageModal';
@@ -15,6 +16,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const { token } = useContext(AuthContext);
     const { name, categoryID, user } = route.params;
     const [sentences, setSentences] = useState([]);
     const [words, setWords] = useState([]);
@@ -35,7 +37,6 @@ const GapsScreen = ({ navigation, route }) => {
     useEffect (() => {
         const fetchGapsTask = async () => {
             try {
-                const token = await AsyncStorage.getItem('token');
                 if (!token) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/gaps_task`, {
                     headers: { Authorization: `Bearer ${token}` }
@@ -54,7 +55,6 @@ const GapsScreen = ({ navigation, route }) => {
 
     const handleScore = async (finalScore) => {
         try {
-            const token = await AsyncStorage.getItem('token');
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
                 headers: {Authorization: `Bearer ${token}`}
@@ -140,7 +140,6 @@ const GapsScreen = ({ navigation, route }) => {
             <ScrollView contentContainerStyle={layout.scrollContent}>
                 
                 <CategoryTitle 
-                    user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Aukkotehtävä"

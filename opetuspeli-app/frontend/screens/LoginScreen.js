@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../utils/AuthContext';
+import Constants from 'expo-constants';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
@@ -6,6 +8,8 @@ import BackButton from '../components/BackButton';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 
 const Login = ({ navigation }) => {
+    const API_BASE = Constants.expoConfig.extra.API_BASE;
+    const { login } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -22,14 +26,14 @@ const Login = ({ navigation }) => {
                 return;
             } 
         try {
-                const response = await fetch("http://192.168.1.162:3001/login", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        password: password, 
+            const response = await fetch(`${API_BASE}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: password, 
                 })
             });
     
@@ -43,9 +47,7 @@ const Login = ({ navigation }) => {
                     imageID: data.imageID,
                     url: data.url
                 };
-                await AsyncStorage.setItem('token', data.token);
-                await AsyncStorage.setItem('user', JSON.stringify(user));
-                setMessage("Tervetuloa takaisin!");
+                await login(data.token, user);
                 navigation.navigate("Home", { welcomeMessage: "Tervetuloa takaisin!" });
             } else {
                 const errorData = await response.json();

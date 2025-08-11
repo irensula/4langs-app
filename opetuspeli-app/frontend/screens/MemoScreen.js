@@ -201,7 +201,6 @@ useEffect(() => {
             <ScrollView contentContainerStyle={layout.scrollContent}>
 
                 <CategoryTitle 
-                    user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Memopeli"

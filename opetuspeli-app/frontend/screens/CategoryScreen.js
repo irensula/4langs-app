@@ -15,7 +15,6 @@ export default function CategoryScreen({ route, navigation }) {
         <View style={layout.screen}>
             <ScrollView contentContainerStyle={layout.scrollContent}>
                 <CategoryTitle 
-                    user={user}
                     categoryID={categoryID} 
                     name={name} 
                     isFocused={isFocused}

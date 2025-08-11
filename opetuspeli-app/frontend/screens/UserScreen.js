@@ -7,13 +7,12 @@ import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 import { ScrollView } from 'react-native-web';
-import Entypo from '@expo/vector-icons/Entypo';
-import { AuthProvider } from '../utils/AuthContext';
+import { AuthContext } from '../utils/AuthContext';
 
 const UserScreen = ({ route, navigation }) => {
-    const { token, setToken } = useContext(AuthContext);
+    const { token, logout } = useContext(AuthContext);
     const { user: initialUser } = route.params;
-    const { name, categoryID } = route.params;
+    
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
     const [user, setUser] = useState(initialUser);
@@ -63,11 +62,11 @@ const UserScreen = ({ route, navigation }) => {
 
     const editUserData = async() => {
         try {
-            const token = await AsyncStorage.getItem('token');
             if (!token) {
                 setMessage('Käyttäjän on oltava valtuutettu');
                 return;
             }
+            
             const response = await fetch(`${API_BASE}/users/${user.id}`, {
                 method: 'PUT',
                 headers: {
@@ -105,15 +104,9 @@ const UserScreen = ({ route, navigation }) => {
         }
     };
 
-    const logout = async () => {
-            setToken(null);
-            await AsyncStorage.removeItem('token');
-            navigation.navigate("Start");
-        }
-
     return (
         <View style={[layout.screen, {paddingHorizontal: 10, backgroundColor: colors.primary }]}>
-            <ScrollView contentContainerStyle={layout.scrollContent}>
+            <ScrollView contentContainerStyle={{ backgroundColor: colors.primary, paddingBottom: 80 }}>
                 <View style={layout.container}>
 
                     <View style={{ minHeight: 50 }}>
@@ -181,8 +174,16 @@ const UserScreen = ({ route, navigation }) => {
                         )}
                         </View>
                     </View>
-                    <Pressable onPress={logout}>
-                        <Entypo name="log-out" size={31} color={colors.secondary} />
+                    <Pressable 
+                        onPress={() => {
+                            logout; 
+                            navigation.navigate('Login');
+                            }} 
+                        style={layout.center}
+                    >
+                        <View style={layout.button}>
+                            <Text style={[textStyles.buttonText, {fontSize: 16}]}>Kirjaudu ulos</Text>
+                        </View>
                     </Pressable>
                 </View>
             </ScrollView>

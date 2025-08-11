@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -17,6 +18,7 @@ import { useIsFocused } from '@react-navigation/native';
 const ConnectScreen = ({ navigation, route }) => {
 
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const { token } = useContext(AuthContext);
     const { name, categoryID, user } = route.params;
     const [pairs, setPairs] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -36,7 +38,6 @@ const ConnectScreen = ({ navigation, route }) => {
     useEffect(() => {
         const fetchConnectTask = async () => {
             try {
-                const token = await AsyncStorage.getItem('token');
                 if (!token) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/connect_task`, {
                     headers: { Authorization: `Bearer ${token}` }
@@ -49,7 +50,7 @@ const ConnectScreen = ({ navigation, route }) => {
             }
         };
         fetchConnectTask();
-    }, []);
+    }, [token]);
 
     useEffect (() => {
         const words = pairs.map(pair => ({
@@ -113,7 +114,6 @@ const ConnectScreen = ({ navigation, route }) => {
 
     const handleScore = async () => {
         try {
-            const token = await AsyncStorage.getItem('token');
             const user = JSON.parse(await AsyncStorage.getItem('user'));
             const maxScore = pairs[0]?.maxScore || 0;
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
@@ -179,7 +179,6 @@ const ConnectScreen = ({ navigation, route }) => {
         <View style={layout.screen}>
             <ScrollView contentContainerStyle={layout.scrollContent}>
                 <CategoryTitle 
-                    user={user}
                     categoryID={categoryID} 
                     name={name} 
                     subtitle="Yhdistä"
