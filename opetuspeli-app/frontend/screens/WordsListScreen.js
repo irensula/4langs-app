@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {View, ScrollView, StyleSheet} from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import WordListCard from '../components/WordListCard';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
@@ -11,7 +11,8 @@ import CategoryTitle from '../components/CategoryTitle';
 
 const WordsListScreen = ({ route, navigation }) => {
     const [words, setWords] = useState([]);
-    const { name, categoryID, user } = route.params;
+    const { name, categoryID } = route.params;
+    const { user, token } = useContext(AuthContext);
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     const isFocused = useIsFocused();
     const [progress, setProgress] = useState([]);
@@ -19,8 +20,7 @@ const WordsListScreen = ({ route, navigation }) => {
     useEffect(() => {
         const fetchWords = async () => {
             try {
-                const token = await AsyncStorage.getItem('token');
-                if (!token) return;
+                if (!token || !categoryID) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/words`, { 
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -31,7 +31,7 @@ const WordsListScreen = ({ route, navigation }) => {
             }
     };
     fetchWords();
-}, []);
+}, [token, categoryID]);
 
     return (
         <View style={layout.screen}>
@@ -49,7 +49,7 @@ const WordsListScreen = ({ route, navigation }) => {
                         <WordListCard key={word.wordID} word={word} API_BASE={API_BASE} />
                     ))}
                 </View>
-                <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} user={user} />
+                <NextArrow screen={'TextScreen'} name={name} categoryID={categoryID} />
 
             </ScrollView>
             {user && (

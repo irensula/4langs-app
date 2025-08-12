@@ -1,3 +1,4 @@
+import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -15,12 +16,46 @@ import ProgressScreen from "./screens/ProgressScreen";
 import ConnectScreen from "./screens/ConnectScreen";
 import GapsScreen from "./screens/GapsScreen";
 import { colors } from "./constants/layout";
-import { AuthProvider } from './utils/AuthContext';
+import { AuthProvider, AuthContext } from './utils/AuthContext';
+import { View, ActivityIndicator } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
-function AppContent() {
+function LoadingIndicator() {
+  return (
+    <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+      <ActivityIndicator size="large" color="#55962f" />
+    </View>
+  );
+}
 
+function AuthStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Start" component={StartScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AppStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="UserScreen" component={UserScreen} />
+      <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
+      <Stack.Screen name="Category" component={CategoryScreen} />
+      <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
+      <Stack.Screen name="TextScreen" component={TextScreen} />
+      <Stack.Screen name="MemoScreen" component={MemoScreen} />
+      <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
+      <Stack.Screen name="GapsScreen" component={GapsScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AppContent() {
   const [fontsLoaded] = useFonts({
     LuckiestGuy: require('./assets/fonts/LuckiestGuy-Regular.ttf'),
     ABeeZee: require('./assets/fonts/ABeeZee-Regular.ttf'),
@@ -28,26 +63,19 @@ function AppContent() {
     NunitoBold: require('./assets/fonts/Nunito-Bold.ttf'),
   });
 
-   if (!fontsLoaded) {
+  const { user, loading } = useContext(AuthContext);
+
+  if (!fontsLoaded) {
     return null;
   }
+  if (loading) {
+    return <LoadingIndicator />;
+  }
+
   return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Start" component={StartScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="UserScreen" component={UserScreen} />
-          <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
-          <Stack.Screen name="Category" component={CategoryScreen} />
-          <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
-          <Stack.Screen name="TextScreen" component={TextScreen} />
-          <Stack.Screen name="MemoScreen" component={MemoScreen} />
-          <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
-          <Stack.Screen name="GapsScreen" component={GapsScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+    <NavigationContainer>
+      {user ? <AppStack /> : <AuthStack />}
+    </NavigationContainer>
   );
 }
 

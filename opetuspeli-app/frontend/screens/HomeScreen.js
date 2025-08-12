@@ -1,5 +1,4 @@
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../utils/AuthContext';
 import { ScrollView, View, Text } from "react-native"; 

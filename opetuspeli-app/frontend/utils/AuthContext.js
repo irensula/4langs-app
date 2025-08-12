@@ -6,15 +6,22 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(null);
     const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadAuthData = async () => {
-            const storedToken = await AsyncStorage.getItem('token');
-            const storedUser = await AsyncStorage.getItem('user');
-            if (storedToken && storedUser) {
-                setToken(storedToken);
-                setUser(JSON.parse(storedUser));
-            } 
+            try {
+                const storedToken = await AsyncStorage.getItem('token');
+                const storedUser = await AsyncStorage.getItem('user');
+                if (storedToken && storedUser) {
+                    setToken(storedToken);
+                    setUser(JSON.parse(storedUser));
+                } 
+            } catch (error) {
+                console.error('Failed to load auth data', error);
+            } finally {
+                setLoading(false); 
+            }
         };
         loadAuthData();
     }, []);
@@ -33,8 +40,13 @@ export const AuthProvider = ({ children }) => {
         await AsyncStorage.removeItem('user');
     }
 
+    const updateUser = async (newUser) => {
+        setUser(newUser);
+        await AsyncStorage.setItem('user', JSON.stringify(newUser));
+    };
+
     return (
-        <AuthContext.Provider value={{ user, token, login, logout }}>
+        <AuthContext.Provider value={{ user, token, login, logout, updateUser, loading }}>
             {children}
         </AuthContext.Provider>
     );

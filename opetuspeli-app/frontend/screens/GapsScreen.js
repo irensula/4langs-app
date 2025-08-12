@@ -1,6 +1,5 @@
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from '../utils/AuthContext';
 import shuffledArray from '../utils/shuffledArray';
@@ -16,8 +15,8 @@ import { useIsFocused } from '@react-navigation/native';
 
 const GapsScreen = ({ navigation, route }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { token } = useContext(AuthContext);
-    const { name, categoryID, user } = route.params;
+    const { user, token } = useContext(AuthContext);
+    const { name, categoryID } = route.params;
     const [sentences, setSentences] = useState([]);
     const [words, setWords] = useState([]);
     const [shuffledWords, setShuffledWords] = useState([]);
@@ -37,7 +36,7 @@ const GapsScreen = ({ navigation, route }) => {
     useEffect (() => {
         const fetchGapsTask = async () => {
             try {
-                if (!token) return;
+                if (!token || !categoryID) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/gaps_task`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -51,11 +50,10 @@ const GapsScreen = ({ navigation, route }) => {
             }
         };
         fetchGapsTask();
-    }, [API_BASE, categoryID])
+    }, [token, categoryID])
 
     const handleScore = async (finalScore) => {
         try {
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
                 headers: {Authorization: `Bearer ${token}`}
             });
@@ -192,7 +190,7 @@ const GapsScreen = ({ navigation, route }) => {
                             <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
                         </Pressable>
                     
-                        <NextArrow screen={'Home'} name={name} categoryID={categoryID} user={user} />
+                        <NextArrow screen={'Home'} name={name} categoryID={categoryID} />
                     </View>
                 </View>
 

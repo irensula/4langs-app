@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import shuffledArray from '../utils/shuffledArray';
 import WordCard from '../components/WordCard';
@@ -18,8 +17,8 @@ import { useIsFocused } from '@react-navigation/native';
 const ConnectScreen = ({ navigation, route }) => {
 
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
-    const { token } = useContext(AuthContext);
-    const { name, categoryID, user } = route.params;
+    const { token, user } = useContext(AuthContext);
+    const { name, categoryID } = route.params;
     const [pairs, setPairs] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
@@ -38,7 +37,7 @@ const ConnectScreen = ({ navigation, route }) => {
     useEffect(() => {
         const fetchConnectTask = async () => {
             try {
-                if (!token) return;
+                if (!token || !categoryID) return;
                 const res = await fetch(`${API_BASE}/categories/${categoryID}/connect_task`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
@@ -50,7 +49,7 @@ const ConnectScreen = ({ navigation, route }) => {
             }
         };
         fetchConnectTask();
-    }, [token]);
+    }, [token, categoryID]);
 
     useEffect (() => {
         const words = pairs.map(pair => ({
@@ -114,7 +113,6 @@ const ConnectScreen = ({ navigation, route }) => {
 
     const handleScore = async () => {
         try {
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
             const maxScore = pairs[0]?.maxScore || 0;
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
                 headers: {Authorization: `Bearer ${token}`}

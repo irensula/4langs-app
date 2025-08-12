@@ -2,7 +2,6 @@ import { useState, useContext } from 'react';
 import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
 import { View, Text, TextInput, Pressable, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 import BackButton from '../components/BackButton';
 import { layout, textStyles, spacing, colors } from '../constants/layout';

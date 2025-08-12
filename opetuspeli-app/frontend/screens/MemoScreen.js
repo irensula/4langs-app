@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import shuffledArray from '../utils/shuffledArray';
 import LanguageTabs from '../components/LanguageTabs';
@@ -14,8 +14,9 @@ import { layout, textStyles, colors, spacing } from '../constants/layout';
 import CategoryTitle from '../components/CategoryTitle';
 
 const MemoScreen = ({ route, navigation }) => {
-    const { name, categoryID, user } = route.params;
+    const { name, categoryID } = route.params;
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const { user, token } = useContext(AuthContext);
     const [originalCards, setOriginalCards] = useState([]);
     const [memoCards, setMemoCards] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
@@ -41,8 +42,7 @@ const MemoScreen = ({ route, navigation }) => {
     useEffect(() => {
         const fetchMemoGame = async () => {
         try {
-            const token = await AsyncStorage.getItem('token');
-            if (!token) return;
+            if (!token || !categoryID) return;
             const res = await fetch(`${API_BASE}/categories/${categoryID}/memogame`, {
                     headers: {Authorization: `Bearer ${token}` }
                 });
@@ -56,7 +56,7 @@ const MemoScreen = ({ route, navigation }) => {
         }
     };
         fetchMemoGame();
-    }, []);
+    }, [token, categoryID]);
     
     useEffect(() => {
         if(openedCards.length === 2) {
@@ -141,8 +141,6 @@ const MemoScreen = ({ route, navigation }) => {
     // handling score GET, POST and PUT
     const handleScore = async () => { 
         try {
-            const token = await AsyncStorage.getItem('token');
-            const user = JSON.parse(await AsyncStorage.getItem('user'));
             const maxScore = originalCards[0]?.maxScore || 0;
 
             const res = await fetch(`${API_BASE}/progress/${user.id}`, {
@@ -249,7 +247,7 @@ useEffect(() => {
                         <Text style={textStyles.buttonTextInner}>Käynnistä uudelleen</Text>
                     </Pressable>
                 
-                    <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} user={user} />
+                    <NextArrow screen={'GapsScreen'} name={name} categoryID={categoryID} />
                 </View>
 
             </ScrollView>

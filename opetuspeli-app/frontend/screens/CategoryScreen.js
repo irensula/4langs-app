@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { AuthContext } from '../utils/AuthContext';
 import { ScrollView, Text, View, Pressable, StyleSheet } from 'react-native';
 import Navbar from '../components/Navbar';
 import { layout, colors, textStyles, spacing } from '../constants/layout';
@@ -6,7 +7,8 @@ import { useIsFocused } from '@react-navigation/native';
 import CategoryTitle from '../components/CategoryTitle';
 
 export default function CategoryScreen({ route, navigation }) {
-    const { name, categoryID, user } = route.params;   
+    const { user } = useContext(AuthContext);
+    const { name, categoryID } = route.params;   
     const isFocused = useIsFocused();
     const [unlocked, setUnlocked] = useState(false);
     console.log('Unlock next category', unlocked);
@@ -22,19 +24,19 @@ export default function CategoryScreen({ route, navigation }) {
                 />
                 
                 <View style={styles.categoriesWrap}>
-                    <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID, user })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('WordsListScreen', { name, categoryID })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Words list</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID, user })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('TextScreen', { name, categoryID })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Text</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID, user })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('ConnectScreen', { name, categoryID })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Connect Task</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID, user })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('MemoScreen', { name, categoryID })} style={styles.category}>
                         <Text style={styles.categoryTitle}>MemoGame</Text>
                     </Pressable>
-                    <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID, user })} style={styles.category}>
+                    <Pressable onPress={() => navigation.navigate('GapsScreen', { name, categoryID })} style={styles.category}>
                         <Text style={styles.categoryTitle}>Gaps Task</Text>
                     </Pressable>
                 </View>

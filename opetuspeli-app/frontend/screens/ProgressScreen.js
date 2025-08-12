@@ -1,22 +1,21 @@
-import { useEffect, useState } from 'react';
-import { ScrollView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { useEffect, useState, useContext } from 'react';
+import { ScrollView, View, Text } from 'react-native';
+import { AuthContext } from '../utils/AuthContext';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import CircularProgress from 'react-native-circular-progress-indicator';
 import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
 
-const ProgressScreen = ({ route, navigation }) => {
+const ProgressScreen = ({ navigation }) => {
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
+    const { user, token } = useContext(AuthContext);
     const [userProgress, setUserProgress] = useState([]);
     const [value, setValue] = useState(0);
     const [totalMaxScore, setTotalMaxScore] = useState(0);
-    const { name, categoryID, user } = route.params;
     
     useEffect(() => {
         const fetchProgress = async () => {
             try {
-                const token = await AsyncStorage.getItem('token');
                 if (!token || !user?.id) return;
                 const res = await fetch(`${API_BASE}/progress/${user.id}`, {
                     headers: { Authorization: `Bearer ${token}` }
@@ -29,12 +28,11 @@ const ProgressScreen = ({ route, navigation }) => {
             }
         };
         fetchProgress();
-    }, [user])
+    }, [user, token])
 
     useEffect (() => {
         const fetchTotalMaxScore = async () => {
             try {
-                const token = await AsyncStorage.getItem('token');
 
                 if (!token || !user?.id) return;
 
@@ -51,7 +49,7 @@ const ProgressScreen = ({ route, navigation }) => {
             }
         }
         fetchTotalMaxScore();
-    }, [user]);
+    }, [user, token]);
 
     const totalScores = userProgress.reduce((totals, progress) => {
         return {
@@ -183,12 +181,5 @@ const ProgressScreen = ({ route, navigation }) => {
         </View>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        flex: 1,
-    }
-})
 
 export default ProgressScreen;

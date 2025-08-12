@@ -1,42 +1,36 @@
-import { useEffect, useState } from "react";
-import { ActivityIndicator, View, Text, Pressable, Button, BackHandler, Platform, StyleSheet } from "react-native"; 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { jwtDecode } from 'jwt-decode';
+import { useEffect, useState, useContext } from "react";
+import { ActivityIndicator, View, Text, Pressable, BackHandler, Platform, StyleSheet } from "react-native"; 
+import jwtDecode from 'jwt-decode';
+import { AuthContext } from '../utils/AuthContext';
 import { layout, textStyles, spacing, colors  } from '../constants/layout';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const StartScreen = ({ navigation }) => {
+    const { user, token } = useContext(AuthContext);
     const [loading, setLoading] = useState(true);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
         const checkLogin = async () => {
           try {
-            const token = await AsyncStorage.getItem('token');
-            const user = await AsyncStorage.getItem('user');
         
             if (token && user) {
                 const decoded = jwtDecode(token);
                 const isExpired = decoded.exp * 1000 < Date.now();
-                
-                if (isExpired) {
-                  await AsyncStorage.multiRemove(['token', 'user']);
+                if (isMounted) setIsLoggedIn(!isExpired);
+                } else if (isMounted) {
                   setIsLoggedIn(false);
-                } else {
-                  setIsLoggedIn(true);
                 }
-            } else {
-              setIsLoggedIn(false);
-            }
           } catch (error) {
-              await AsyncStorage.multiRemove(['token', 'user']);
               setIsLoggedIn(false);
           } finally {
             setLoading(false);
           }
       };
     checkLogin();
-  }, []);
+    return () => { isMounted = false; };
+  }, [user, token]);
 
   const handleExit = () => {
     if (Platform.OS === 'android') {
@@ -48,7 +42,7 @@ const StartScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View>
+      <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
         <Text>Loading...</Text>
       </View>
@@ -88,7 +82,7 @@ const StartScreen = ({ navigation }) => {
                 </>
               )
             }
-        </View >
+        </View>
       </View>
     )
 } 

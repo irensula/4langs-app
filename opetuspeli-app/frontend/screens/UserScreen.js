@@ -1,36 +1,33 @@
 import { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, Pressable, TextInput, StyleSheet } from "react-native";
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import MessageBox from '../components/MessageBox';
 import AvatarList from '../components/AvatarsList';
 import Navbar from '../components/Navbar';
 import { layout, textStyles, spacing, colors } from '../constants/layout';
-import { ScrollView } from 'react-native-web';
+import { ScrollView } from 'react-native';
 import { AuthContext } from '../utils/AuthContext';
 
 const UserScreen = ({ route, navigation }) => {
-    const { token, logout } = useContext(AuthContext);
-    const { user: initialUser } = route.params;
+    const { user: contextUser, token, logout, updateUser } = useContext(AuthContext);
     
     const API_BASE = Constants.expoConfig?.extra?.API_BASE || 'fallback value';
     
-    const [user, setUser] = useState(initialUser);
+    const [user, setUser] = useState(contextUser);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
     const [editMode, setEditMode] = useState(false);
     const [userdata, setUserdata] = useState({
-        username: user.username,
-        email: user.email,
-        phonenumber: user.phonenumber,
-        password: ''
+        username: contextUser?.username || '',
+        email: contextUser?.email || '',
+        phonenumber: contextUser?.phonenumber || '',
+        password: '',
     });
     const [avatars, setAvatars] = useState([]);
-    const [selectedImageID, setSelectedImageID] = useState(user.imageID || null);
+    const [selectedImageID, setSelectedImageID] = useState(user?.imageID || null);
     const userAvatar = avatars.find(a => a.imageID === user.imageID);
     const userAvatarUrl = userAvatar ? userAvatar.url : null;
-    console.log("userAvatar", userAvatar);
-    console.log("userAvatarUrl", userAvatarUrl);
+    
     useEffect(() => {
         setUserdata({
             username: user?.username || '',
@@ -39,6 +36,11 @@ const UserScreen = ({ route, navigation }) => {
             password: '',
         });
     }, [user]);
+
+    useEffect(() => {
+        setUser(contextUser);
+    }, [contextUser]);
+
 
     useEffect(() => {
         async function fetchAvatars() {
@@ -50,7 +52,7 @@ const UserScreen = ({ route, navigation }) => {
     }, []);
 
     useEffect(() => {
-        setSelectedImageID(user.imageID || null);
+        setSelectedImageID(user?.imageID || null);
     }, [user]);
 
     const handleChange = (field, value) => {
@@ -87,8 +89,8 @@ const UserScreen = ({ route, navigation }) => {
                 setMessage('Käyttäjän tiedot on päivitetty');
                 setMessageType('success');
                 setUser(updatedUser);
+                updateUser(updatedUser);
                 setEditMode(false);
-                await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
 
                 setTimeout(() => {
                     setMessage('');
@@ -176,7 +178,7 @@ const UserScreen = ({ route, navigation }) => {
                     </View>
                     <Pressable 
                         onPress={() => {
-                            logout; 
+                            logout(); 
                             navigation.navigate('Login');
                             }} 
                         style={layout.center}

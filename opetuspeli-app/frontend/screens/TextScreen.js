@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, Pressable } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import { AuthContext } from '../utils/AuthContext';
 import { layout, textStyles, colors, spacing } from '../constants/layout';
 import Constants from 'expo-constants';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import TextCard from '../components/TextCard';
 import Navbar from '../components/Navbar';
 import NextArrow from '../components/NextArrow';
@@ -11,7 +11,8 @@ import LanguageTabs from '../components/LanguageTabs';
 import CategoryTitle from '../components/CategoryTitle';
 
 const TextScreen = ({ route, navigation }) => {
-    const { name, categoryID, user } = route.params;
+    const { user, token } = useContext(AuthContext);
+    const { name, categoryID } = route.params;
     const [texts, setTexts] = useState([]);
     const [selectedLanguage, setSelectedLanguage] = useState('en');
     const [activeLanguage, setActiveLanguage] = useState(false);
@@ -21,8 +22,7 @@ const TextScreen = ({ route, navigation }) => {
     useEffect(() => {
         const fetchTexts = async () => {
         try {
-            const token = await AsyncStorage.getItem('token');
-            if (!token) return;
+            if (!token || !categoryID) return;
             const res = await fetch(`${API_BASE}/categories/${categoryID}/texts`, {
                 headers: {Authorization: `Bearer ${token}` }
             });
@@ -33,7 +33,7 @@ const TextScreen = ({ route, navigation }) => {
         }
     };
     fetchTexts();
-}, []);
+}, [token, categoryID]);
     
     return (
         <View style={layout.screen}>
@@ -63,7 +63,7 @@ const TextScreen = ({ route, navigation }) => {
                         />)
                     )}
                 </View>
-                <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} user={user} />
+                <NextArrow screen={'ConnectScreen'} name={name} categoryID={categoryID} />
             </ScrollView>
 
             {user && (
