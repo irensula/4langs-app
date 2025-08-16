@@ -178,8 +178,7 @@ const UserScreen = ({ route, navigation }) => {
                     </View>
                     <Pressable 
                         onPress={() => {
-                            logout(); 
-                            navigation.navigate('Login');
+                            logout();
                             }} 
                         style={layout.center}
                     >

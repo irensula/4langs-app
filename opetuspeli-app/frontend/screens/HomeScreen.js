@@ -9,7 +9,7 @@ import HouseIcons from '../components/HouseIcons';
 
 const HomeScreen = ({ route, navigation }) => {
     const API_BASE = Constants.expoConfig.extra.API_BASE;
-    const { user, token } = useContext(AuthContext);
+    const { user, token, loading } = useContext(AuthContext);
     const [categories, setCategories] = useState([]);
     const [message, setMessage] = useState('');
     const [messageType, setMessageType] = useState('success');
@@ -29,7 +29,7 @@ const HomeScreen = ({ route, navigation }) => {
     }, [route.params?.welcomeMessage]);
 
     useEffect(() => {
-        if (!token || !user) return;
+        if (loading || !token || !user) return;
 
         fetch(`${API_BASE}/categories`, {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -38,7 +38,20 @@ const HomeScreen = ({ route, navigation }) => {
             if (!res.ok) throw new Error('Failed to fetch categories');
             return res.json();
         })
-        .then(setCategories)
+        .then((data) => {
+        // Add `unlocked` prop based on backend `locked` field
+        const updatedCategories = data.map((category) => ({
+            ...category,
+            unlocked: !category.locked  // true if not locked
+        }));
+
+        setCategories(updatedCategories);
+        updatedCategories.forEach(c => {
+        console.log(`Category ${c.name}: locked=${c.locked}, unlocked=${c.unlocked}`);
+    });
+    console.log('updatedCategories', updatedCategories);
+
+    })
         .catch((err) => {
             console.error('Fetch error:', err);
             setMessage('Could not load categories');
@@ -52,6 +65,15 @@ const HomeScreen = ({ route, navigation }) => {
             categoryID: category.categoryID,
             user,
             unlocked: category.unlocked,
+    //         setUnlocked: (newUnlocked) => {
+    //   setCategories(prev =>
+    //     prev.map(c =>
+    //       c.categoryID === category.categoryID
+    //         ? { ...c, unlocked: newUnlocked }
+    //         : c
+    //     )
+    // );
+    // }
         });
     };
 

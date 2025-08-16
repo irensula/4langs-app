@@ -73,10 +73,9 @@ const ProgressScreen = ({ navigation }) => {
         return Math.round((score / max) * 100);
     }
     return (
-        <View style={[layout.screen, { backgroundColor: colors.primary }]}>
-            <ScrollView contentContainerStyle={layout.scrollContent}>
-
-                <View style={layout.mainContainer}>
+        <View style={[layout.screen, {paddingHorizontal: 10, backgroundColor: colors.primary }]}>
+            <ScrollView contentContainerStyle={{ backgroundColor: colors.primary, paddingBottom: 80 }}>
+                <View style={layout.container}>
                     <View style={[layout.formContainer, layout.center, layout.shadowStyle]}>
                         <Text style={[textStyles.title, { color: colors.secondary }]}>Edistymisesi</Text>
 
@@ -86,9 +85,9 @@ const ProgressScreen = ({ navigation }) => {
                             textColor={''}
                             fontSize={20}
                             valueSuffix={''}
-                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            valueFormatter={({ value }) => `${Math.round(value)}%`}
                             inActiveStrokeColor={colors.secondary}
-                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeOpacity={0.2}
                             inActiveStrokeWidth={6}
                             duration={3000}
                         />
@@ -104,9 +103,9 @@ const ProgressScreen = ({ navigation }) => {
                             textColor={''}
                             fontSize={20}
                             valueSuffix={''}
-                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            valueFormatter={({ value }) => `${Math.round(value)}%`}
                             inActiveStrokeColor={colors.secondary}
-                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeOpacity={0.2}
                             inActiveStrokeWidth={6}
                             duration={3000}
                         />
@@ -122,9 +121,9 @@ const ProgressScreen = ({ navigation }) => {
                             textColor={''}
                             fontSize={20}
                             valueSuffix={''}
-                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            valueFormatter={({ value }) => `${Math.round(value)}%`}
                             inActiveStrokeColor={colors.secondary}
-                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeOpacity={0.2}
                             inActiveStrokeWidth={6}
                             duration={3000}
                         />
@@ -140,9 +139,9 @@ const ProgressScreen = ({ navigation }) => {
                             textColor={''}
                             fontSize={20}
                             valueSuffix={''}
-                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            valueFormatter={({ value }) => `${Math.round(value)}%`}
                             inActiveStrokeColor={colors.secondary}
-                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeOpacity={0.2}
                             inActiveStrokeWidth={6}
                             duration={3000}
                         />
@@ -158,9 +157,9 @@ const ProgressScreen = ({ navigation }) => {
                             textColor={''}
                             fontSize={20}
                             valueSuffix={''}
-                            progressFormatter={(value) => `${Math.round(value)}%`}
+                            valueFormatter={({ value }) => `${Math.round(value)}%`}
                             inActiveStrokeColor={colors.secondary}
-                            inActiveStrokeOpacity={'0.2'}
+                            inActiveStrokeOpacity={0.2}
                             inActiveStrokeWidth={6}
                             duration={3000}
                         />

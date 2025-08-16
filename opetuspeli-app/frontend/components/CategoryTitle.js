@@ -35,7 +35,9 @@ const CategoryTitle = ({ categoryID, name, subtitle, isFocused, refreshProgress,
 
                 setProgress(progressData);
                 setProgressMax(maxScoreData.totalMaxScore);
-                setUnlocked(progressData.unlockNext);
+                if (setUnlocked) {
+                    setUnlocked(progressData.unlockNext);
+                }
 
             } catch (err) {
                 console.error('Error fetching progress or max score:', err);

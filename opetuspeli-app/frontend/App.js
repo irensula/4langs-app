@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
@@ -18,10 +18,14 @@ import GapsScreen from "./screens/GapsScreen";
 import { colors } from "./constants/layout";
 import { AuthProvider, AuthContext } from './utils/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const Stack = createNativeStackNavigator();
 
 function LoadingIndicator() {
+   
   return (
     <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
       <ActivityIndicator size="large" color="#55962f" />

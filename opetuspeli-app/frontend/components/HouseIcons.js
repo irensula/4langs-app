@@ -113,18 +113,21 @@ const HouseIcons = ({ categories, onSelect }) => (
       />
     )} */}
     <View style={[layout.center, { paddingTop: 15, }]}>
-      {categories.map((category) => (
+      {categories.map((category) => {
+        const isLocked = category.locked;
+        console.log('Locked: ', isLocked);
+        return(
         <Pressable
           key={category.categoryID}
-          disabled={category.locked}
+          disabled={isLocked}
           onPress={() => onSelect(category)}
           style={styles.category}
         >
-          <Text style={[textStyles.subtitle, { opacity: category.locked ? 0.4 : 1 }]}>
-            {category.name} {category.locked ? '(Locked)' : ''}
+          <Text style={[textStyles.subtitle, { opacity: isLocked ? 0.4 : 1 }]}>
+            {category.name} {isLocked ? '(Locked)' : ''}
           </Text>
-        </Pressable>
-      ))}
+        </Pressable>)
+      })}
     </View>
   </View>
 );
