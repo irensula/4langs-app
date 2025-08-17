@@ -46,9 +46,7 @@ const HomeScreen = ({ route, navigation }) => {
         }));
 
         setCategories(updatedCategories);
-        updatedCategories.forEach(c => {
-        console.log(`Category ${c.name}: locked=${c.locked}, unlocked=${c.unlocked}`);
-    });
+       
     console.log('updatedCategories', updatedCategories);
 
     })
@@ -59,23 +57,23 @@ const HomeScreen = ({ route, navigation }) => {
         });
     }, [token]);
 
-    const handleSelectCategory = (category) => {
+   const handleSelectCategory = (category) => {
         navigation.navigate('Category', { 
             name: category.name,
             categoryID: category.categoryID,
             user,
             unlocked: category.unlocked,
-    //         setUnlocked: (newUnlocked) => {
-    //   setCategories(prev =>
-    //     prev.map(c =>
-    //       c.categoryID === category.categoryID
-    //         ? { ...c, unlocked: newUnlocked }
-    //         : c
-    //     )
-    // );
-    // }
+            setUnlocked: (newUnlocked) => {
+      setCategories(prev =>
+        prev.map(c =>
+          c.categoryID === category.categoryID
+            ? { ...c, unlocked: newUnlocked }
+            : c
+        )
+      );
+            }
         });
-    };
+        };
 
     return (
         <View style={layout.screen}>

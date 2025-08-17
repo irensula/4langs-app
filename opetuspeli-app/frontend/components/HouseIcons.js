@@ -3,7 +3,9 @@ import Svg, { Rect, Polygon, Path, G } from 'react-native-svg';
 import Entypo from '@expo/vector-icons/Entypo';
 import { layout, colors, textStyles, spacing } from '../constants/layout';
 
-const HouseIcons = ({ categories, onSelect }) => (
+const HouseIcons = ({ categories, onSelect }) => {
+  
+  return (
   <View>
     {/* <Svg width="300" height="100" viewBox="0 0 300 100">
       
@@ -112,9 +114,10 @@ const HouseIcons = ({ categories, onSelect }) => (
         style={{ position: 'absolute', left: 245, top: 35 }}
       />
     )} */}
+    
     <View style={[layout.center, { paddingTop: 15, }]}>
       {categories.map((category) => {
-        const isLocked = category.locked;
+        const isLocked = !category.unlocked;
         console.log('Locked: ', isLocked);
         return(
         <Pressable
@@ -124,13 +127,13 @@ const HouseIcons = ({ categories, onSelect }) => (
           style={styles.category}
         >
           <Text style={[textStyles.subtitle, { opacity: isLocked ? 0.4 : 1 }]}>
-            {category.name} {isLocked ? '(Locked)' : ''}
+            {category.name} {isLocked ? '(Locked)' : '(Unlocked)'} {category.unlocked}
           </Text>
         </Pressable>)
       })}
     </View>
-  </View>
-);
+  </View>)
+};
 
 const styles = StyleSheet.create({
   category: { 

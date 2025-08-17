@@ -8,9 +8,8 @@ import CategoryTitle from '../components/CategoryTitle';
 
 export default function CategoryScreen({ route, navigation }) {
     const { user } = useContext(AuthContext);
-    const { name, categoryID } = route.params;   
+    const { name, categoryID, unlocked } = route.params;   
     const isFocused = useIsFocused();
-    const [unlocked, setUnlocked] = useState(false);
     console.log('Unlock next category', unlocked);
     
     return (
@@ -20,7 +19,7 @@ export default function CategoryScreen({ route, navigation }) {
                     categoryID={categoryID} 
                     name={name} 
                     isFocused={isFocused}
-                    setUnlocked={setUnlocked}
+                    
                 />
                 
                 <View style={styles.categoriesWrap}>

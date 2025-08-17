@@ -37,6 +37,7 @@ const CategoryTitle = ({ categoryID, name, subtitle, isFocused, refreshProgress,
                 setProgressMax(maxScoreData.totalMaxScore);
                 if (setUnlocked) {
                     setUnlocked(progressData.unlockNext);
+                    console.log('progressData.unlockNext', progressData.unlockNext)
                 }
 
             } catch (err) {
