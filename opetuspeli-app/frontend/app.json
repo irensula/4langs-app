@@ -18,8 +18,9 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.opetuspeliapp",
+      "package": "com.irensula.opetuspeliapp",
       "permissions": [
+        "INTERNET",
         "android.permission.RECORD_AUDIO",
         "android.permission.MODIFY_AUDIO_SETTINGS"
       ]

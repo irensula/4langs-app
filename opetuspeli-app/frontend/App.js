@@ -18,9 +18,6 @@ import GapsScreen from "./screens/GapsScreen";
 import { colors } from "./constants/layout";
 import { AuthProvider, AuthContext } from './utils/AuthContext';
 import { View, ActivityIndicator } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-
 
 const Stack = createNativeStackNavigator();
 
@@ -33,33 +30,8 @@ function LoadingIndicator() {
   );
 }
 
-function AuthStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Start" component={StartScreen} />
-      <Stack.Screen name="Register" component={RegisterScreen} />
-      <Stack.Screen name="Login" component={LoginScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function AppStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="UserScreen" component={UserScreen} />
-      <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
-      <Stack.Screen name="Category" component={CategoryScreen} />
-      <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
-      <Stack.Screen name="TextScreen" component={TextScreen} />
-      <Stack.Screen name="MemoScreen" component={MemoScreen} />
-      <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
-      <Stack.Screen name="GapsScreen" component={GapsScreen} />
-    </Stack.Navigator>
-  );
-}
-
 function AppContent() {
+
   const [fontsLoaded] = useFonts({
     LuckiestGuy: require('./assets/fonts/LuckiestGuy-Regular.ttf'),
     ABeeZee: require('./assets/fonts/ABeeZee-Regular.ttf'),
@@ -78,7 +50,28 @@ function AppContent() {
 
   return (
     <NavigationContainer>
-      {user ? <AppStack /> : <AuthStack />}
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Start" component={StartScreen} />
+      {!user && (
+        <>
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Login" component={LoginScreen} />
+        </>
+      )}
+      {user && (
+        <>
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="UserScreen" component={UserScreen} />
+          <Stack.Screen name="ProgressScreen" component={ProgressScreen} />
+          <Stack.Screen name="Category" component={CategoryScreen} />
+          <Stack.Screen name="WordsListScreen" component={WordsListScreen} />
+          <Stack.Screen name="TextScreen" component={TextScreen} />
+          <Stack.Screen name="MemoScreen" component={MemoScreen} />
+          <Stack.Screen name="ConnectScreen" component={ConnectScreen} />
+          <Stack.Screen name="GapsScreen" component={GapsScreen} />
+        </>
+      )}
+    </Stack.Navigator>
     </NavigationContainer>
   );
 }

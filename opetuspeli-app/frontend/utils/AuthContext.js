@@ -26,7 +26,15 @@ export const AuthProvider = ({ children }) => {
         loadAuthData();
     }, []);
 
+    const clearOldToken = async () => {
+        await AsyncStorage.removeItem('token');
+        await AsyncStorage.removeItem('user');
+        setToken(null);
+        setUser(null);
+    };
+
     const login = async (token, user) => {
+        await clearOldToken();
         setToken(token);
         setUser(user);
         await AsyncStorage.setItem('token', token);

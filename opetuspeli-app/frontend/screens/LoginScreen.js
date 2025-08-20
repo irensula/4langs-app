@@ -47,7 +47,6 @@ const Login = ({ navigation }) => {
                     url: data.url
                 };
                 await login(data.token, user);
-                navigation.navigate("Home", { welcomeMessage: "Tervetuloa takaisin!" });
             } else {
                 const errorData = await response.json();
                 setMessage(errorData.error || "Kirjautuminen epäonnistui");

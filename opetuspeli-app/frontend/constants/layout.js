@@ -113,8 +113,9 @@ export const layout = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 20,
       paddingHorizontal: 30,
-      paddingVertical: 20,
+      paddingVertical: 30,
       width: '100%',
+      minHeight: 350,
   },
   shadowStyle: {
       shadowColor: '#000',

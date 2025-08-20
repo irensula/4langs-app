@@ -9,7 +9,7 @@ const jwt = require('jsonwebtoken')
 
 router.post('/', (req, res, next) => {
     const user = req.body;
-      
+
     knex('users')
         .select('users.*', 'user_images.url')
         .leftJoin('user_images', 'users.imageID', 'user_images.imageID' )
@@ -21,6 +21,7 @@ router.post('/', (req, res, next) => {
                 )
             }
             const tempUser = dbuser[0];
+            
             bcrypt.compare(user.password, tempUser.password)
                 .then((passwordCorrect) => {
                     if (!passwordCorrect) {

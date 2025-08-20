@@ -1,53 +1,20 @@
-import { useEffect, useState, useContext } from "react";
-import { ActivityIndicator, View, Text, Pressable, BackHandler, Platform, StyleSheet } from "react-native"; 
-import jwtDecode from 'jwt-decode';
+import { useContext } from "react";
+import { View, Text, Pressable, BackHandler, Platform, StyleSheet } from "react-native"; 
 import { AuthContext } from '../utils/AuthContext';
 import { layout, textStyles, spacing, colors  } from '../constants/layout';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 const StartScreen = ({ navigation }) => {
     const { user, token } = useContext(AuthContext);
-    const [loading, setLoading] = useState(true);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {
-        let isMounted = true;
-        const checkLogin = async () => {
-          try {
-        
-            if (token && user) {
-                const decoded = jwtDecode(token);
-                const isExpired = decoded.exp * 1000 < Date.now();
-                if (isMounted) setIsLoggedIn(!isExpired);
-                } else if (isMounted) {
-                  setIsLoggedIn(false);
-                }
-          } catch (error) {
-              setIsLoggedIn(false);
-          } finally {
-            setLoading(false);
-          }
-      };
-    checkLogin();
-    return () => { isMounted = false; };
-  }, [user, token]);
+    const handleExit = () => {
+      if (Platform.OS === 'android') {
+        BackHandler.exitApp();
+      } else {
+        alert('Please, close the app manually on iOS');
+      }
+    };
 
-  const handleExit = () => {
-    if (Platform.OS === 'android') {
-      BackHandler.exitApp();
-    } else {
-      alert('Please, close the app manually on iOS');
-    }
-  };
-
-  if (loading) {
-    return (
-      <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" />
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
     return (
         <View style={layout.container}>
             <View>
@@ -58,9 +25,9 @@ const StartScreen = ({ navigation }) => {
 
             <View style={layout.mainContainer}>
               <Text style={textStyles.mainTitle}>Tervetuloa!</Text>
-              {isLoggedIn ? 
+              {user ? 
                 (
-                  <Pressable onPress={() => navigation.navigate('Home')}>
+                  <Pressable onPress={() => navigation.replace('Home')}>
                       <View style={layout.button}>
                         <Text style={textStyles.buttonText}>Let's go!</Text>
                       </View>

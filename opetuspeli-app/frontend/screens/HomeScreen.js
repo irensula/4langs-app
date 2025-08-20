@@ -15,20 +15,6 @@ const HomeScreen = ({ route, navigation }) => {
     const [messageType, setMessageType] = useState('success');
 
     useEffect(() => {
-        if (route.params?.welcomeMessage) {
-            setMessage(route.params.welcomeMessage);
-            setMessageType('success');
-            const timer = setTimeout(() => {
-                setMessage('');
-            }, 5000);
-
-            navigation.setParams({ welcomeMessage: null });
-
-            return () => clearTimeout(timer);
-        }
-    }, [route.params?.welcomeMessage]);
-
-    useEffect(() => {
         if (loading || !token || !user) return;
 
         fetch(`${API_BASE}/categories`, {
