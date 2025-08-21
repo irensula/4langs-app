@@ -32,36 +32,49 @@ docker compose down
 docker compose up
 
 FRONTEND
-npm i @react-navigation/native-stack // make a stack in the app
-npm install @react-native-async-storage/async-storage // for saving user and token in AsyncStorage
-npm install react-native-svg-transformer // for svg
-npx expo install react-native-svg // for svg
-npm install --save-dev expo-svg-transformer // for svg
-npx expo start -c // clean cache and open the app
-npx expo install @react-navigation/native @react-navigation/native-stack react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated react-native-svg
+
+# Install React Navigation stack
+
+npm install @react-navigation/native @react-navigation/native-stack
+
+# Install AsyncStorage for storing user/token
+
+npm install @react-native-async-storage/async-storage
+
+# Install SVG support
+
+npm install react-native-svg-transformer expo-svg-transformer @expo/vector-icons
+npx expo install react-native-svg
+
+# Install navigation dependencies
+
+npx expo install react-native-screens react-native-safe-area-context react-native-gesture-handler react-native-reanimated
+
+# Install Expo tools
+
 npm install -g expo-cli
-npx expo install expo-constants // for API
-npx expo install expo-av // for sounds
-npx expo install expo-audio // for sounds
-npm i @expo/vector-icons // for icons
-npx react-native-asset // for assets
-npm install jwt-decode
-react-native-reanimated v2
-react-native-redash
-npm i @react-navigation/native-stack // make a stack in the app
+npx expo install expo@53.0.20 expo-constants@~17.1.7 react-native@0.79.5
 
-npm i @expo/vector-icons // for icons
+# Install audio/video
 
-npm install jwt-decode
-npm install react-native-linear-gradient // for gradient
-npm install react-native-circular-progress
-npm install react-native-dotenv
-npm install react-native-safe-area-context
+npx expo install expo-av expo-audio
 
-npx expo install expo@53.0.20 expo-constants@~17.1.7 react-native@0.79.5 // upfrading packages
+# Other utilities
+
+npm install jwt-decode react-native-linear-gradient react-native-circular-progress react-native-dotenv react-native-safe-area-context
+
+# React Native assets
+
+npx react-native-asset
 
 $env:NODE_ENV="development"; npx expo start
 $env:NODE_ENV="production"; npx expo start
+
+# build
+
+npx expo login
+npx eas build:configure
+eas build --platform android --profile production
 
 Remove-Item -Recurse -Force .expo // deletes .expo folder (for reloading the app)
 npx expo start -c
@@ -70,7 +83,8 @@ DEPLOYNIG:
 npm install -g eas-cli
 eas login
 eas build:configure
-eas build --platform android
+eas build --platform android --profile production
+eas credentials
 
 PYTHON
 python -m pip --version

@@ -11,7 +11,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.irensula.opetuspeliapp"
     },
     "android": {
       "adaptiveIcon": {
@@ -20,9 +21,7 @@
       "edgeToEdgeEnabled": true,
       "package": "com.irensula.opetuspeliapp",
       "permissions": [
-        "INTERNET",
-        "android.permission.RECORD_AUDIO",
-        "android.permission.MODIFY_AUDIO_SETTINGS"
+        "INTERNET"
       ]
     },
     "web": {},
