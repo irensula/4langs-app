@@ -11,12 +11,12 @@ const SECRET = process.env.SECRET;
 
 const DATABASE_OPTIONS = {
   client: process.env.DB_CLIENT,
-  connection: {
+  connection: process.env.DATABASE_URL ? process.env.DATABASE_URL : {
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-  },
+  }
 };
 
 const knex = require('knex')(DATABASE_OPTIONS);
