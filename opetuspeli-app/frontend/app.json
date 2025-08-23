@@ -22,6 +22,9 @@
       "package": "com.irensula.opetuspeliapp",
       "permissions": [
         "INTERNET"
+      ],
+     "blockedPermissions": [
+      "android.permission.RECORD_AUDIO"
       ]
     },
     "web": {},

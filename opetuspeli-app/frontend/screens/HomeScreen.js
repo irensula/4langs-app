@@ -16,6 +16,7 @@ const HomeScreen = ({ route, navigation }) => {
 
     useEffect(() => {
         if (loading || !token || !user) return;
+        console.log("API_BASE:", API_BASE);
 
         fetch(`${API_BASE}/categories`, {
         headers: { 'Authorization': `Bearer ${token}` }

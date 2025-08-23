@@ -69,6 +69,7 @@ const Login = ({ navigation }) => {
 
             <View style={layout.mainContainer}>
                 <Text style={textStyles.title}>Kirjautuminen</Text>
+                <Text>API_BASE: {API_BASE}</Text>
 
                 <View style={[layout.formContainer, layout.shadowStyle]}>
                     
