@@ -3,6 +3,9 @@ import { View, Text, Pressable, BackHandler, Platform, StyleSheet } from "react-
 import { AuthContext } from '../utils/AuthContext';
 import { layout, textStyles, spacing, colors  } from '../constants/layout';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import data from '../assets/data.json';
+
+
 
 const StartScreen = ({ navigation }) => {
     const { user, token } = useContext(AuthContext);
@@ -14,7 +17,7 @@ const StartScreen = ({ navigation }) => {
         alert('Please, close the app manually on iOS');
       }
     };
-
+    console.log('Data', data);
     return (
         <View style={layout.container}>
             <View>
