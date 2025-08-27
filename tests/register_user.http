@@ -1,0 +1,10 @@
+POST http://localhost:3001/register HTTP/1.1
+content-type: application/json
+
+{
+    "username": "Mary",
+    "email": "mary@gmail.com",
+    "phonenumber": "0501112244",
+    "password": "12345678",
+    "imageID": 2
+}   

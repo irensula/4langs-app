@@ -1,0 +1,12 @@
+POST http://localhost:3001/progress/2 HTTP/1.1
+Content-Type: application/json 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwidXNlcm5hbWUiOiJFbGxpIiwiZW1haWwiOiJlbGxpQGdtYWlsLmNvbSIsInBob25lbnVtYmVyIjoiMDUwMjIyMzM3NyIsImltYWdlSUQiOjcsInVybCI6Ii9pbWFnZXMvYXZhdGFycy9wYW5kYS5wbmciLCJpYXQiOjE3NTIyMzgxODYsImV4cCI6MTc1Mjg0Mjk4Nn0.BTXSFE5_12GFhJ0oxFF6t1BaDNecD3ln-9dlj-Zdogw
+
+{
+    "userID": 2,
+    "exerciseID": 2,
+    "score_en": 0,
+    "score_fi": 5,
+    "score_ua": 0,
+    "score_ru": 0
+}
