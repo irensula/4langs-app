@@ -10,8 +10,8 @@ router.get('/', (req, res, next) => {
             res.json(rows);
         })
         .catch((err) => {
-            console.error("Error fetching users' progress:", err.message);
-            res.status(500).json({ error: "Failed to fetch users' progress" })
+            console.error("Error fetching progress:", err.message);
+            res.status(500).json({ error: "Failed to fetch progress" })
     })
 })
 
@@ -36,86 +36,6 @@ router.get('/:id', (req, res) => {
         });
 })
 
-router.post('/:id', async(req, res) => {
-    const userId = req.params.id;
-    const progress = req.body;
-
-    if (        
-        progress.exerciseID  == null || 
-        progress.score_en == null ||
-        progress.score_fi == null ||
-        progress.score_ua == null ||
-        progress.score_ru == null
-        ) {
-            return res.status(400).json({ error: "Missing required fields. Please check your input." });
-        }
-    try {
-        const existing = await knex('progress')
-            .where({ userID: userId, exerciseID: progress.exerciseID })
-            .first();
-        if (existing) {
-            return res.status(409).json({ error: "Progress already exists for this exercise."});
-        }
-
-        const newProgress = {
-                userID: userId,
-                exerciseID: progress.exerciseID,
-                score_en: progress.score_en,
-                score_fi: progress.score_fi,
-                score_ua: progress.score_ua,
-                score_ru: progress.score_ru
-            }
-        
-        await knex('progress').insert(newProgress);
-        
-        res.status(201).json({ message: "Progress created successfully" });
-       
-    } catch (err) {
-        console.error('INSERT INTO progress failed', err.message);
-        res.status(500).json({error: 'Something went wrong while creating progress.'});
-    }   
-})
-
-router.put('/:id', async (req, res) => {
-    const userId = req.params.id;
-    const { exerciseID, score_en, score_fi, score_ua, score_ru } = req.body;
-    console.log("BODY RECEIVED:", req.body);
-
-    if(!exerciseID) {
-      return res.status(400).json({ error: 'Missing required fields (exerciseID)' });
-    }
-
-  try {
-    const existing = await knex('progress')
-        .where({ userID: userId, exerciseID })
-        .first();
-
-    if (!existing) {
-        return res.status(404).json({ error: 'Progress record not found for this user and exercise' });
-    }
-
-    const updatedProgress = {
-      score_en: score_en != null ? score_en : existing.score_en,
-      score_fi: score_fi != null ? score_fi : existing.score_fi,
-      score_ua: score_ua != null ? score_ua : existing.score_ua,
-      score_ru: score_ru != null ? score_ru : existing.score_ru
-    };
-
-    await knex('progress')
-      .where({ userID: userId, exerciseID })
-      .update(updatedProgress);
-
-    const updated = await knex('progress')
-      .where({ userID: userId, exerciseID })
-      .first();
-
-    res.json(updated);
-  } catch (err) {
-        console.error('UPDATE progress failed', err);
-        res.status(500).json({ error: 'Database update error' });
-  }
-});
-
 router.get('/:id/:categoryID', async (req, res, next) => {
     const userId = req.params.id;
     const categoryID = req.params.categoryID;
@@ -123,6 +43,7 @@ router.get('/:id/:categoryID', async (req, res, next) => {
     try {
         const rows = await knex('progress')
             .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
+            .where({ userID: userId, categoryID })
             .sum({ 
                     totalMaxScore: 'maxScore', 
                     totalScoreEn: 'score_en',
@@ -130,40 +51,120 @@ router.get('/:id/:categoryID', async (req, res, next) => {
                     totalScoreUa: 'score_ua',
                     totalScoreRu: 'score_ru'
                 })
-            .where({ userID: userId, categoryID });
+            .first();
+
+        const totalMaxScore = Number(rows.totalMaxScore) || 0;
 
         const totals = rows[0] || {};
         
-        const totalMaxScore = Number(totals.totalMaxScore) || 0;
-        const totalScoreEn = Number(totals.totalScoreEn) || 0;
-        const totalScoreFi = Number(totals.totalScoreFi) || 0;
-        const totalScoreUa = Number(totals.totalScoreUa) || 0;
-        const totalScoreRu = Number(totals.totalScoreRu) || 0;
+        const totalProgress =
+            (Number(rows.totalScoreEn) || 0) +
+            (Number(rows.totalScoreFi) || 0) +
+            (Number(rows.totalScoreUa) || 0) +
+            (Number(rows.totalScoreRu) || 0);
 
-        const totalMaxScoreAllLanguages = totalMaxScore * 4;
-        const totalProgressAllLanguages = totalScoreEn + totalScoreFi + totalScoreUa + totalScoreRu;
-        const totalCategoryProgress = totalMaxScoreAllLanguages > 0 
-            ? Math.round((totalProgressAllLanguages / totalMaxScoreAllLanguages) * 100 )
+            const totalMaxAll = totalMaxScore * 4;
+
+            const progressPercent = totalMaxAll
+            ? Math.round((totalProgress / totalMaxAll) * 100)
             : 0;
 
-        let unlockNext = false;
-        if (totalCategoryProgress >= 80) {
-            unlockNext = true;
-        }
-        res.json({
-            totalMaxScore,
-            totalScoreEn,
-            totalScoreFi,
-            totalScoreUa,
-            totalScoreRu,
-            totalMaxScoreAllLanguages,
-            totalProgressAllLanguages,
-            unlockNext
+            const unlockNext = totalMaxAll > 0 && totalProgress >= totalMaxAll * 0.8;
+
+            res.json({
+                totalMaxScore,
+                totalProgress,
+                progressPercent,
+                unlockNext
+            });
+            } catch (err) {
+                console.error(err);
+                res.status(500).json({ error: "Failed to fetch progress in current category" })
+            }
         })
-    } catch (err) {
-            console.error("Error fetching users' progress:", err.message);
-            res.status(500).json({ error: "Failed to fetch users' progress in current category" })
+
+router.post('/:id', async (req, res) => {
+  const userId = req.params.id;
+  const { exerciseID, selectedLanguage, maxScore, categoryID } = req.body;
+
+  const columnMap = {
+    en: 'score_en',
+    fi: 'score_fi',
+    ua: 'score_ua',
+    ru: 'score_ru',
+  };
+
+  const column = columnMap[selectedLanguage];
+
+  if (!column) return res.status(400).json({ error: "Invalid language" });
+
+  try {
+    const existing = await knex('progress')
+      .where({ userID: userId, exerciseID })
+      .first();
+
+    if (existing) {
+    await knex('progress')
+        .where({ userID: userId, exerciseID })
+        .update({
+            [column]: knex.raw(`GREATEST(COALESCE(??,0), ?)`, [column, maxScore]),
+        });
+    } else {
+      await knex('progress').insert({
+        userID: userId,
+        exerciseID,
+        score_en: selectedLanguage === "en" ? maxScore : 0,
+        score_fi: selectedLanguage === "fi" ? maxScore : 0,
+        score_ua: selectedLanguage === "ua" ? maxScore : 0,
+        score_ru: selectedLanguage === "ru" ? maxScore : 0,
+      });
     }
-})
+
+    const progress = await knex('progress')
+        .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
+        .where('progress.userID', userId)
+        .where('exercises.categoryID', categoryID)
+        .groupBy('progress.userID')
+        .sum({
+            totalMaxScore: 'exercises.maxScore',
+            totalScoreEn: knex.raw('COALESCE(progress.score_en,0)'),
+            totalScoreFi: knex.raw('COALESCE(progress.score_fi,0)'),
+            totalScoreUa: knex.raw('COALESCE(progress.score_ua,0)'),
+            totalScoreRu: knex.raw('COALESCE(progress.score_ru,0)')
+        })
+        .first();
+        
+      const totalMaxScore = Number(progress.totalMaxScore) || 0;
+
+    const totalProgress =
+      (Number(progress.totalScoreEn) || 0) +
+      (Number(progress.totalScoreFi) || 0) +
+      (Number(progress.totalScoreUa) || 0) +
+      (Number(progress.totalScoreRu) || 0);
+
+    const totalMaxAll = totalMaxScore * 4;
     
+    const percent = totalMaxAll > 0
+        ? totalProgress / totalMaxAll
+        : 0;
+    const unlockNext = percent >= 0.8;
+
+
+    if (unlockNext) {
+        
+      await knex('users')
+        .where({ userID: userId })
+        
+        .update({
+          categoryID: knex.raw('categoryID + 1')
+        });
+    }
+    
+    res.json({ success: true, unlockNext });
+  } catch (err) {
+    console.error("FULL ERROR:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
