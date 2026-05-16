@@ -41,7 +41,7 @@ router.get('/:id/:categoryID', async (req, res, next) => {
     const categoryID = req.params.categoryID;
     
     try {
-        const rows = await knex('progress')
+        const progress = await knex('progress')
             .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
             .where({ userID: userId, categoryID })
             .sum({ 
@@ -53,23 +53,35 @@ router.get('/:id/:categoryID', async (req, res, next) => {
                 })
             .first();
 
-        const totalMaxScore = Number(rows.totalMaxScore) || 0;
-
-        const totals = rows[0] || {};
+        const totalMaxScore = Number(progress.totalMaxScore) || 0;
+        
+        if (totalMaxScore === 0) {
+            return res.json({
+                totalMaxScore: 0,
+                totalProgress: 0,
+                progressPercent: 0,
+                unlockNext: false
+            });
+        }
         
         const totalProgress =
-            (Number(rows.totalScoreEn) || 0) +
-            (Number(rows.totalScoreFi) || 0) +
-            (Number(rows.totalScoreUa) || 0) +
-            (Number(rows.totalScoreRu) || 0);
+            (Number(progress.totalScoreEn) || 0) +
+            (Number(progress.totalScoreFi) || 0) +
+            (Number(progress.totalScoreUa) || 0) +
+            (Number(progress.totalScoreRu) || 0);
 
             const totalMaxAll = totalMaxScore * 4;
 
             const progressPercent = totalMaxAll
-            ? Math.round((totalProgress / totalMaxAll) * 100)
-            : 0;
+                ? Math.round((totalProgress / totalMaxAll) * 100)
+                : 0;
 
-            const unlockNext = totalMaxAll > 0 && totalProgress >= totalMaxAll * 0.8;
+            // const unlockNext = totalMaxAll > 0 && totalProgress >= totalMaxAll * 0.8;
+
+            const percent = totalMaxAll > 0 
+                ? totalProgress / totalMaxAll 
+                : 0;
+            const unlockNext = percent >= 0.8;
 
             res.json({
                 totalMaxScore,
@@ -154,7 +166,7 @@ router.post('/:id', async (req, res) => {
         
       await knex('users')
         .where({ userID: userId })
-        
+        .andWhere("categoryID", categoryID)
         .update({
           categoryID: knex.raw('categoryID + 1')
         });
