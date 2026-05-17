@@ -1,11 +1,11 @@
-POST http://localhost:3001/progress/5 HTTP/1.1
+POST http://localhost:3001/progress/6 HTTP/1.1
 Content-Type: application/json 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJKYW5lIiwiZW1haWwiOiJqYW5lQGdtYWlsLmNvbSIsInBob25lbnVtYmVyIjoiMDUwMTIzNDU2NyIsImltYWdlSUQiOjEsInVybCI6Ii9pbWFnZXMvYXZhdGFycy9kb2cucG5nIiwiaWF0IjoxNzc4NjY1MDk1LCJleHAiOjE3NzkyNjk4OTV9.SP1ra5ZTbRavxX_3UYBlz5eeGTIgqZNJbI9z5qWRbuw
 
 {
-    "exerciseID": 3,
-    "selectedLanguage": "en",
-    "maxScore": 11,
+    "exerciseID": 2,
+    "selectedLanguage": "ru",
+    "maxScore": 5,
     "categoryID": 1,
-    "score_en": 11
+    "score_ru": 5
 }

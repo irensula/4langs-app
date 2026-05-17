@@ -5,18 +5,31 @@ const config = require("../utils/config");
 const options = config.DATABASE_OPTIONS;
 const knex = require("knex")(options);
 
-router.get("/", (req, res, next) => {
-  const userId = res.locals.auth.userId; // get user id
-  knex("categories")
-    .select("*")
-    .orderBy("categoryID", "asc")
-    .then((rows) => {
-      res.json(rows);
-    })
-    .catch((err) => {
+router.get("/", async (req, res, next) => {
+  try { 
+    const userId = res.locals.auth.userId; // get user id
+
+    const userProgress = await knex('users')
+        .where('userID', userId)
+        .select('categoryID')
+        .first();
+    
+    const lastOpenedId = userProgress?.categoryID || 1;
+
+    const categories = await knex("categories")
+      .select("*")
+      .orderBy("categoryID", "asc");
+
+      const categoriesWithStatus = categories.map(category => ({
+      ...category,
+      isOpen: category.categoryID <= lastOpenedId || category.categoryID === 1 
+    }));
+    
+        res.json(categoriesWithStatus);
+    } catch (err) {
       console.error("Error fetching categories:", err.message);
       res.status(500).json({ error: "Failed to fetch categories" });
-    });
+    }
 });
 
 router.get("/:id/words", (req, res, next) => {

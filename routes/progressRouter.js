@@ -61,7 +61,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-// unlock next category
+// get score of current category
 router.get('/:id/:categoryID', async (req, res, next) => {
     const userId = req.params.id;
     const categoryID = req.params.categoryID;
@@ -98,6 +98,13 @@ router.get('/:id/:categoryID', async (req, res, next) => {
         const unlockNext = maxScoreAll > 0 && currentScoreAll / maxScoreAll >= 0.8;
 
         res.json({
+            currentScoreAll,
+            maxScoreAll,
+            currentScoreEn,
+            currentScoreFi,
+            currentScoreUa,
+            currentScoreRu,
+            maxScorePerLanguage,
             unlockNext
         });
             } catch (err) {
@@ -122,15 +129,15 @@ router.post('/:id', async (req, res) => {
   if (!column) return res.status(400).json({ error: "Invalid language" });
 
   try {
-    const existing = await knex('progress')
+     const existing = await knex('progress')
       .where({ userID: userId, exerciseID })
       .first();
 
     if (existing) {
-    await knex('progress')
-        .where({ userID: userId, exerciseID })
-        .update({
-            [column]: knex.raw(`GREATEST(COALESCE(??,0), ?)`, [column, maxScore]),
+        await knex('progress')
+            .where({ userID: userId, exerciseID })
+            .update({
+                [column]: knex.raw(`GREATEST(COALESCE(??,0), ?)`, [column, maxScore]),
         });
     } else {
       await knex('progress').insert({
@@ -143,38 +150,39 @@ router.post('/:id', async (req, res) => {
       });
     }
 
-    const progress = await knex('progress')
+    // 2. ИСПРАВЛЕНО: Считаем СУММУ МАКСИМАЛЬНЫХ БАЛЛОВ ВСЕХ упражнений в этой категории
+    const maxScoreData = await knex('exercises')
+        .where('categoryID', categoryID)
+        .sum('maxScore as totalMaxScore')
+        .first();
+
+    const totalMaxScore = Number(maxScoreData?.totalMaxScore) || 0;
+    const totalMaxAll = totalMaxScore * 4; // Максимум для всех 4 языков
+
+    // 3. ИСПРАВЛЕНО: Считаем реальную сумму набранных пользователем баллов по всей категории
+    const userScoreData = await knex('progress')
         .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
         .where('progress.userID', userId)
         .where('exercises.categoryID', categoryID)
-        .groupBy('progress.userID')
-        .sum({
-            totalMaxScore: 'exercises.maxScore',
-            totalScoreEn: knex.raw('COALESCE(progress.score_en,0)'),
-            totalScoreFi: knex.raw('COALESCE(progress.score_fi,0)'),
-            totalScoreUa: knex.raw('COALESCE(progress.score_ua,0)'),
-            totalScoreRu: knex.raw('COALESCE(progress.score_ru,0)')
-        })
+        .select([
+            knex.raw('SUM(COALESCE(progress.score_en, 0)) as totalScoreEn'),
+            knex.raw('SUM(COALESCE(progress.score_fi, 0)) as totalScoreFi'),
+            knex.raw('SUM(COALESCE(progress.score_ua, 0)) as totalScoreUa'),
+            knex.raw('SUM(COALESCE(progress.score_ru, 0)) as totalScoreRu')
+        ])
         .first();
-        
-      const totalMaxScore = Number(progress.totalMaxScore) || 0;
 
     const totalProgress =
-      (Number(progress.totalScoreEn) || 0) +
-      (Number(progress.totalScoreFi) || 0) +
-      (Number(progress.totalScoreUa) || 0) +
-      (Number(progress.totalScoreRu) || 0);
-
-    const totalMaxAll = totalMaxScore * 4;
+      (Number(userScoreData?.totalScoreEn) || 0) +
+      (Number(userScoreData?.totalScoreFi) || 0) +
+      (Number(userScoreData?.totalScoreUa) || 0) +
+      (Number(userScoreData?.totalScoreRu) || 0);
     
-    const percent = totalMaxAll > 0
-        ? totalProgress / totalMaxAll
-        : 0;
+    // 4. Честный расчет процента от общего объема категории
+    const percent = totalMaxAll > 0 ? totalProgress / totalMaxAll : 0;
     const unlockNext = percent >= 0.8;
 
-
     if (unlockNext) {
-        
       await knex('users')
         .where({ userID: userId })
         .andWhere("categoryID", categoryID)
@@ -183,7 +191,12 @@ router.post('/:id', async (req, res) => {
         });
     }
     
-    res.json({ success: true, unlockNext });
+    res.json({ 
+      success: true, 
+      unlockNext, 
+      percent: Math.round(percent * 100),
+      debug: { totalProgress, totalMaxAll } // Временный дебаг, чтобы вы видели реальные цифры баллов
+    });
   } catch (err) {
     console.error("FULL ERROR:", err);
     res.status(500).json({ error: err.message });
