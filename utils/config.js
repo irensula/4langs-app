@@ -1,21 +1,21 @@
 const dotenv = require("dotenv");
 
-// const envFile =
-//   process.env.NODE_ENV === "production"
-//     ? ".env.production"
-//     : ".env.development";
-// console.log("Loading env file:", envFile);
-// dotenv.config({ path: envFile });
+const envFile =
+  process.env.NODE_ENV === "production"
+    ? ".env.production"
+    : ".env.development";
+console.log("Loading env file:", envFile);
+dotenv.config({ path: envFile });
 
 
-if (!process.env.RAILWAY_ENVIRONMENT) {
-  const envFile =
-    process.env.NODE_ENV === "production"
-      ? ".env.production"
-      : ".env.development";
+// if (!process.env.RAILWAY_ENVIRONMENT) {
+//   const envFile =
+//     process.env.NODE_ENV === "production"
+//       ? ".env.production"
+//       : ".env.development";
 
-  dotenv.config({ path: envFile });
-}
+//   dotenv.config({ path: envFile });
+// }
 
 console.log("NODE_ENV:", process.env.NODE_ENV);
 
