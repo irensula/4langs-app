@@ -43,12 +43,4 @@ app.use("/progress", isAuthenticated, require("./routes/progressRouter"));
 app.use("/max-score", isAuthenticated, require("./routes/exercisesRouter"));
 app.use("/", require("./routes/index"));
 
-// Serve React frontend
-// app.use(express.static(path.join(__dirname, 'build')));
-
-// // Only send index.html for frontend routes (not API)
-// app.get(/^\/(?!avatars|images|sounds|login|register|categories|words|sentences|texts|users|progress|max-score).*/, (req, res) => {
-//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-
 module.exports = app;

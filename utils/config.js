@@ -1,11 +1,21 @@
 const dotenv = require("dotenv");
 
-const envFile =
-  process.env.NODE_ENV === "production"
-    ? ".env.production"
-    : ".env.development";
-console.log("Loading env file:", envFile);
-dotenv.config({ path: envFile });
+// const envFile =
+//   process.env.NODE_ENV === "production"
+//     ? ".env.production"
+//     : ".env.development";
+// console.log("Loading env file:", envFile);
+// dotenv.config({ path: envFile });
+
+
+if (!process.env.RAILWAY_ENVIRONMENT) {
+  const envFile =
+    process.env.NODE_ENV === "production"
+      ? ".env.production"
+      : ".env.development";
+
+  dotenv.config({ path: envFile });
+}
 
 console.log("NODE_ENV:", process.env.NODE_ENV);
 
@@ -30,6 +40,8 @@ knex
   .raw("SELECT 1")
   .then(() => {
     console.log("✅ Database connection successful");
+    console.log("Secret exists:", !!process.env.SECRET);
+    console.log("Secret length:", process.env.SECRET?.length);
   })
   .catch((err) => {
     console.error("❌ Database connection failed:", err.message);

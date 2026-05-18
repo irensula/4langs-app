@@ -40,7 +40,7 @@ router.post("/", (req, res, next) => {
             url: tempUser.url,
           };
           const token = jwt.sign(userForToken, config.SECRET, {
-            expiresIn: "7d",
+            expiresIn: "2m",
           });
           console.log(
             "token",

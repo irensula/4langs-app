@@ -26,7 +26,7 @@ const isAuthenticated = (req, res, next) => {
         decodedToken = jwt.verify(token, config.SECRET);
     }
     catch (error) {
-        console.log("jwt error")
+        console.log("JWT verify error:", error.message);
     }
 
     if (!decodedToken || !decodedToken.id) {

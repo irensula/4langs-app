@@ -150,16 +150,16 @@ router.post('/:id', async (req, res) => {
       });
     }
 
-    // 2. ИСПРАВЛЕНО: Считаем СУММУ МАКСИМАЛЬНЫХ БАЛЛОВ ВСЕХ упражнений в этой категории
+    // count the sum of all exercises in the current category
     const maxScoreData = await knex('exercises')
         .where('categoryID', categoryID)
         .sum('maxScore as totalMaxScore')
         .first();
 
     const totalMaxScore = Number(maxScoreData?.totalMaxScore) || 0;
-    const totalMaxAll = totalMaxScore * 4; // Максимум для всех 4 языков
+    const totalMaxAll = totalMaxScore * 4; 
 
-    // 3. ИСПРАВЛЕНО: Считаем реальную сумму набранных пользователем баллов по всей категории
+    // count the sum of user's score in the surrent category
     const userScoreData = await knex('progress')
         .join('exercises', 'progress.exerciseID', 'exercises.exerciseID')
         .where('progress.userID', userId)
@@ -178,7 +178,7 @@ router.post('/:id', async (req, res) => {
       (Number(userScoreData?.totalScoreUa) || 0) +
       (Number(userScoreData?.totalScoreRu) || 0);
     
-    // 4. Честный расчет процента от общего объема категории
+    // percent of the score in the current category
     const percent = totalMaxAll > 0 ? totalProgress / totalMaxAll : 0;
     const unlockNext = percent >= 0.8;
 
@@ -195,7 +195,7 @@ router.post('/:id', async (req, res) => {
       success: true, 
       unlockNext, 
       percent: Math.round(percent * 100),
-      debug: { totalProgress, totalMaxAll } // Временный дебаг, чтобы вы видели реальные цифры баллов
+      debug: { totalProgress, totalMaxAll } 
     });
   } catch (err) {
     console.error("FULL ERROR:", err);
