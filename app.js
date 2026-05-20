@@ -29,6 +29,8 @@ app.use("/avatars", require("./routes/avatarsRouter"));
 app.use("/images", express.static("assets/images"));
 app.use("/sounds", express.static("assets/sounds"));
 app.use("/login", require("./routes/loginRouter"));
+app.use("/refresh", require("./routes/refreshRouter"));
+
 app.use(
   "/register",
   validateSchema(userschema),

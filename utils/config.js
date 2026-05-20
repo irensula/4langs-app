@@ -39,12 +39,12 @@ const knex = require("knex")(DATABASE_OPTIONS);
 knex
   .raw("SELECT 1")
   .then(() => {
-    console.log("✅ Database connection successful");
+    console.log("Database connection successful");
     console.log("Secret exists:", !!process.env.SECRET);
     console.log("Secret length:", process.env.SECRET?.length);
   })
   .catch((err) => {
-    console.error("❌ Database connection failed:", err.message);
+    console.error("Database connection failed:", err.message);
   });
 
 module.exports = {
