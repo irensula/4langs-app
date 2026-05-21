@@ -46,26 +46,9 @@ router.post("/", (req, res, next) => {
             url: tempUser.url,
           };
           const token = jwt.sign(userForToken, config.SECRET, {
-            expiresIn: "1m",
+            expiresIn: "10m",
           });
-          console.log("NEW TOKEN ISSUED:", token);
-          console.log("EXPIRES IN: 1m");
-          console.log(
-            "token",
-            token,
-            "id",
-            tempUser.userID,
-            "username",
-            tempUser.username,
-            "email",
-            tempUser.email,
-            "imageID",
-            tempUser.imageID,
-            "url",
-            tempUser.url,
-            "role",
-            "regularuser"
-          );
+      
           res.status(200).send({
             token,
             userForToken,
